@@ -1,35 +1,35 @@
 ---
 const stacks = [
   {
-    icon: '☁️',
-    title: 'Cloud & DevOps',
-    skills: ['AWS', 'Docker', 'Kubernetes', 'Terraform', 'CI/CD (Jenkins, GitHub Actions)']
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>',
+    title: "Desarrollo Web",
+    skills: ["WordPress", "WooCommerce", "HTML / CSS", "JavaScript", "Elementor"],
   },
   {
-    icon: '🛡️',
-    title: 'Networking & Security',
-    skills: ['TCP/IP, DNS, HTTP/S', 'Firewalls & VPNs', 'Load Balancing', 'IAM & SSO', 'Penetration Testing Tools']
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>',
+    title: "Soluciones a Medida",
+    skills: ["Python", "Django", "REST APIs", "PostgreSQL", "Linux"],
   },
   {
-    icon: '⌨️',
-    title: 'Scripting & Automation',
-    skills: ['Python', 'Bash/Shell Scripting', 'Go', 'Ansible', 'PowerShell']
-  }
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>',
+    title: "Seguridad & DevOps",
+    skills: ["Docker", "AWS", "CI/CD", "Firewalls", "Pentesting"],
+  },
 ];
 ---
 
-<section class="tech-stack">
+<section class="tech-stack" id="habilidades">
   <div class="tech-stack__container">
     <div class="tech-stack__header">
-      <span class="tech-stack__tagline">Core Competencies</span>
-      <h2 class="tech-stack__title">Technology Stack</h2>
+      <span class="tech-stack__tagline">Con qué trabajo</span>
+      <h2 class="tech-stack__title">Mis Herramientas</h2>
     </div>
 
     <div class="tech-stack__grid">
       {stacks.map((stack) => (
-        <div class="stack-card">
+        <div class="stack-card glass">
           <div class="stack-card__header">
-            <span class="stack-card__icon">{stack.icon}</span>
+            <span class="stack-card__icon" set:html={stack.icon} aria-hidden="true" />
             <h3 class="stack-card__title">{stack.title}</h3>
           </div>
           <ul class="stack-card__list">
@@ -45,64 +45,80 @@ const stacks = [
 
 <style>
   .tech-stack {
-    padding: 5rem 2rem;
+    padding: 5rem 1.25rem;
     border-top: 1px solid var(--color-border);
   }
 
   .tech-stack__container {
-    max-width: 960px;
+    max-width: 1080px;
     margin: 0 auto;
   }
 
   .tech-stack__header {
-    text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 3.5rem;
   }
 
   .tech-stack__tagline {
     display: block;
-    color: var(--color-primary);
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: 0.6875rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.3em;
-    margin-bottom: 1rem;
+    letter-spacing: 0.08em;
+    color: var(--color-primary);
+    margin-bottom: 0.875rem;
   }
 
   .tech-stack__title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    letter-spacing: -0.025em;
+    font-family: var(--font-heading);
+    font-size: var(--text-3xl);
+    font-weight: 800;
+    letter-spacing: 0.1em;
   }
 
   .tech-stack__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.25rem;
   }
 
   .stack-card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
+    padding: 1.75rem;
+    transition: all var(--transition-normal);
+    cursor: default;
+  }
+
+  .stack-card:hover {
+    border-color: rgba(59, 130, 246, 0.22);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px -10px rgba(59, 130, 246, 0.18);
   }
 
   .stack-card__header {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+    gap: 0.875rem;
+    margin-bottom: 1.25rem;
   }
 
   .stack-card__icon {
-    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--color-primary);
+    flex-shrink: 0;
   }
 
   .stack-card__title {
-    font-size: 1.125rem;
+    font-family: var(--font-heading);
+    font-size: 0.9375rem;
     font-weight: 700;
-    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
   }
 
   .stack-card__list {
@@ -114,26 +130,44 @@ const stacks = [
   .stack-card__item {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
+    gap: 0.625rem;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 400;
     color: var(--color-text-muted);
+    line-height: 1.5;
   }
 
   .stack-card__item::before {
-    content: '→';
-    color: var(--color-primary);
-    opacity: 0.5;
+    content: "";
+    width: 4px;
+    height: 4px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    opacity: 0.6;
+    flex-shrink: 0;
   }
 
-  @media (min-width: 768px) {
+  /* ======= TABLET (640px – 1023px) ======= */
+  @media (min-width: 640px) {
+    .tech-stack {
+      padding: 5rem 2.5rem;
+    }
+
     .tech-stack__grid {
       grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
     }
   }
 
+  /* ======= DESKTOP (≥1024px) ======= */
   @media (min-width: 1024px) {
     .tech-stack {
-      padding: 5rem 2.5rem;
+      padding: 6rem 3rem;
+    }
+
+    .stack-card {
+      padding: 2.25rem 2rem;
     }
   }
 </style>

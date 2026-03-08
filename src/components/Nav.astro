@@ -1,120 +1,121 @@
 ---
 const navLinks = [
-  { label: "Work", subtitle: "Portafolio", href: "#proyectos" },
-  { label: "Tech", subtitle: "Habilidades", href: "#habilidades" },
-  { label: "Bio", subtitle: "Sobre mí", href: "#inicio" },
-  { label: "Contact", subtitle: "Contacto", href: "#contacto" },
+  { label: "Work",    subtitle: "Portafolio", href: "#proyectos" },
+  { label: "Tech",    subtitle: "Habilidades", href: "#habilidades" },
+  { label: "Bio",     subtitle: "Sobre mí",   href: "#inicio" },
+  { label: "Contact", subtitle: "Contacto",   href: "#contacto" },
 ];
 
 const socialLinks = [
   {
     label: "GitHub",
     href: "https://github.com/ArbenS90",
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.001 2C6.47598 2 2.00098 6.475 2.00098 12C2.00098 16.425 4.86348 20.1625 8.83848 21.4875C9.33848 21.575 9.52598 21.275 9.52598 21.0125C9.52598 20.775 9.51348 19.9875 9.51348 19.15C7.00098 19.6125 6.35098 18.5375 6.15098 17.975C6.03848 17.6875 5.55098 16.8 5.12598 16.5625C4.77598 16.375 4.27598 15.9125 5.11348 15.9C5.90098 15.8875 6.46348 16.625 6.65098 16.925C7.55098 18.4375 8.98848 18.0125 9.56348 17.75C9.65098 17.1 9.91348 16.6625 10.201 16.4125C7.97598 16.1625 5.65098 15.3 5.65098 11.475C5.65098 10.3875 6.03848 9.4875 6.67598 8.7875C6.57598 8.5375 6.22598 7.5125 6.77598 6.1375C6.77598 6.1375 7.61348 5.875 9.52598 7.1625C10.326 6.9375 11.176 6.825 12.026 6.825C12.876 6.825 13.726 6.9375 14.526 7.1625C16.4385 5.8625 17.276 6.1375 17.276 6.1375C17.826 7.5125 17.476 8.5375 17.376 8.7875C18.0135 9.4875 18.401 10.375 18.401 11.475C18.401 15.3125 16.0635 16.1625 13.8385 16.4125C14.201 16.725 14.5135 17.325 14.5135 18.2625C14.5135 19.6 14.501 20.675 14.501 21.0125C14.501 21.275 14.6885 21.5875 15.1885 21.4875C19.259 20.1133 21.9999 16.2963 22.001 12C22.001 6.475 17.526 2 12.001 2Z"></path></svg>',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.001 2C6.47598 2 2.00098 6.475 2.00098 12C2.00098 16.425 4.86348 20.1625 8.83848 21.4875C9.33848 21.575 9.52598 21.275 9.52598 21.0125C9.52598 20.775 9.51348 19.9875 9.51348 19.15C7.00098 19.6125 6.35098 18.5375 6.15098 17.975C6.03848 17.6875 5.55098 16.8 5.12598 16.5625C4.77598 16.375 4.27598 15.9125 5.11348 15.9C5.90098 15.8875 6.46348 16.625 6.65098 16.925C7.55098 18.4375 8.98848 18.0125 9.56348 17.75C9.65098 17.1 9.91348 16.6625 10.201 16.4125C7.97598 16.1625 5.65098 15.3 5.65098 11.475C5.65098 10.3875 6.03848 9.4875 6.67598 8.7875C6.57598 8.5375 6.22598 7.5125 6.77598 6.1375C6.77598 6.1375 7.61348 5.875 9.52598 7.1625C10.326 6.9375 11.176 6.825 12.026 6.825C12.876 6.825 13.726 6.9375 14.526 7.1625C16.4385 5.8625 17.276 6.1375 17.276 6.1375C17.826 7.5125 17.476 8.5375 17.376 8.7875C18.0135 9.4875 18.401 10.375 18.401 11.475C18.401 15.3125 16.0635 16.1625 13.8385 16.4125C14.201 16.725 14.5135 17.325 14.5135 18.2625C14.5135 19.6 14.501 20.675 14.501 21.0125C14.501 21.275 14.6885 21.5875 15.1885 21.4875C19.259 20.1133 21.9999 16.2963 22.001 12C22.001 6.475 17.526 2 12.001 2Z"/></svg>',
   },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/santiago-arango-benjumea-383864219/",
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94048 4.99993C6.94011 5.81424 6.44608 6.54702 5.69134 6.85273C4.9366 7.15845 4.07187 6.97605 3.5049 6.39155C2.93793 5.80704 2.78195 4.93715 3.1105 4.19207C3.43906 3.44699 4.18654 2.9755 5.00048 2.99993C6.08155 3.03238 6.94097 3.91837 6.94048 4.99993ZM7.00048 8.47993H3.00048V20.9999H7.00048V8.47993ZM13.3205 8.47993H9.34048V20.9999H13.2805V14.4299C13.2805 10.7699 18.0505 10.4299 18.0505 14.4299V20.9999H22.0005V13.0699C22.0005 6.89993 14.9405 7.12993 13.2805 10.1599L13.3205 8.47993Z"></path></svg>',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94048 4.99993C6.94011 5.81424 6.44608 6.54702 5.69134 6.85273C4.9366 7.15845 4.07187 6.97605 3.5049 6.39155C2.93793 5.80704 2.78195 4.93715 3.1105 4.19207C3.43906 3.44699 4.18654 2.9755 5.00048 2.99993C6.08155 3.03238 6.94097 3.91837 6.94048 4.99993ZM7.00048 8.47993H3.00048V20.9999H7.00048V8.47993ZM13.3205 8.47993H9.34048V20.9999H13.2805V14.4299C13.2805 10.7699 18.0505 10.4299 18.0505 14.4299V20.9999H22.0005V13.0699C22.0005 6.89993 14.9405 7.12993 13.2805 10.1599L13.3205 8.47993Z"/></svg>',
   },
-
   {
     label: "Email",
     href: "mailto:arben04dev@gmail.com",
-    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM20 7.23792L12.0718 14.338L4 7.21594V19H20V7.23792ZM4.51146 5L12.0619 11.662L19.501 5H4.51146Z"></path></svg>',
+    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM20 7.23792L12.0718 14.338L4 7.21594V19H20V7.23792ZM4.51146 5L12.0619 11.662L19.501 5H4.51146Z"/></svg>',
   },
 ];
 ---
 
-<!-- Navegación lateral izquierda (redes sociales) -->
+<!-- ======= NAV LATERAL IZQUIERDA (desktop) ======= -->
 <div class="nav-left">
   <div class="nav-left__line"></div>
   <div class="nav-left__social">
     <button class="nav-left__trigger" aria-label="Redes sociales">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"
-          fill="currentColor"></path>
+        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z" fill="currentColor"></path>
       </svg>
-      <span class="nav-left__trigger-text">Social</span>
+      <span class="sr-only">Social</span>
     </button>
     <div class="nav-left__links">
-      {
-        socialLinks.map((link) => (
-          <a
-            href={link.href}
-            class="nav-left__link"
-            aria-label={link.label}
-            target="_blank"
-            rel="noopener noreferrer"
-            set:html={link.svg}
-          />
-        ))
-      }
+      {socialLinks.map((link) => (
+        <a href={link.href} class="nav-left__link" aria-label={link.label} target="_blank" rel="noopener noreferrer" set:html={link.svg} />
+      ))}
     </div>
   </div>
 </div>
 
-<!-- Navegación lateral derecha (menú) -->
-<nav class="nav-right">
-  {
-    navLinks.map((link) => (
-      <a href={link.href} class="nav-right__link">
-        <span class="nav-right__subtitle">{link.subtitle}</span>
-        <span class="nav-right__label">{link.label}</span>
-      </a>
-    ))
-  }
+<!-- ======= NAV LATERAL DERECHA (desktop) ======= -->
+<nav class="nav-right" aria-label="Navegación principal">
+  {navLinks.map((link) => (
+    <a href={link.href} class="nav-right__link">
+      <span class="nav-right__subtitle">{link.subtitle}</span>
+      <span class="nav-right__label">{link.label}</span>
+    </a>
+  ))}
 </nav>
 
-<!-- Status indicator -->
+<!-- ======= STATUS (desktop) ======= -->
 <div class="nav-status">
   <div class="nav-status__text">
-    <span class="nav-status__title">SYSTEM STATUS</span>
-    <span class="nav-status__value">Online & Available</span>
+    <span class="nav-status__title">STATUS</span>
+    <span class="nav-status__value">Available</span>
   </div>
-  <div class="nav-status__dot"></div>
+  <div class="nav-status__dot" aria-hidden="true"></div>
 </div>
 
-<!-- Menú móvil -->
-<button class="nav-mobile-toggle" aria-label="Abrir menú">
+<!-- ======= BARRA SUPERIOR FLOTANTE (tablet 640–1023px) ======= -->
+<header class="nav-tablet" role="banner">
+  <span class="nav-tablet__brand">SA</span>
+  <nav class="nav-tablet__links" aria-label="Navegación tablet">
+    {navLinks.map((link) => (
+      <a href={link.href} class="nav-tablet__link">{link.label}</a>
+    ))}
+  </nav>
+  <div class="nav-tablet__socials">
+    {socialLinks.map((link) => (
+      <a href={link.href} class="nav-tablet__social" aria-label={link.label} target="_blank" rel="noopener noreferrer" set:html={link.svg} />
+    ))}
+  </div>
+</header>
+
+<!-- ======= TOGGLE MÓVIL (<640px) ======= -->
+<button class="nav-mobile-toggle" aria-label="Abrir menú" aria-expanded="false">
   <span class="nav-mobile-toggle__bar"></span>
   <span class="nav-mobile-toggle__bar"></span>
   <span class="nav-mobile-toggle__bar"></span>
 </button>
 
-<div class="nav-mobile">
+<!-- ======= MENÚ MÓVIL (<640px) ======= -->
+<div class="nav-mobile" role="dialog" aria-modal="true" aria-label="Menú de navegación">
   <div class="nav-mobile__links">
-    {
-      navLinks.map((link) => (
-        <a href={link.href} class="nav-mobile__link">
-          {link.label}
-        </a>
-      ))
-    }
+    {navLinks.map((link) => (
+      <a href={link.href} class="nav-mobile__link">{link.label}</a>
+    ))}
   </div>
   <div class="nav-mobile__social">
-    {
-      socialLinks.map((link) => (
-        <a
-          href={link.href}
-          class="nav-mobile__social-link"
-          aria-label={link.label}
-          target="_blank"
-          rel="noopener noreferrer"
-          set:html={link.svg}
-        />
-      ))
-    }
+    {socialLinks.map((link) => (
+      <a href={link.href} class="nav-mobile__social-link" aria-label={link.label} target="_blank" rel="noopener noreferrer" set:html={link.svg} />
+    ))}
   </div>
+  <span class="nav-mobile__status">
+    <span class="nav-mobile__dot"></span>
+    Online & Available
+  </span>
 </div>
 
 <style>
-  /* Navegación izquierda */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border-width: 0;
+  }
+
+  /* ======= NAV IZQUIERDA (desktop ≥1024px) ======= */
   .nav-left {
     display: none;
     position: fixed;
-    left: 1rem;
+    left: 1.5rem;
     bottom: 2rem;
     z-index: 100;
     flex-direction: column;
@@ -125,7 +126,7 @@ const socialLinks = [
   .nav-left__line {
     width: 1px;
     height: 5rem;
-    background: linear-gradient(to top, rgba(43, 108, 238, 0.5), transparent);
+    background: linear-gradient(to top, rgba(59, 130, 246, 0.45), transparent);
   }
 
   .nav-left__social {
@@ -136,15 +137,12 @@ const socialLinks = [
   }
 
   .nav-left__trigger {
-    width: 3rem;
-    height: 3rem;
+    width: 2.75rem;
+    height: 2.75rem;
     padding: 0.5rem;
-
-    background: transparent;
     color: var(--color-text-muted);
-    transition:
-      color var(--transition-fast),
-      transform var(--transition-fast);
+    transition: color var(--transition-fast), transform var(--transition-fast);
+    cursor: pointer;
   }
 
   .nav-left__trigger:hover {
@@ -152,18 +150,15 @@ const socialLinks = [
     transform: scale(1.1);
   }
 
-  .nav-left__trigger svg {
-    width: 100%;
-    height: 100%;
-  }
+  .nav-left__trigger svg { width: 100%; height: 100%; }
 
   .nav-left__links {
     position: absolute;
-    bottom: 4rem;
+    bottom: 3.75rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.25rem;
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
@@ -177,12 +172,11 @@ const socialLinks = [
   }
 
   .nav-left__link {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
     color: var(--color-text-muted);
-    transition:
-      color var(--transition-fast),
-      transform var(--transition-fast);
+    transition: color var(--transition-fast), transform var(--transition-fast);
+    cursor: pointer;
   }
 
   .nav-left__link:hover {
@@ -190,17 +184,13 @@ const socialLinks = [
     transform: scale(1.3);
   }
 
-  .nav-left__link svg {
-    width: 100%;
-    height: 100%;
-    fill: currentColor;
-  }
+  .nav-left__link svg { width: 100%; height: 100%; fill: currentColor; }
 
-  /* Navegación derecha */
+  /* ======= NAV DERECHA (desktop ≥1024px) ======= */
   .nav-right {
     display: none;
     position: fixed;
-    right: 3rem;
+    right: 2.5rem;
     top: 50%;
     transform: translateY(-50%);
     z-index: 100;
@@ -212,25 +202,29 @@ const socialLinks = [
   .nav-right__link {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.875rem;
+    cursor: pointer;
   }
 
   .nav-right__subtitle {
+    font-family: var(--font-heading);
     font-size: 0.625rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.18em;
     color: var(--color-primary);
     opacity: 0;
-    transform: translateX(10px);
+    transform: translateX(8px);
     transition: all var(--transition-fast);
   }
 
   .nav-right__label {
-    font-size: 0.875rem;
+    font-family: var(--font-heading);
+    font-size: 0.6875rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text);
+    letter-spacing: 0.2em;
+    color: var(--color-text-muted);
     transition: color var(--transition-fast);
   }
 
@@ -240,107 +234,185 @@ const socialLinks = [
   }
 
   .nav-right__link:hover .nav-right__label {
-    color: var(--color-primary);
+    color: var(--color-text);
   }
 
-  /* Status indicator */
+  /* ======= STATUS (desktop ≥1024px) ======= */
   .nav-status {
     display: none;
     position: fixed;
-    right: 2rem;
+    right: 1.75rem;
     bottom: 2rem;
     z-index: 100;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.625rem;
   }
 
   .nav-status__text {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    gap: 0.1rem;
   }
 
   .nav-status__title {
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-family: var(--font-heading);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
   }
 
   .nav-status__value {
-    font-size: 0.625rem;
+    font-family: var(--font-heading);
+    font-size: 0.6875rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-primary);
+    letter-spacing: 0.14em;
+    color: #22c55e;
   }
 
   .nav-status__dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    background-color: var(--color-primary);
+    width: 7px;
+    height: 7px;
+    background-color: #22c55e;
     border-radius: 50%;
+    box-shadow: 0 0 10px #22c55e;
     animation: pulse 2s infinite;
   }
 
   @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.5;
-      transform: scale(1.2);
-    }
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(1.25); }
   }
 
-  /* Menú móvil toggle */
+  /* ======= NAV TABLET (640px – 1023px) ======= */
+  .nav-tablet {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    align-items: center;
+    gap: 0;
+    background: rgba(9, 15, 35, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    padding: 0.5rem 0.625rem 0.5rem 1.125rem;
+    white-space: nowrap;
+  }
+
+  .nav-tablet__brand {
+    font-family: var(--font-heading);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+    margin-right: 1.5rem;
+  }
+
+  .nav-tablet__links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .nav-tablet__link {
+    font-family: var(--font-heading);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .nav-tablet__link:hover {
+    color: var(--color-text);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .nav-tablet__socials {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 0.75rem;
+    padding-left: 0.875rem;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .nav-tablet__social {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .nav-tablet__social:hover { color: var(--color-primary); }
+  .nav-tablet__social svg { width: 14px; height: 14px; fill: currentColor; }
+
+  /* ======= TOGGLE MÓVIL (<640px) ======= */
   .nav-mobile-toggle {
     position: fixed;
-    bottom: 1rem;
-    left: 1rem;
+    bottom: 1.25rem;
+    left: 1.25rem;
     z-index: 101;
     width: 3rem;
     height: 3rem;
-    background-color: var(--color-primary);
+    background: var(--color-primary);
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    box-shadow: 0 4px 20px rgba(43, 108, 238, 0.3);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35);
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .nav-mobile-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 28px rgba(59, 130, 246, 0.5);
   }
 
   .nav-mobile-toggle__bar {
     width: 18px;
     height: 2px;
-    background-color: var(--color-text);
+    background-color: white;
+    border-radius: 2px;
     transition: all var(--transition-fast);
   }
 
-  .nav-mobile-toggle.active .nav-mobile-toggle__bar:nth-child(1) {
-    transform: rotate(45deg) translate(4px, 4px);
-  }
+  .nav-mobile-toggle.active .nav-mobile-toggle__bar:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+  .nav-mobile-toggle.active .nav-mobile-toggle__bar:nth-child(2) { opacity: 0; }
+  .nav-mobile-toggle.active .nav-mobile-toggle__bar:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
 
-  .nav-mobile-toggle.active .nav-mobile-toggle__bar:nth-child(2) {
-    opacity: 0;
-  }
-
-  .nav-mobile-toggle.active .nav-mobile-toggle__bar:nth-child(3) {
-    transform: rotate(-45deg) translate(4px, -4px);
-  }
-
-  /* Menú móvil */
+  /* ======= MENÚ MÓVIL (<640px) ======= */
   .nav-mobile {
     position: fixed;
     inset: 0;
     z-index: 100;
-    background-color: rgba(5, 5, 5, 0.98);
+    background: rgba(2, 6, 23, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3rem;
+    gap: 2.5rem;
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-normal);
@@ -355,56 +427,95 @@ const socialLinks = [
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 0.25rem;
   }
 
   .nav-mobile__link {
-    font-size: 1.5rem;
+    font-family: var(--font-heading);
+    font-size: 2rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: -0.01em;
     color: var(--color-text);
-    transition: color var(--transition-fast);
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    cursor: pointer;
   }
 
   .nav-mobile__link:hover {
     color: var(--color-primary);
+    background: rgba(59, 130, 246, 0.06);
   }
 
   .nav-mobile__social {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .nav-mobile__social-link {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--color-text-muted);
-    transition: color var(--transition-fast);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    cursor: pointer;
   }
 
   .nav-mobile__social-link:hover {
     color: var(--color-primary);
+    border-color: rgba(59, 130, 246, 0.3);
   }
 
-  .nav-mobile__social-link svg {
-    width: 100%;
-    height: 100%;
-    fill: currentColor;
+  .nav-mobile__social-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+  .nav-mobile__status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-text-subtle);
   }
 
-  /* Desktop */
+  .nav-mobile__dot {
+    width: 7px;
+    height: 7px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+    animation: pulse 2s infinite;
+  }
+
+  /* ======= BREAKPOINTS ======= */
+
+  /* Tablet: 640px – 1023px */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .nav-tablet { display: flex; }
+    .nav-mobile-toggle { display: none; }
+    .nav-mobile { display: none !important; }
+    .nav-left, .nav-right, .nav-status { display: none; }
+  }
+
+  /* Mobile: < 640px */
+  @media (max-width: 639px) {
+    .nav-tablet { display: none; }
+    .nav-left, .nav-right, .nav-status { display: none; }
+  }
+
+  /* Desktop: ≥ 1024px */
   @media (min-width: 1024px) {
-    .nav-left,
-    .nav-right,
-    .nav-status {
-      display: flex;
-    }
-
-    .nav-mobile-toggle,
-    .nav-mobile {
-      display: none !important;
-    }
+    .nav-left, .nav-right, .nav-status { display: flex; }
+    .nav-tablet { display: none; }
+    .nav-mobile-toggle { display: none !important; }
+    .nav-mobile { display: none !important; }
   }
 </style>
 
@@ -413,15 +524,22 @@ const socialLinks = [
   const mobileMenu = document.querySelector(".nav-mobile");
   const mobileLinks = document.querySelectorAll(".nav-mobile__link");
 
+  function closeMenu() {
+    toggle?.classList.remove("active");
+    mobileMenu?.classList.remove("active");
+    toggle?.setAttribute("aria-expanded", "false");
+  }
+
   toggle?.addEventListener("click", () => {
-    toggle.classList.toggle("active");
+    const isOpen = toggle.classList.toggle("active");
     mobileMenu?.classList.toggle("active");
+    toggle.setAttribute("aria-expanded", String(isOpen));
   });
 
-  mobileLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      toggle?.classList.remove("active");
-      mobileMenu?.classList.remove("active");
-    });
+  mobileLinks.forEach((link) => link.addEventListener("click", closeMenu));
+
+  /* Cierra el menú si se redimensiona a tablet/desktop */
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 640) closeMenu();
   });
 </script>
