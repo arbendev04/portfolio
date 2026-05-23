@@ -181,6 +181,10 @@ button {
   * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
 
+/* ===== HIDDEN ATTRIBUTE FIX ===== */
+/* Prevents CSS display rules from overriding [hidden] attribute */
+[hidden] { display: none !important; }
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--color-background); }
