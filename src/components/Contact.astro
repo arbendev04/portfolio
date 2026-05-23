@@ -17,12 +17,25 @@
       y te respondo en menos de 24 horas — sin rodeos, sin burocracia.
     </p>
 
-    <form class="contact__form" novalidate>
+    <form
+      class="contact__form"
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      novalidate
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="contact__honeypot" aria-hidden="true">
+        <label>No llenar: <input name="bot-field" tabindex="-1" /></label>
+      </p>
+
       <div class="contact__form-row">
         <div class="contact__field">
           <label for="contact-name" class="contact__label">Tu nombre</label>
           <input
             id="contact-name"
+            name="name"
             type="text"
             class="contact__input"
             placeholder="Santiago García"
@@ -34,6 +47,7 @@
           <label for="contact-email" class="contact__label">Tu correo</label>
           <input
             id="contact-email"
+            name="email"
             type="email"
             class="contact__input"
             placeholder="correo@ejemplo.com"
@@ -47,6 +61,7 @@
         <label for="contact-phone" class="contact__label">WhatsApp <span class="contact__optional">(opcional)</span></label>
         <input
           id="contact-phone"
+          name="phone"
           type="tel"
           class="contact__input"
           placeholder="+57 300 000 0000"
@@ -58,6 +73,7 @@
         <label for="contact-message" class="contact__label">Tu proyecto</label>
         <textarea
           id="contact-message"
+          name="message"
           class="contact__input contact__textarea"
           placeholder="Cuéntame qué necesitas, qué tipo de proyecto es, y cualquier detalle relevante…"
           rows="4"
@@ -66,12 +82,31 @@
       </div>
 
       <button type="submit" class="contact__button">
-        Enviar y empezar
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <span class="contact__button-text">Enviar y empezar</span>
+        <svg class="contact__button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
         </svg>
       </button>
     </form>
+
+    <!-- Estado de éxito -->
+    <div class="contact__success" role="alert" aria-live="polite" hidden>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/>
+      </svg>
+      <div>
+        <strong>¡Mensaje enviado!</strong>
+        <p>Te respondo en menos de 24 horas. ¡Hablamos pronto!</p>
+      </div>
+    </div>
+
+    <!-- Estado de error -->
+    <div class="contact__error" role="alert" aria-live="polite" hidden>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>
+      </svg>
+      <p>Hubo un problema al enviar. Intenta de nuevo o escríbeme a <a href="mailto:arben04dev@gmail.com">arben04dev@gmail.com</a></p>
+    </div>
   </div>
 </section>
 
@@ -104,13 +139,12 @@
     gap: 2rem;
   }
 
-  /* Encabezado */
   .contact__heading { display: flex; flex-direction: column; gap: 0.625rem; }
 
   .contact__tagline {
     font-family: var(--font-heading);
     font-size: 0.6875rem;
-    font-weight: 600;
+    font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-primary);
@@ -119,7 +153,7 @@
   .contact__title {
     font-family: var(--font-heading);
     font-size: clamp(2rem, 5.5vw, 3.25rem);
-    font-weight: 800;
+    font-weight: 400;
     letter-spacing: 0.1em;
     line-height: 1.06;
   }
@@ -133,7 +167,13 @@
     max-width: 46ch;
   }
 
-  /* Formulario */
+  .contact__honeypot {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
   .contact__form {
     display: flex;
     flex-direction: column;
@@ -153,7 +193,7 @@
   }
 
   .contact__label {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 0.6875rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -166,7 +206,6 @@
     text-transform: none;
     letter-spacing: 0;
     color: var(--color-text-subtle);
-    font-family: var(--font-body);
   }
 
   .contact__input {
@@ -202,6 +241,10 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
   }
 
+  .contact__input:invalid:not(:placeholder-shown) {
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+
   .contact__textarea {
     resize: vertical;
     min-height: 130px;
@@ -226,24 +269,63 @@
     box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
     cursor: pointer;
     min-height: 48px;
-    align-self: stretch; /* ancho completo en móvil */
+    align-self: stretch;
   }
 
-  .contact__button:hover {
+  .contact__button:hover:not(:disabled) {
     background: var(--color-primary-hover);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(59, 130, 246, 0.45);
   }
 
-  .contact__button svg {
-    transition: transform var(--transition-fast);
+  .contact__button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
   }
 
-  .contact__button:hover svg {
+  .contact__button-icon {
+    transition: transform var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .contact__button:hover:not(:disabled) .contact__button-icon {
     transform: translateX(3px);
   }
 
-  /* ======= TABLET (640px – 1023px) ======= */
+  /* Estados de feedback */
+  .contact__success,
+  .contact__error {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .contact__success {
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    color: #86efac;
+  }
+
+  .contact__success svg { color: #4ade80; flex-shrink: 0; margin-top: 1px; }
+  .contact__success strong { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+  .contact__success p { margin: 0; color: #bbf7d0; }
+
+  .contact__error {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #fca5a5;
+  }
+
+  .contact__error svg { color: #f87171; flex-shrink: 0; margin-top: 2px; }
+  .contact__error p { margin: 0; }
+  .contact__error a { color: var(--color-primary); text-decoration: underline; }
+
+  /* ======= TABLET ======= */
   @media (min-width: 640px) {
     .contact {
       padding: 6rem 2.5rem 7rem;
@@ -254,14 +336,57 @@
     }
 
     .contact__button {
-      align-self: flex-start; /* botón compacto en desktop */
+      align-self: flex-start;
     }
   }
 
-  /* ======= DESKTOP (≥1024px) ======= */
+  /* ======= DESKTOP ======= */
   @media (min-width: 1024px) {
     .contact {
       padding: 8rem 3rem 9rem;
     }
   }
 </style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.contact__form');
+  const successEl = document.querySelector<HTMLElement>('.contact__success');
+  const errorEl = document.querySelector<HTMLElement>('.contact__error');
+  const button = document.querySelector<HTMLButtonElement>('.contact__button');
+  const buttonText = document.querySelector<HTMLElement>('.contact__button-text');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    // Estado de carga
+    if (button) button.disabled = true;
+    if (buttonText) buttonText.textContent = 'Enviando…';
+
+    try {
+      const formData = new FormData(form);
+      const params = new URLSearchParams();
+      formData.forEach((value, key) => params.append(key, value.toString()));
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+      });
+
+      if (response.ok) {
+        form.hidden = true;
+        if (successEl) successEl.hidden = false;
+      } else {
+        throw new Error('Response not ok');
+      }
+    } catch {
+      if (errorEl) errorEl.hidden = false;
+      if (button) button.disabled = false;
+      if (buttonText) buttonText.textContent = 'Enviar y empezar';
+    }
+  });
+</script>
