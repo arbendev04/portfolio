@@ -6,7 +6,7 @@ interface Props {
 
 const {
   title,
-  description = "Desarrollador web freelance especializado en WordPress, Shopify, WooCommerce y soluciones a medida. Convierto visitas en clientes reales. Disponible para proyectos en 2026.",
+  description = "Desarrollador web freelance en Colombia. WordPress, Shopify y código a medida para negocios que quieren crecer. Presupuesto en menos de 24 horas.",
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://santiago-arango.dev");
@@ -18,8 +18,8 @@ const personSchema = {
   name: "Santiago Arango",
   url: canonicalURL.origin,
   jobTitle: "Desarrollador Web Freelance",
-  description: "Desarrollador web especializado en WordPress, Shopify, WooCommerce, Python y soluciones a medida.",
-  knowsAbout: ["WordPress", "WooCommerce", "Shopify", "PHP", "Python", "Django", "PostgreSQL", "E-Commerce", "REST APIs"],
+  description: "Desarrollador web freelance en Colombia especializado en WordPress, Shopify y soluciones a medida que convierten visitas en clientes.",
+  knowsAbout: ["WordPress", "WooCommerce", "Shopify", "PHP", "Python", "Django", "PostgreSQL", "E-Commerce", "REST APIs", "Diseño Web"],
   sameAs: [
     "https://github.com/ArbenS90",
     "https://www.linkedin.com/in/santiago-arango-benjumea-383864219/",
@@ -27,8 +27,26 @@ const personSchema = {
   contactPoint: {
     "@type": "ContactPoint",
     email: "arben04dev@gmail.com",
-    contactType: "freelance",
-    areaServed: ["CO", "ES"],
+    contactType: "customer service",
+    availableLanguage: ["Spanish"],
+    areaServed: ["CO", "ES", "LATAM"],
+  },
+  worksFor: {
+    "@type": "Organization",
+    name: "SYS-ENG",
+    url: canonicalURL.origin,
+  },
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Santiago Arango · Dev",
+  url: canonicalURL.origin,
+  description: "Portafolio de Santiago Arango, desarrollador web freelance en Colombia.",
+  author: {
+    "@type": "Person",
+    name: "Santiago Arango",
   },
 };
 ---
@@ -76,6 +94,7 @@ const personSchema = {
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   </head>
   <body>
     <slot />
