@@ -334,9 +334,9 @@ const stats = [
     color: var(--color-text-subtle);
   }
 
-  /* ======= PANEL VISUAL — mobile first ======= */
+  /* ======= PANEL VISUAL — oculto en móvil ======= */
   .hero__visual {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 1rem;
     padding: 1.75rem 1.25rem 2.5rem;
@@ -500,7 +500,7 @@ const stats = [
     .hero__content { padding: 5.5rem 3rem 3.5rem; gap: 2.5rem; }
     .hero__main { max-width: 560px; }
     .hero__description { max-width: 52ch; }
-    .hero__visual { padding: 2.5rem 3rem 3rem; }
+    .hero__visual { display: flex; padding: 2.5rem 3rem 3rem; }
     .panel-map { height: 360px; }
     .panel-terminal { height: 220px; }
   }
