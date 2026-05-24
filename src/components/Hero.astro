@@ -49,58 +49,106 @@ const stats = [
   <!-- Panel visual -->
   <div class="hero__visual" aria-hidden="true">
 
-    <!-- MAPA -->
+    <!-- MAPA MUNDO -->
     <div class="panel-card panel-map glass">
       <div class="panel-card__head">
         <span class="panel-eyebrow">Alcance global</span>
-        <span class="panel-status">
-          <span class="panel-status__dot"></span>Disponible
-        </span>
       </div>
 
+      <!--
+        Proyección equirectangular: viewBox 460×220
+        x = (lon + 180) / 360 * 460
+        y = (90  - lat) / 180 * 220
+        Miami    lon=-80 lat=26  → x=128 y=78
+        Medellín lon=-76 lat=6   → x=133 y=103
+        Madrid   lon=-4  lat=40  → x=225 y=61
+      -->
       <svg class="map__svg" viewBox="0 0 460 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Grid de fondo -->
-        <defs>
-          <pattern id="mapgrid" width="28" height="28" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.8" fill="rgba(255,255,255,0.06)"/>
-          </pattern>
-        </defs>
-        <rect width="460" height="220" fill="url(#mapgrid)" rx="0"/>
 
-        <!-- Arcos -->
+        <!-- Continentes (muy sutiles) -->
+        <!-- Norteamérica -->
+        <path class="map__land"
+          d="M 19 35 L 55 33 L 68 48 L 82 70 L 100 86 L 115 91
+             L 128 78 L 136 60 L 162 52 L 159 44 L 128 33
+             L 140 20 L 100 18 L 75 20 Z"/>
+        <!-- Groenlandia -->
+        <path class="map__land"
+          d="M 148 16 L 172 14 L 200 22 L 198 32 L 172 36 L 148 28 Z"/>
+        <!-- Sudamérica -->
+        <path class="map__land"
+          d="M 128 83 L 158 97 L 197 103 L 192 122 L 165 138
+             L 142 161 L 132 160 L 138 108 L 126 101 Z"/>
+        <!-- Europa -->
+        <path class="map__land"
+          d="M 179 65 L 186 38 L 222 22 L 248 24 L 262 30
+             L 248 60 L 232 65 L 224 66 L 214 65 L 182 66 Z"/>
+        <!-- África -->
+        <path class="map__land"
+          d="M 182 66 L 214 65 L 248 72 L 268 94 L 252 112
+             L 240 138 L 222 138 L 212 132 L 210 108
+             L 198 102 L 170 90 L 174 74 Z"/>
+        <!-- Asia (continente, simplificado) -->
+        <path class="map__land"
+          d="M 248 60 L 262 30 L 282 26 L 402 30 L 428 46
+             L 406 64 L 378 60 L 352 74 L 320 86 L 302 100
+             L 265 94 L 255 72 L 232 65 Z"/>
+        <!-- India -->
+        <path class="map__land"
+          d="M 302 100 L 318 90 L 330 100 L 320 116 L 308 114 Z"/>
+        <!-- Indochina -->
+        <path class="map__land"
+          d="M 352 74 L 368 80 L 372 96 L 358 100 L 346 92 Z"/>
+        <!-- Japón -->
+        <path class="map__land"
+          d="M 406 58 L 414 52 L 420 58 L 414 66 L 406 64 Z"/>
+        <!-- Australia -->
+        <path class="map__land"
+          d="M 368 134 L 392 110 L 412 110 L 420 130 L 416 144
+             L 404 148 L 382 144 Z"/>
+        <!-- Nueva Zelanda (pequeña) -->
+        <path class="map__land"
+          d="M 432 148 L 436 140 L 440 148 L 436 155 Z"/>
+        <!-- Reino Unido / Irlanda (pequeño) -->
+        <path class="map__land"
+          d="M 175 36 L 180 32 L 183 38 L 178 44 Z"/>
+        <!-- Islandia -->
+        <path class="map__land"
+          d="M 155 22 L 165 20 L 168 26 L 158 28 Z"/>
+
+        <!-- Arcos de conexión -->
         <path class="map__arc map__arc--1"
-          d="M 105 140 Q 240 20 370 85"
-          stroke="rgba(59,130,246,0.55)" stroke-width="1.5"
+          d="M 128 78 Q 178 20 225 61"
+          stroke="rgba(59,130,246,0.6)" stroke-width="1.5"
           stroke-dasharray="7 5" stroke-linecap="round"/>
         <path class="map__arc map__arc--2"
-          d="M 125 175 Q 248 15 370 85"
-          stroke="rgba(34,211,238,0.4)" stroke-width="1.2"
+          d="M 133 103 Q 180 14 225 61"
+          stroke="rgba(34,211,238,0.45)" stroke-width="1.3"
           stroke-dasharray="7 5" stroke-linecap="round"/>
         <path class="map__arc map__arc--3"
-          d="M 105 140 Q 114 156 125 175"
+          d="M 128 78 Q 130 90 133 103"
           stroke="rgba(251,191,36,0.5)" stroke-width="1.2"
           stroke-dasharray="4 4" stroke-linecap="round"/>
 
         <!-- Miami -->
-        <circle class="map__ring" cx="105" cy="140" r="18" fill="rgba(34,211,238,0.06)"/>
-        <circle cx="105" cy="140" r="7" fill="rgba(34,211,238,0.25)" stroke="rgba(34,211,238,0.7)" stroke-width="1.5"/>
-        <circle cx="105" cy="140" r="3" fill="#22d3ee"/>
-        <text x="120" y="136" class="map__city">Miami</text>
-        <text x="120" y="150" class="map__country">Florida · USA</text>
+        <circle class="map__ring" cx="128" cy="78" r="16" fill="rgba(34,211,238,0.07)"/>
+        <circle cx="128" cy="78" r="6" fill="rgba(34,211,238,0.2)" stroke="rgba(34,211,238,0.75)" stroke-width="1.5"/>
+        <circle cx="128" cy="78" r="2.5" fill="#22d3ee"/>
+        <text x="140" y="74" class="map__city">Miami</text>
+        <text x="140" y="84" class="map__country">Florida · USA</text>
 
-        <!-- Colombia -->
-        <circle class="map__ring map__ring--yellow" cx="125" cy="175" r="18" fill="rgba(251,191,36,0.06)"/>
-        <circle cx="125" cy="175" r="7" fill="rgba(251,191,36,0.25)" stroke="rgba(251,191,36,0.7)" stroke-width="1.5"/>
-        <circle cx="125" cy="175" r="3" fill="#fbbf24"/>
-        <text x="140" y="172" class="map__city">Medellín</text>
-        <text x="140" y="186" class="map__country">Colombia</text>
+        <!-- Medellín -->
+        <circle class="map__ring map__ring--yellow" cx="133" cy="103" r="16" fill="rgba(251,191,36,0.07)"/>
+        <circle cx="133" cy="103" r="6" fill="rgba(251,191,36,0.2)" stroke="rgba(251,191,36,0.75)" stroke-width="1.5"/>
+        <circle cx="133" cy="103" r="2.5" fill="#fbbf24"/>
+        <text x="145" y="100" class="map__city">Medellín</text>
+        <text x="145" y="110" class="map__country">Colombia</text>
 
-        <!-- España -->
-        <circle class="map__ring map__ring--blue" cx="370" cy="85" r="18" fill="rgba(59,130,246,0.06)"/>
-        <circle cx="370" cy="85" r="7" fill="rgba(59,130,246,0.25)" stroke="rgba(59,130,246,0.7)" stroke-width="1.5"/>
-        <circle cx="370" cy="85" r="3" fill="#3b82f6"/>
-        <text x="370" y="62" class="map__city" text-anchor="middle">España</text>
-        <text x="370" y="75" class="map__country" text-anchor="middle">Madrid</text>
+        <!-- Madrid -->
+        <circle class="map__ring map__ring--blue" cx="225" cy="61" r="16" fill="rgba(59,130,246,0.07)"/>
+        <circle cx="225" cy="61" r="6" fill="rgba(59,130,246,0.2)" stroke="rgba(59,130,246,0.75)" stroke-width="1.5"/>
+        <circle cx="225" cy="61" r="2.5" fill="#3b82f6"/>
+        <text x="225" y="42" class="map__city" text-anchor="middle">España</text>
+        <text x="225" y="51" class="map__country" text-anchor="middle">Madrid</text>
       </svg>
     </div>
 
@@ -120,10 +168,10 @@ const stats = [
           <span class="t-ok">✓</span><span class="t-out"> Build completado en <span class="t-hi">0.8s</span></span>
         </p>
         <p class="terminal__line t-l3">
-          <span class="t-ok">✓</span><span class="t-out"> Performance &nbsp;<span class="t-score">98</span>/100</span>
+          <span class="t-ok">✓</span><span class="t-out"> Performance  <span class="t-score">98</span>/100</span>
         </p>
         <p class="terminal__line t-l4">
-          <span class="t-ok">✓</span><span class="t-out"> SEO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-score">100</span>/100</span>
+          <span class="t-ok">✓</span><span class="t-out"> SEO          <span class="t-score">100</span>/100</span>
         </p>
         <p class="terminal__line t-l5">
           <span class="t-prompt">~/proyecto</span><span class="t-cmd"> $ git push origin main</span>
@@ -214,7 +262,7 @@ const stats = [
     line-height: 1.4;
     margin-top: 1.2em;
     padding-left: 0.75em;
-    border-left: 2px solid rgba(59, 130, 246, 0.5);
+    border-left: 2px solid rgba(59,130,246,0.5);
   }
 
   .hero__description {
@@ -241,7 +289,6 @@ const stats = [
     transition: all var(--transition-fast);
     min-height: 44px;
   }
-
   .btn--primary {
     background: var(--color-primary);
     color: white;
@@ -252,7 +299,6 @@ const stats = [
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(59,130,246,0.45);
   }
-
   .btn--outline {
     background: transparent;
     border: 1px solid var(--color-border);
@@ -272,9 +318,7 @@ const stats = [
     padding-top: 1.75rem;
     border-top: 1px solid var(--color-border);
   }
-
   .stat { display: flex; flex-direction: column; gap: 0.2rem; }
-
   .stat__value {
     font-family: var(--font-body);
     font-size: 1.625rem;
@@ -284,7 +328,6 @@ const stats = [
     letter-spacing: -0.03em;
     font-variant-numeric: tabular-nums;
   }
-
   .stat__label {
     font-family: var(--font-body);
     font-size: 0.6875rem;
@@ -321,11 +364,11 @@ const stats = [
     .hero__visual {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 1rem;
       width: 50%;
-      padding: 2.5rem 2rem;
+      padding: 3rem 2.5rem;
       background-color: #05091a;
-      border-left: 1px solid rgba(255,255,255,0.04);
+      border-left: 1px solid rgba(255,255,255,0.08);
       position: relative;
       overflow: hidden;
     }
@@ -335,8 +378,8 @@ const stats = [
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 70% 50% at 60% 20%, rgba(59,130,246,0.1) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(34,211,238,0.06) 0%, transparent 60%);
+        radial-gradient(ellipse 70% 55% at 65% 25%, rgba(59,130,246,0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 45% at 25% 80%, rgba(34,211,238,0.07) 0%, transparent 60%);
       pointer-events: none;
     }
 
@@ -357,61 +400,52 @@ const stats = [
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      padding: 1.5rem;
+      gap: 0.875rem;
+      padding: 1.5rem 1.75rem;
       min-height: 0;
+      overflow: hidden;
     }
 
     .panel-card__head {
       display: flex;
       align-items: center;
-      justify-content: space-between;
     }
 
     .panel-eyebrow {
       font-family: var(--font-body);
-      font-size: 0.6875rem;
+      font-size: 0.625rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       color: var(--color-text-subtle);
-    }
-
-    .panel-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-family: var(--font-body);
-      font-size: 0.6875rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #4ade80;
-    }
-
-    .panel-status__dot {
-      width: 6px; height: 6px;
-      background: #22c55e;
-      border-radius: 50%;
-      box-shadow: 0 0 7px #22c55e;
-      animation: pulse 2s infinite;
     }
 
     .map__svg {
       width: 100%;
       height: auto;
       flex: 1;
+      min-height: 0;
     }
 
+    /* Continentes */
+    .map__land {
+      fill: rgba(255,255,255,0.04);
+      stroke: rgba(255,255,255,0.09);
+      stroke-width: 0.5;
+      stroke-linejoin: round;
+    }
+
+    /* Arcos */
     .map__arc {
       fill: none;
       stroke-dashoffset: 600;
-      animation: drawArc 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      animation: drawArc 2s cubic-bezier(0.4,0,0.2,1) forwards;
     }
     .map__arc--1 { animation-delay: 0.3s; }
     .map__arc--2 { animation-delay: 0.6s; }
     .map__arc--3 { animation-delay: 0.1s; }
 
+    /* Pulso de puntos */
     .map__ring {
       animation: mapPulse 2.8s ease-in-out infinite;
     }
@@ -420,52 +454,49 @@ const stats = [
 
     .map__city {
       font-family: var(--font-body);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       fill: var(--color-text);
       letter-spacing: 0.01em;
     }
     .map__country {
       font-family: var(--font-body);
-      font-size: 9.5px;
+      font-size: 9px;
       font-weight: 400;
       fill: var(--color-text-subtle);
       letter-spacing: 0.04em;
     }
 
-    /* ── Terminal ── */
+    /* ── Terminal (más pequeña) ── */
     .panel-terminal {
-      flex: 1;
+      flex: 0 0 190px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
       padding: 0;
-      min-height: 0;
-      background: rgba(2, 6, 23, 0.85);
+      background: rgba(2,6,23,0.85);
     }
 
     .terminal__bar {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.75rem 1rem;
+      gap: 0.375rem;
+      padding: 0.625rem 1rem;
       background: rgba(255,255,255,0.03);
       border-bottom: 1px solid var(--color-border);
       flex-shrink: 0;
     }
-
     .terminal__dot {
-      width: 11px; height: 11px;
+      width: 10px; height: 10px;
       border-radius: 50%;
       flex-shrink: 0;
     }
     .terminal__dot--red    { background: #ff5f57; }
     .terminal__dot--yellow { background: #febc2e; }
     .terminal__dot--green  { background: #28c840; }
-
     .terminal__title {
       font-family: var(--font-body);
-      font-size: 0.625rem;
+      font-size: 0.5625rem;
       font-weight: 500;
       color: var(--color-text-subtle);
       letter-spacing: 0.06em;
@@ -473,23 +504,23 @@ const stats = [
     }
 
     .terminal__body {
-      padding: 1.25rem 1.375rem;
+      padding: 0.875rem 1.125rem;
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.2rem;
       flex: 1;
+      overflow: hidden;
     }
 
     .terminal__line {
       font-family: 'Courier New', 'Fira Code', monospace;
-      font-size: 0.8125rem;
-      line-height: 1.65;
+      font-size: 0.75rem;
+      line-height: 1.6;
       opacity: 0;
-      transform: translateY(4px);
+      transform: translateY(3px);
       animation: fadeInLine 0.2s ease forwards;
       white-space: pre;
     }
-
     .t-l1 { animation-delay: 0.5s; }
     .t-l2 { animation-delay: 1.1s; }
     .t-l3 { animation-delay: 1.5s; }
@@ -518,20 +549,16 @@ const stats = [
     0%, 100% { opacity: 1; transform: scale(1); }
     50%       { opacity: 0.5; transform: scale(1.35); }
   }
-
   @keyframes mapPulse {
-    0%, 100% { opacity: 0.5; }
+    0%, 100% { opacity: 0.55; }
     50%       { opacity: 0.12; }
   }
-
   @keyframes drawArc {
     to { stroke-dashoffset: 0; }
   }
-
   @keyframes fadeInLine {
     to { opacity: 1; transform: translateY(0); }
   }
-
   @keyframes blink {
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
