@@ -11,12 +11,9 @@ const stats = [
 <section class="hero" id="inicio">
   <div class="hero__content">
     <header class="hero__header animate-in">
-      <div class="hero__logo" aria-hidden="true">
-        <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"/>
-        </svg>
-      </div>
-      <span class="hero__brand">Santiago Arango · Dev</span>
+      <a href="#inicio" aria-label="ArbenDev — inicio">
+        <img class="hero__logo-img" src="/logos/logo.webp" alt="ArbenDev" />
+      </a>
     </header>
 
     <div class="hero__main">
@@ -37,14 +34,49 @@ const stats = [
     </div>
 
     <div class="hero__stats animate-in animate-in--delay-5">
-      {stats.map((stat) => (
-        <div class="stat">
-          <span class="stat__value">{stat.value}</span>
-          <span class="stat__label">{stat.label}</span>
-        </div>
-      ))}
+      {stats.map((stat) => {
+        const num = parseInt(stat.value);
+        const suffix = stat.value.slice(String(num).length);
+        return (
+          <div class="stat">
+            <span class="stat__value" data-target={num} data-suffix={suffix}>0{suffix}</span>
+            <span class="stat__label">{stat.label}</span>
+          </div>
+        );
+      })}
     </div>
   </div>
+
+  <!-- Count-up stats -->
+  <script>
+    function runCountUp(el: HTMLElement) {
+      const target = parseInt(el.dataset.target ?? '0');
+      const suffix = el.dataset.suffix ?? '';
+      const duration = 1400;
+      const start = performance.now();
+
+      function tick(now: number) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const statsEl = document.querySelector('.hero__stats');
+    if (statsEl) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll<HTMLElement>('[data-target]').forEach(runCountUp);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.6 });
+      observer.observe(statsEl);
+    }
+  </script>
 
   <!-- Panel visual -->
   <div class="hero__visual" aria-hidden="true">
@@ -206,22 +238,18 @@ const stats = [
 
   .hero__header { display: flex; align-items: center; gap: 0.875rem; }
 
-  .hero__logo {
-    width: 1.75rem; height: 1.75rem;
-    color: var(--color-primary);
-    transition: transform var(--transition-slow);
-    flex-shrink: 0;
+  .hero__header a {
+    display: inline-flex;
+    align-items: center;
   }
-  .hero__header:hover .hero__logo { transform: rotate(90deg); }
 
-  .hero__brand {
-    font-family: var(--font-heading);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--color-text-muted);
+  .hero__logo-img {
+    height: 120px;
+    width: auto;
+    display: block;
+    transition: opacity var(--transition-fast);
   }
+  .hero__header a:hover .hero__logo-img { opacity: 0.8; }
 
   .hero__main { display: flex; flex-direction: column; gap: 1.5rem; }
 
@@ -318,7 +346,7 @@ const stats = [
   .stat { display: flex; flex-direction: column; gap: 0.2rem; }
   .stat__value {
     font-family: var(--font-body);
-    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-size: clamp(2rem, 4.5vw, 4.375rem);
     font-weight: 700;
     color: var(--color-primary);
     line-height: 1;

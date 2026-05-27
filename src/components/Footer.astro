@@ -11,10 +11,7 @@ const links = [
 <footer class="footer">
   <div class="footer__container">
     <div class="footer__brand">
-      <svg class="footer__logo" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z"></path>
-      </svg>
-      <span class="footer__copyright">SYS-ENG © {currentYear}</span>
+      <img class="footer__logo-img" src="/logos/logo.webp" alt="ArbenDev" />
     </div>
 
     <nav class="footer__nav">
@@ -32,6 +29,8 @@ const links = [
       </a>
     </div>
   </div>
+
+  <p class="footer__copyright">© {currentYear} ArbenDev</p>
 </footer>
 
 <style>
@@ -52,21 +51,25 @@ const links = [
   .footer__brand {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
   }
 
-  .footer__logo {
-    width: 1rem;
-    height: 1rem;
-    color: var(--color-primary);
+  .footer__logo-img {
+    height: 80px;
+    width: auto;
+    display: block;
   }
 
   .footer__copyright {
+    text-align: center;
     font-family: var(--font-heading);
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
+    color: var(--color-text-subtle);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    width: 100%;
   }
 
   .footer__nav {
