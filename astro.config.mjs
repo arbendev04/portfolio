@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://santiago-arango.dev', /* actualiza con tu dominio real */
+  site: 'https://arben.dev', /* actualiza con tu dominio real */
   integrations: [sitemap()],
   devToolbar: {
     enabled: false,

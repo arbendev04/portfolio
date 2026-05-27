@@ -9,8 +9,8 @@ const {
   description = "Desarrollador web freelance en Colombia. WordPress, Shopify y código a medida para negocios que quieren crecer. Presupuesto en menos de 24 horas.",
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://santiago-arango.dev");
-const ogImage = new URL("/og-image.webp", Astro.site ?? "https://santiago-arango.dev");
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://arben.dev");
+const ogImage = new URL("/og-image.webp", Astro.site ?? "https://arben.dev");
 
 const personSchema = {
   "@context": "https://schema.org",
@@ -81,8 +81,13 @@ const websiteSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Favicons multi-dispositivo -->
+    <link rel="icon" href="/favicos/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicos/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicos/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicos/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicos/site.webmanifest" />
+    <meta name="theme-color" content="#111827" />
 
     <!-- Fuentes: preconnect + carga optimizada (solo pesos usados) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

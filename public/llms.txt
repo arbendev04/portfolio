@@ -1,0 +1,22 @@
+# Santiago Arango — Portfolio
+> Portafolio profesional de Santiago Arango, desarrollador web freelance en Colombia.
+
+## Sitio principal
+- https://arben.dev/
+
+## Sitemap
+- https://arben.dev/sitemap-index.xml
+
+## Enfoque
+- Desarrollo web para negocios en crecimiento.
+- WordPress y WooCommerce.
+- Shopify y e-commerce.
+- Soluciones web a medida.
+
+## Contacto
+- Email: arben04dev@gmail.com
+- LinkedIn: https://www.linkedin.com/in/santiago-arango-benjumea-383864219/
+- GitHub: https://github.com/ArbenS90
+
+## Versión ampliada
+- https://arben.dev/llms-full.txt

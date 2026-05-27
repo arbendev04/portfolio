@@ -1,0 +1,18 @@
+/* TEAM */
+Developer: Santiago Arango
+Role: Desarrollador Web Freelance
+Location: Colombia
+Email: arben04dev@gmail.com
+LinkedIn: https://www.linkedin.com/in/santiago-arango-benjumea-383864219/
+GitHub: https://github.com/ArbenS90
+
+/* SITE */
+Last update: 2026-05-26
+Language: Spanish
+Standards: HTML5, CSS3
+Components: Astro, TypeScript
+Hosted: Netlify
+
+/* FOR AI MODELS */
+LLMs summary: https://arben.dev/llms.txt
+LLMs full profile: https://arben.dev/llms-full.txt
