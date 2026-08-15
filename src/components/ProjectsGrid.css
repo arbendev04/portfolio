@@ -1,0 +1,206 @@
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 300px);
+  gap: 20px;
+  width: 100%;
+  max-width: var(--maxw-content);
+}
+
+.projects-grid__card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--surface-card);
+  box-shadow: var(--inset-hairline);
+  transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+
+.projects-grid__card:hover {
+  border-color: rgba(25, 211, 255, 0.4);
+  box-shadow: var(--glow-md), var(--shadow-md), var(--inset-hairline);
+}
+
+.projects-grid__preview {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.projects-grid__preview-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  /* the card itself already handles the click-to-expand — the iframe must
+     never intercept it, or its own embedded page would eat the click */
+  pointer-events: none;
+}
+
+.projects-grid__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(6, 7, 8, 0.88) 0%, rgba(6, 7, 8, 0.35) 45%, rgba(6, 7, 8, 0.05) 75%);
+}
+
+.projects-grid__content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px 24px 22px 40px;
+  pointer-events: none;
+}
+
+.projects-grid__index {
+  position: absolute;
+  top: 14px;
+  right: 22px;
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: var(--w-bold);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text-faint);
+  opacity: 0.9;
+  user-select: none;
+}
+
+.projects-grid__tech {
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.projects-grid__card:hover .projects-grid__tech {
+  color: var(--brand-cyan);
+}
+
+.projects-grid__tech-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.projects-grid__tech-icon {
+  display: inline-flex;
+  line-height: 0;
+}
+
+.projects-grid__tech-sep {
+  margin: 0 8px;
+  opacity: 0.6;
+}
+
+.projects-grid__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.projects-grid__title-link {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  /* `.projects-grid__content` sets pointer-events: none so clicks fall through
+     to the card's own expand toggle — this is the one child that needs to
+     stay a real, independently clickable link. */
+  pointer-events: auto;
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.projects-grid__title-link:hover,
+.projects-grid__title-link:focus-visible {
+  color: var(--brand-cyan-bright);
+}
+
+.projects-grid__tip {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  padding: 5px 10px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-body);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.projects-grid__title-link:hover .projects-grid__tip,
+.projects-grid__title-link:focus-visible .projects-grid__tip {
+  opacity: 1;
+  transform: none;
+}
+
+.projects-grid__arrow {
+  color: var(--text-faint);
+  transition: transform var(--dur-base) var(--ease-spring), color var(--dur-base) var(--ease-out);
+  margin-top: 3px;
+}
+
+.projects-grid__card:hover .projects-grid__arrow {
+  transform: translate(4px, -4px);
+  color: var(--brand-cyan);
+}
+
+.projects-grid__desc {
+  margin: 10px 0 0;
+  max-width: 42ch;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+
+/* the description only earns its space once a card has the whole row — in the
+   half-width state there usually isn't room for it without crowding the title */
+.projects-grid__card--expanded .projects-grid__desc {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 767px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    gap: 16px;
+  }
+
+  /* overrides the desktop 2x2 placement React sets inline — on a single
+     column every card just stacks in document order */
+  .projects-grid__card {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+    height: 280px;
+  }
+
+  .projects-grid__desc {
+    opacity: 1;
+    transform: none;
+  }
+}

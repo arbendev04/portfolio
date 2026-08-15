@@ -1,0 +1,129 @@
+/* arben.dev — Design Tokens
+ * Space Grotesk (display/kinetic) + Hanken Grotesk (body/UI) + JetBrains Mono (technical)
+ * Dark, minimalist, technical. Deep black base with electric-blue → cyan gradient.
+ */
+
+:root {
+  /* ---- Raw neutrals: deep blacks ---- */
+  --black-950: #060708;
+  --black-900: #0A0C10;
+  --black-850: #0E1116;
+  --black-800: #131820;
+  --black-750: #1A2029;
+  --black-700: #222A35;
+
+  /* ---- Lines & grays ---- */
+  --line-soft: #1C232D;
+  --line: #28313D;
+  --line-strong: #38434F;
+
+  --gray-100: #F4F7FA;
+  --gray-200: #D5DDE7;
+  --gray-300: #AEB9C6;
+  --gray-400: #8492A2;
+  --gray-500: #626F7E;
+  --gray-600: #47525E;
+
+  --white: #FBFDFF;
+
+  /* ---- Brand gradient ---- */
+  --brand-blue: #1F6BFF;
+  --brand-blue-deep: #1450E6;
+  --brand-cyan: #19D3FF;
+  --brand-cyan-bright: #56E6FF;
+
+  --brand-gradient: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-cyan) 100%);
+  --brand-gradient-soft: linear-gradient(135deg, #1F6BFF22 0%, #19D3FF22 100%);
+
+  --glow-cyan: rgba(25, 211, 255, 0.45);
+  --glow-blue: rgba(31, 107, 255, 0.40);
+
+  /* ---- Semantic surfaces ---- */
+  --bg-page: var(--black-950);
+  --bg-surface: var(--black-850);
+  --surface-card: var(--black-800);
+  --surface-raised: var(--black-750);
+  --surface-chip: var(--black-700);
+
+  --border: var(--line);
+  --border-soft: var(--line-soft);
+  --border-strong: var(--line-strong);
+
+  --text-strong: var(--white);
+  --text-body: var(--gray-200);
+  --text-muted: var(--gray-400);
+  --text-faint: var(--gray-500);
+
+  --accent: var(--brand-cyan);
+  --accent-press: var(--brand-blue-deep);
+  --focus-ring: var(--brand-cyan);
+  --on-accent: #06121B;
+
+  /* ---- Typography ---- */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-sans: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-semibold: 600;
+  --w-bold: 700;
+
+  /* ---- Fluid type scale ---- */
+  --fs-hero: clamp(3.25rem, 12.8vw, 11.5rem);
+  --fs-display: clamp(2.5rem, 5vw, 4rem);
+  --fs-h1: clamp(2rem, 3.6vw, 3rem);
+  --fs-h2: clamp(1.5rem, 2.4vw, 2rem);
+  --fs-h3: 1.375rem;
+  --fs-h4: 1.125rem;
+  --fs-lg: 1.125rem;
+  --fs-base: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.75rem;
+  --fs-eyebrow: 0.78rem;
+
+  /* ---- Line heights ---- */
+  --lh-tight: 1.02;
+  --lh-snug: 1.12;
+  --lh-heading: 1.18;
+  --lh-body: 1.6;
+
+  /* ---- Letter spacing ---- */
+  --ls-tighter: -0.04em;
+  --ls-tight: -0.02em;
+  --ls-normal: 0em;
+  --ls-wide: 0.04em;
+  --ls-eyebrow: 0.22em;
+
+  /* ---- Spacing ---- */
+  --section-y: clamp(4rem, 9vw, 9rem);
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --maxw-prose: 68ch;
+  --maxw-content: 1080px;
+  --maxw-wide: 1320px;
+
+  /* ---- Radii ---- */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+
+  /* ---- Shadows & glows ---- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 12px 30px -12px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 30px 70px -24px rgba(0, 0, 0, 0.8);
+  --glow-sm: 0 0 0 1px rgba(25, 211, 255, 0.4), 0 0 18px -2px var(--glow-cyan);
+  --glow-md: 0 0 0 1px rgba(25, 211, 255, 0.5), 0 0 34px -4px var(--glow-cyan);
+  --inset-hairline: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  /* ---- Motion ---- */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --dur-slow: 480ms;
+  --dur-kinetic: 720ms;
+}

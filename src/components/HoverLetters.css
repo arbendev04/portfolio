@@ -1,0 +1,37 @@
+.hover-letters {
+  display: inline;
+  /* makes this the `offsetParent` for its letters, so their measured offsets
+     (see useGradientLetters) are relative to where this word starts — not to
+     whichever positioned ancestor happens to be further up the tree */
+  position: relative;
+}
+
+.hover-letter {
+  display: inline-block;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hover-letter:hover {
+  color: var(--brand-cyan);
+}
+
+.hover-letter--gradient {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Three classes beats the plain `.hover-letter:hover` above on specificity
+   regardless of source order — see KineticHeroName.css for why that matters. */
+.hover-letter.hover-letter--gradient:hover {
+  background: none;
+  color: var(--text-strong);
+  -webkit-text-fill-color: var(--text-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-letter {
+    transition: none;
+  }
+}

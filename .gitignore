@@ -1,7 +1,5 @@
 # build output
 dist/
-# generated types
-.astro/
 
 # dependencies
 node_modules/
@@ -29,4 +27,8 @@ pnpm-debug.log*
 .claude/
 .agent/
 .agents/
+.atl/
 skills-lock.json
+
+# local reference snapshot, not part of the Vite build
+ArbenDev Portfolio (offline).html

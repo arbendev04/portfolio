@@ -1,0 +1,97 @@
+.kinetic-grow {
+  display: block;
+  /* expands outward from its own centre so the type engulfs the viewport,
+     the way the reference's "ENORME" does */
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+/* Holds the filled and stroked copies of the name in exact register. */
+.kinetic-stack {
+  display: block;
+  position: relative;
+}
+
+.kinetic-layer {
+  display: block;
+  will-change: opacity;
+}
+
+/* The stroked copy sits directly on top of the filled one and fades in as the
+   fill fades out, so the letters hollow out into outlines while they grow.
+   Animating `-webkit-text-stroke-width` directly is not reliably supported,
+   which is why this is a cross-fade between two layers rather than one. */
+/* Doubled class keeps this above `.hero__title`, which shares its specificity
+   and would otherwise win on source order and restore the solid colour. */
+.kinetic-layer.kinetic-layer--outline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  -webkit-text-stroke: 1.5px var(--text-strong);
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  /* absolutely positioned, so it paints above the fill layer regardless of
+     opacity — without this, its (aria-hidden, invisible-when-faded) letters
+     would intercept hover before it ever reaches the real ones underneath */
+  pointer-events: none;
+}
+
+.kinetic-line {
+  display: block;
+  white-space: nowrap;
+  /* makes this the `offsetParent` for its letters, so their measured offsets
+     (see useGradientLetters) are relative to where this word starts */
+  position: relative;
+}
+
+.hero-letter {
+  display: inline-block;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hero-letter:hover {
+  color: var(--brand-cyan);
+}
+
+/* Each accent letter carries its own measured slice of the gradient (see
+   useGradientLetters) so the word still reads as one continuous surface. */
+.hero-letter--gradient {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* The tight line-height leaves descenders hanging outside the line box.
+     Harmless for solid-colour letters, but `background-clip: text` only
+     paints inside *this* box, so the "j" in Benjumea lost its tail. */
+  padding-bottom: 0.28em;
+}
+
+/* Three classes beats the plain `.hero-letter:hover` above on specificity
+   regardless of source order — see the `.kinetic-layer.kinetic-layer--outline`
+   comment above for why that matters here. */
+.hero-letter.hero-letter--gradient:hover {
+  background: none;
+  color: var(--text-strong);
+  -webkit-text-fill-color: var(--text-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-letter {
+    transition: none;
+  }
+}
+
+/* Breathing room under the last line — the gradient word already gets
+   equivalent space from its own letters' padding above, but a non-accent word
+   could end up last too if `accentIndex` ever changes. */
+.kinetic-line:last-child {
+  padding-bottom: 0.28em;
+}
+
+@media (max-width: 767px) {
+  /* the stroke scales with the type, so it needs to start finer on mobile */
+  .kinetic-layer.kinetic-layer--outline {
+    -webkit-text-stroke-width: 1px;
+  }
+}

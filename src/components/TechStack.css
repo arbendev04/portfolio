@@ -1,0 +1,102 @@
+.skills {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--section-y) 0;
+}
+
+.skills__header {
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.skills__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--brand-cyan);
+  margin-bottom: 16px;
+}
+
+.skills__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--text-strong);
+}
+
+.skills__rows {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.5vw, 40px);
+  max-width: var(--maxw-content);
+}
+
+.skills__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  padding-bottom: clamp(20px, 2.5vw, 28px);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.skills__row:last-child {
+  border-bottom: none;
+}
+
+.skills__row-label {
+  flex: 0 0 130px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.skills__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.skills__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 34px;
+  padding: 0 14px 0 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: var(--surface-card);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+  cursor: default;
+  transition: all var(--dur-base) var(--ease-spring);
+}
+
+.skills__pill:hover {
+  color: var(--brand-cyan-bright);
+  border-color: rgba(25, 211, 255, 0.5);
+  box-shadow: var(--glow-sm);
+  transform: translateY(-2px);
+  background: var(--surface-raised);
+}
+
+.skills__pill-icon {
+  display: flex;
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
+@media (max-width: 767px) {
+  .skills__row-label {
+    flex: 0 0 100%;
+  }
+}
