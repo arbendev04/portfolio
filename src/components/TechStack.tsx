@@ -7,16 +7,18 @@ import './TechStack.css';
 export default function TechStack() {
   return (
     <section data-section className="skills">
-      <motion.div
-        className="skills__header"
-        initial="hidden"
-        whileInView="visible"
-        viewport={revealViewport}
-        variants={fadeUp}
-      >
-        <div className="skills__eyebrow">[ 03 ] — capabilities</div>
+      <div className="skills__header">
+        <motion.div
+          className="skills__eyebrow"
+          initial="hidden"
+          whileInView="visible"
+          viewport={revealViewport}
+          variants={fadeUp}
+        >
+          [ 03 ] — capabilities
+        </motion.div>
         <HoverLetters as="h2" className="skills__title" text="The stack I reach for." />
-      </motion.div>
+      </div>
 
       <div className="skills__rows">
         {categories.map((cat, i) => (

@@ -22,8 +22,13 @@ export function useGradientLetterStyles(
       if (!totalWidth) return;
       setStyles(
         letterRefs.current.map((el) => ({
-          backgroundSize: `${totalWidth}px 100%`,
-          backgroundPosition: `${-(el?.offsetLeft ?? 0)}px 0`,
+          // Taller than the box (160%) and vertically centered — a descender
+          // like the "g" in "something" can dip slightly past the box's own
+          // line-height, and a gradient sized to exactly 100% stops painting
+          // right at that edge, leaving the tip of the descender transparent
+          // (unpainted, not just unclipped) instead of filled.
+          backgroundSize: `${totalWidth}px 160%`,
+          backgroundPosition: `${-(el?.offsetLeft ?? 0)}px center`,
         })),
       );
     };

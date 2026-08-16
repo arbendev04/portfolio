@@ -1,8 +1,9 @@
-/* Tall scroll runway: the inner .hero__sticky pins for the extra 350vh, which
+/* Tall scroll runway: the inner .hero__sticky pins for the extra 180vh, which
    is the distance the name uses to grow, hollow out into outlines, and fade.
-   Raise or lower this single value to stretch or shorten the whole effect. */
+   Raise or lower this single value to stretch or shorten the whole effect —
+   shorter means the same animation plays out over less scrolling, i.e. faster. */
 .hero {
-  min-height: 450vh;
+  min-height: 280vh;
   position: relative;
   /* NOTE: no `overflow: hidden` here — it would turn .hero into a scroll
      container and break `position: sticky` on .hero__sticky. */
@@ -67,7 +68,9 @@
 .hero__scroll {
   position: absolute;
   bottom: 40px;
-  left: 0;
+  /* right-aligned so it never overlaps the role line, which sits at the same
+     height on the left */
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,7 +84,7 @@
 
 .hero__scroll-label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
 }

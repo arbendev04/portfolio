@@ -1,5 +1,5 @@
 import { useRef, type RefObject } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { useGradientLetterStyles } from '../lib/useGradientLetters';
 import './KineticHeroName.css';
 
@@ -85,17 +85,20 @@ export default function KineticHeroName({ words, accentIndex = -1, scrollTargetR
     layoutEffect: false,
   });
 
-  // driven straight off scroll position — Lenis already smooths the input, so an
-  // extra spring would only add lag between the scroll and the growth
-  const scale = useTransform(scrollYProgress, [0, 1], [1, m.scaleTo]);
+  // a fast, tightly-damped spring smooths out the raw scroll input without
+  // adding noticeable lag — high stiffness catches up almost immediately, the
+  // high damping stops it from overshooting into a floaty/bouncy feel
+  const progress = useSpring(scrollYProgress, { stiffness: 400, damping: 40, mass: 0.3 });
+
+  const scale = useTransform(progress, [0, 1], [1, m.scaleTo]);
   // holds full strength through the hollowing-out, then clears near the end so
   // the section hands off cleanly
-  const opacity = useTransform(scrollYProgress, [0, 0.85, 1], [1, 1, m.opacityTo]);
+  const opacity = useTransform(progress, [0, 0.85, 1], [1, 1, m.opacityTo]);
 
   // solid fill dissolves while the stroked copy takes over, leaving the letters
   // as pure outlines for the last stretch of the growth
-  const fillOpacity = useTransform(scrollYProgress, [0.18, 0.55], [1, 0]);
-  const outlineOpacity = useTransform(scrollYProgress, [0.18, 0.5], [0, 1]);
+  const fillOpacity = useTransform(progress, [0.18, 0.55], [1, 0]);
+  const outlineOpacity = useTransform(progress, [0.18, 0.5], [0, 1]);
 
   // Every word is split into per-letter spans for the hover effect. The accent
   // word needs the gradient-preserving treatment from AccentWord; the rest just

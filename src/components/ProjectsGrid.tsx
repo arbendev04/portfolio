@@ -10,24 +10,23 @@ export interface ProjectItem {
   tech: string[];
   title: string;
   description: string;
-  /** Live site rendered as a preview inside the card. Cards without one just
-   * show the plain dark surface, so it's safe to leave unset until a real
-   * URL is on hand. It also turns the title into a link out to the site. */
+  /** Site to link out to once the card is expanded. Cards without one just
+   * render the title as plain text instead of a link, and skip the preview
+   * image entirely (there's no live site to show a picture of). */
   url?: string;
+  /** Set when the site sends `X-Frame-Options: DENY` (or an equivalent
+   * `frame-ancestors` CSP) — it refuses to render inside anyone's iframe, ours
+   * included, and there's no client-side way around that (nor should there be,
+   * it's an anti-clickjacking header). Falls back to `previewImage` instead. */
+  noPreview?: boolean;
+  /** Static fallback for a `noPreview` card — typically the site's own
+   * og:image, saved locally under public/projects/. */
+  previewImage?: string;
 }
 
-interface Layout {
-  row1: string[];
-  row2: string[];
-}
-
-function initialLayout(items: ProjectItem[]): Layout {
-  const ids = items.map((item) => item.id);
-  return {
-    row1: ids.slice(0, 2),
-    row2: ids.slice(2, Math.min(items.length, 4)),
-  };
-}
+// Matches .projects-grid's grid-template-columns below — kept in one place
+// so the "leftover card defaults to full width" fallback stays in sync with it.
+const COLS = 3;
 
 interface ProjectsGridProps {
   items: ProjectItem[];
@@ -41,66 +40,60 @@ function stopCardExpand(e: MouseEvent) {
 }
 
 export default function ProjectsGrid({ items, id = 'projects-grid' }: ProjectsGridProps) {
-  const [layout, setLayout] = useState<Layout>(() => initialLayout(items));
+  // Just which card (if any) is expanded — cards are left in natural document
+  // order and CSS grid auto-placement handles wrapping them into rows, so
+  // there's no bookkeeping here that can lose track of an item.
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  // A trailing single card left dangling in its own row (item count not a
+  // multiple of COLS) defaults to full width instead of sitting in one column
+  // with empty cells beside it — only while nothing else is expanded.
+  const trailingSoloId = items.length % COLS === 1 ? items[items.length - 1].id : null;
 
   const handleExpand = (itemId: string) => {
-    const inRow1 = layout.row1.includes(itemId);
-    const row = inRow1 ? layout.row1 : layout.row2;
-    if (row.length === 1) return;
-
-    const neighbor = row.find((candidate) => candidate !== itemId)!;
-    setLayout(
-      inRow1
-        ? { row1: [itemId], row2: [neighbor, ...layout.row2.filter((c) => c !== neighbor)].slice(0, 2) }
-        : { row1: [neighbor, ...layout.row1.filter((c) => c !== neighbor)].slice(0, 2), row2: [itemId] },
-    );
+    setExpandedId((current) => (current === itemId ? null : itemId));
   };
 
   return (
     <LayoutGroup id={id}>
       <motion.div layout className="projects-grid">
         {items.map((item) => {
-          const inRow1 = layout.row1.includes(item.id);
-          const row = inRow1 ? layout.row1 : layout.row2;
-          const isExpanded = row.length === 1 && row[0] === item.id;
+          const isExpanded = expandedId ? item.id === expandedId : item.id === trailingSoloId;
+          const showIframe = isExpanded && item.url && !item.noPreview;
+          const showImage = isExpanded && item.noPreview && item.previewImage;
+          const hasPreview = showIframe || showImage;
 
           return (
             <motion.div
               key={item.id}
               layoutId={`${id}-${item.id}`}
               onClick={() => handleExpand(item.id)}
-              style={{ gridRow: inRow1 ? 1 : 2, gridColumn: isExpanded ? '1 / -1' : String(row.indexOf(item.id) + 1) }}
+              style={isExpanded ? { gridColumn: '1 / -1' } : undefined}
               className={`projects-grid__card${isExpanded ? ' projects-grid__card--expanded' : ''}`}
               transition={{ layout: { type: 'spring', stiffness: 260, damping: 30 } }}
             >
-              {item.url && (
-                <div className="projects-grid__preview" aria-hidden="true">
-                  <iframe
-                    src={item.url}
-                    title=""
-                    tabIndex={-1}
-                    loading="lazy"
-                    sandbox=""
-                    className="projects-grid__preview-frame"
-                  />
+              {hasPreview && (
+                <div className="projects-grid__image" aria-hidden="true">
+                  {showIframe ? (
+                    <iframe
+                      src={item.url}
+                      title=""
+                      tabIndex={-1}
+                      loading="lazy"
+                      sandbox=""
+                    />
+                  ) : (
+                    <img src={item.previewImage} alt="" loading="lazy" />
+                  )}
                 </div>
               )}
-              <div className="projects-grid__scrim" />
-              <motion.div layout="position" className="projects-grid__content">
+              <motion.div
+                layout="position"
+                className={`projects-grid__content${hasPreview ? ' projects-grid__content--has-preview' : ''}`}
+              >
                 <span className="projects-grid__index">{item.index}</span>
-                <div className="projects-grid__tech">
-                  {item.tech.map((tag, i) => (
-                    <span key={tag} className="projects-grid__tech-tag">
-                      {icons[tag] && (
-                        <span className="projects-grid__tech-icon" dangerouslySetInnerHTML={{ __html: icons[tag] }} />
-                      )}
-                      {tag}
-                      {i < item.tech.length - 1 && <span className="projects-grid__tech-sep">·</span>}
-                    </span>
-                  ))}
-                </div>
                 <h3 className="projects-grid__title">
-                  {item.url ? (
+                  {isExpanded && item.url ? (
                     <a
                       href={item.url}
                       target="_blank"
@@ -117,14 +110,25 @@ export default function ProjectsGrid({ items, id = 'projects-grid' }: ProjectsGr
                       <span className="projects-grid__tip" aria-hidden="true">
                         Ver sitio
                       </span>
+                      <span className="projects-grid__arrow">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+                      </span>
                     </a>
                   ) : (
                     item.title
                   )}
-                  <span className="projects-grid__arrow">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
-                  </span>
                 </h3>
+                <div className="projects-grid__tech">
+                  {item.tech.map((tag, i) => (
+                    <span key={tag} className="projects-grid__tech-tag">
+                      {icons[tag] && (
+                        <span className="projects-grid__tech-icon" dangerouslySetInnerHTML={{ __html: icons[tag] }} />
+                      )}
+                      {tag}
+                      {i < item.tech.length - 1 && <span className="projects-grid__tech-sep">·</span>}
+                    </span>
+                  ))}
+                </div>
                 <p className="projects-grid__desc">{item.description}</p>
               </motion.div>
             </motion.div>

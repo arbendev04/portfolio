@@ -6,6 +6,17 @@
   position: relative;
 }
 
+/* No `position` here on purpose — it must stay out of the offsetParent chain
+   above, or the gradient measurement would anchor to this instead of
+   `.hover-letters`. */
+.hover-line {
+  display: inline;
+}
+
+.hover-word {
+  display: inline-block;
+}
+
 .hover-letter {
   display: inline-block;
   transition: color var(--dur-fast) var(--ease-out);
@@ -20,6 +31,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Three classes beats the plain `.hover-letter:hover` above on specificity

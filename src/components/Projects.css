@@ -16,7 +16,7 @@
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
   color: var(--brand-cyan);
-  margin-bottom: 16px;
+  margin-bottom: clamp(20px, 3vw, 32px);
 }
 
 .work__title {

@@ -18,6 +18,17 @@
   width: 100%;
 }
 
+/* Same flex/gap contract as .contact__inner — this exists only so the badge,
+   form, and social dock can share one fadeUp trigger without the title (a
+   direct sibling, not nested in here) being dragged into it. */
+.contact__rest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(22px, 3vw, 34px);
+  width: 100%;
+}
+
 .contact__eyebrow {
   font-family: var(--font-mono);
   font-size: var(--fs-eyebrow);
@@ -28,10 +39,15 @@
 
 .contact__title {
   margin: 0;
+  /* extra room below the text itself, on top of .contact__inner's own gap —
+     otherwise the badge sits close enough to read as if it's clipping the "g" */
+  margin-bottom: clamp(16px, 2.5vw, 28px);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(2.5rem, 6vw, 5rem);
-  line-height: 0.98;
+  /* matches .work__title / .skills__title — the old 0.98 was tighter than the
+     font's own descenders (the "g" in "something" was getting clipped) */
+  line-height: var(--lh-tight);
   letter-spacing: -0.04em;
   color: var(--text-strong);
 }
@@ -160,28 +176,6 @@
 
 .contact__submit:active {
   transform: translateY(0);
-}
-
-.contact__socials {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 14px;
-}
-
-.contact__social {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  color: var(--text-faint);
-  transition: color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-spring);
-}
-
-.contact__social:hover {
-  color: var(--brand-cyan);
-  transform: translateY(-2px);
 }
 
 .contact__footer {
