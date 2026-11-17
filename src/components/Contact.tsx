@@ -1,27 +1,40 @@
-import { type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import HoverLetters from './HoverLetters';
 import SocialDock from './SocialDock';
 import { fadeUp, revealViewport } from '../lib/motion';
+import { CONTACT_FORM_NAME, HONEYPOT_FIELD, submitContactForm } from '../lib/contactForm';
 import './Contact.css';
 
-function handleSubmit(e: FormEvent<HTMLFormElement>) {
-  e.preventDefault();
-  const data = new FormData(e.currentTarget);
-  const nombre = data.get('nombre');
-  const correo = data.get('correo');
-  const whatsapp = data.get('whatsapp') || '';
-  const proyecto = data.get('proyecto');
+type SubmitStatus = 'idle' | 'sending' | 'success' | 'error';
 
-  const subject = encodeURIComponent(`Nuevo proyecto — ${nombre}`);
-  const body = encodeURIComponent(
-    `Nombre: ${nombre}\nCorreo: ${correo}\nWhatsApp: ${whatsapp}\n\nProyecto:\n${proyecto}`,
-  );
+const CONTACT_EMAIL = 'hola@arben.dev';
 
-  window.location.href = `mailto:hola@arben.dev?subject=${subject}&body=${body}`;
-}
+const STATUS_MESSAGES: Record<Exclude<SubmitStatus, 'idle' | 'sending'>, string> = {
+  success: '¡Mensaje recibido! Te respondo pronto.',
+  error: 'No se pudo enviar el mensaje. Intenta de nuevo o escríbeme directamente a',
+};
 
 export default function Contact() {
+  const [status, setStatus] = useState<SubmitStatus>('idle');
+  const isSending = status === 'sending';
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setStatus('sending');
+
+    try {
+      await submitContactForm(new FormData(form));
+      form.reset();
+      setStatus('success');
+    } catch {
+      // the message below already tells the visitor what to do next, and the
+      // email fallback keeps the lead from being lost
+      setStatus('error');
+    }
+  }
+
   return (
     <section data-section className="contact">
       <div className="contact__inner">
@@ -63,7 +76,21 @@ export default function Contact() {
             Open to freelance · 2025
           </div>
 
-          <form className="contact__form" onSubmit={handleSubmit}>
+          <form
+            className="contact__form"
+            name={CONTACT_FORM_NAME}
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot={HONEYPOT_FIELD}
+            onSubmit={handleSubmit}
+          >
+            <input type="hidden" name="form-name" value={CONTACT_FORM_NAME} />
+            {/* honeypot: hidden from people and assistive tech, bots fill it in */}
+            <label className="contact__honeypot" aria-hidden="true">
+              No llenes este campo
+              <input name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" />
+            </label>
+
             <div className="contact__form-row">
               <label className="contact__field">
                 <span className="contact__label">Tu nombre</span>
@@ -91,10 +118,23 @@ export default function Contact() {
               />
             </label>
 
-            <button type="submit" className="contact__submit">
-              <span>Enviar y empezar</span>
+            <button type="submit" className="contact__submit" disabled={isSending} aria-busy={isSending}>
+              <span>{isSending ? 'Enviando…' : 'Enviar y empezar'}</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
             </button>
+
+            <p className={`contact__status contact__status--${status}`} role="status" aria-live="polite">
+              {status === 'success' && STATUS_MESSAGES.success}
+              {status === 'error' && (
+                <>
+                  {STATUS_MESSAGES.error}{' '}
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="contact__status-link">
+                    {CONTACT_EMAIL}
+                  </a>
+                  .
+                </>
+              )}
+            </p>
           </form>
 
           <SocialDock />

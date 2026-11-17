@@ -87,6 +87,17 @@
     </script>
   </head>
   <body>
+    <!-- Netlify Forms detection: Netlify registers forms by parsing the deployed
+         HTML at build time and never sees the React-rendered one, so this hidden
+         copy must list every field the real form in Contact.tsx submits. -->
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="nombre" />
+      <input type="email" name="correo" />
+      <input type="tel" name="whatsapp" />
+      <textarea name="proyecto"></textarea>
+      <input name="bot-field" />
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
