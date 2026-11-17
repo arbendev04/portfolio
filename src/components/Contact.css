@@ -7,6 +7,10 @@
   text-align: center;
   padding: var(--section-y) 0;
   position: relative;
+  /* Above the traveling globe, which lives in the projects section's stacking
+     layer (z-index 2) and ends its trip behind this one. The section has no
+     background of its own, so the globe shows through around the form. */
+  z-index: 3;
 }
 
 .contact__inner {
@@ -87,14 +91,35 @@
   }
 }
 
+/* Frosted-glass panel: translucent and blurring whatever is behind it (the
+   traveling globe), so the globe reads through it as a soft glow. */
 .contact__form {
   width: 100%;
-  max-width: 660px;
+  max-width: 700px;
   margin-top: 8px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   text-align: left;
+  padding: clamp(22px, 3.5vw, 36px);
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.056), rgba(255, 255, 255, 0.012) 55%),
+    rgba(12, 16, 22, 0.34);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Without backdrop-filter support the panel would be see-through with nothing
+   blurred, so it falls back to a solid surface instead. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .contact__form {
+    background: var(--surface-card);
+  }
 }
 
 .contact__form-row {
@@ -121,7 +146,9 @@
 .contact__textarea {
   width: 100%;
   padding: 14px 16px;
-  background: var(--surface-card);
+  /* nearly opaque on purpose: the glass panel shows the globe, but nothing
+     should ever show through behind the text being typed */
+  background: rgba(10, 13, 18, 0.88);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   color: var(--text-strong);

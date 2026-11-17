@@ -1,0 +1,85 @@
+/* Full-viewport layer the globe travels within. It sits inside the projects
+   section at z-index -1: that paints it above the section's own opaque
+   background but beneath the project cards. Its clip-path (set per frame) hides
+   anything above the section's top edge while the section is still sliding up. */
+.traveling-globe {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Rendered once at the background size; moved and scaled with transforms. */
+.traveling-globe__layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform, opacity;
+  opacity: 0;
+}
+
+/* Only interactive once docked, so it never blocks clicks on the cards. */
+.traveling-globe__layer.is-docked {
+  pointer-events: auto;
+  cursor: default;
+}
+
+.traveling-globe__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.traveling-globe__labels {
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+}
+
+/* docked beside the tech stack: labels on hover; behind the contact form:
+   always labelled, since nothing can hover it there */
+.traveling-globe__layer.is-docked:hover .traveling-globe__labels,
+.traveling-globe__layer.is-contact .traveling-globe__labels {
+  opacity: 1;
+}
+
+.traveling-globe__label {
+  position: absolute;
+  bottom: anchor(top);
+  left: anchor(center);
+  translate: -50% 0;
+  margin-bottom: 10px;
+  padding: 4px 9px;
+  border-radius: 4px;
+  border: 1px solid rgba(25, 211, 255, 0.45);
+  background: rgba(6, 7, 8, 0.85);
+  box-shadow: var(--glow-sm);
+  color: var(--brand-cyan-bright);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+/* the little pointer under each label */
+.traveling-globe__label::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  border: 5px solid transparent;
+  border-top-color: rgba(25, 211, 255, 0.45);
+}
+
+/* Browsers without CSS anchor positioning can't place the labels on their
+   markers, so they skip them rather than show them in the wrong spot. */
+@supports not (anchor-name: --a) {
+  .traveling-globe__labels {
+    display: none;
+  }
+}

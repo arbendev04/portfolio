@@ -1,14 +1,17 @@
 .main-content {
+  /* exposed so full-bleed sections can cancel it out (see .work--cover) */
+  --page-gutter: clamp(1.75rem, 5.5vw, 6rem);
   position: relative;
   z-index: 1;
   margin-left: 74px;
-  padding: 0 clamp(1.75rem, 5.5vw, 6rem);
+  padding: 0 var(--page-gutter);
 }
 
 @media (max-width: 767px) {
   .main-content {
+    --page-gutter: clamp(1rem, 4vw, 2rem);
     margin-left: 0;
-    padding: 0 clamp(1rem, 4vw, 2rem);
+    padding: 0 var(--page-gutter);
     padding-bottom: 72px; /* space for mobile bottom bar */
   }
 }

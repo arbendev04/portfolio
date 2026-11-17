@@ -6,6 +6,36 @@
   padding: var(--section-y) 0;
 }
 
+/* Curtain entrance: the section is pulled up over the hero's last screen, so
+   while the hero is still pinned this opaque sheet slides up over it and hides
+   the "ARBEN" the agent colony has just built. */
+.work--cover {
+  position: relative;
+  z-index: 2;
+  margin-top: -100vh;
+  /* full-bleed: cancels the page gutter so the hero can't peek out the sides */
+  margin-inline: calc(-1 * var(--page-gutter));
+  padding-inline: var(--page-gutter);
+  border-radius: 32px 32px 0 0;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -28px 70px rgba(0, 0, 0, 0.6);
+  /* The page's grid texture is a fixed layer *behind* the content, so an opaque
+     sheet would hide it. The sheet repaints the same grid itself, fixed to the
+     viewport so its lines sit exactly on top of the global ones. */
+  background-color: var(--bg-page);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--line-strong) 4.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--line-strong) 4.5%, transparent) 1px, transparent 1px);
+  background-size: 68px 68px;
+  background-attachment: fixed;
+}
+
+@media (max-width: 767px) {
+  .work--cover {
+    border-radius: 22px 22px 0 0;
+  }
+}
+
 .work__header {
   margin-bottom: clamp(40px, 6vw, 72px);
 }

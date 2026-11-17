@@ -1,0 +1,60 @@
+/* Spotlight glow — add `.spotlight` to any element and register it with
+   useSpotlight (src/lib/spotlight.ts), which feeds --glow-x/--glow-y per
+   element and --glow-hue on their container. The element's own border lights
+   up only where the cursor is (or approaches from outside), never all at once.
+
+   Tunables, overridable per component:
+     --glow-size  reach of the light, in px
+     --glow-ring  thickness of the lit border
+     --glow-wash  strength of the faint fill inside the element (0–1)
+
+   The element needs position (relative/absolute) and a border-radius; its
+   ::before and ::after are taken by the effect.
+
+   :where() gives these defaults zero specificity, so a component's own rule
+   can always override the tunables, whatever order the stylesheets load in. */
+:where(.spotlight) {
+  --glow-size: 240px;
+  --glow-ring: 2px;
+  --glow-wash: 0.13;
+  --glow-at: var(--glow-x, -999px) var(--glow-y, -999px);
+  --glow-color: hsl(var(--glow-hue, 200) 100% 60%);
+  /* layer 1: a faint wash of the glow colour inside the element. Only the
+     image is set, so the element keeps its own background-color. */
+  background-image: radial-gradient(
+    var(--glow-size) circle at var(--glow-at),
+    hsl(var(--glow-hue, 200) 100% 60% / var(--glow-wash)),
+    transparent 70%
+  );
+}
+
+/* layers 2 and 3: the border lighting up near the cursor — a coloured ring,
+   then a smaller white-hot core on top. Each is a full-size gradient masked
+   down to a thin ring just inside the edge (padding = ring thickness), so
+   only the border area ever glows. */
+.spotlight::before,
+.spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: var(--glow-ring);
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+.spotlight::before {
+  background: radial-gradient(calc(var(--glow-size) * 0.75) circle at var(--glow-at), var(--glow-color), transparent 100%);
+  filter: brightness(1.6);
+}
+
+.spotlight::after {
+  background: radial-gradient(calc(var(--glow-size) * 0.35) circle at var(--glow-at), rgba(255, 255, 255, 0.85), transparent 100%);
+}

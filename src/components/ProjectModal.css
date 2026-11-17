@@ -1,0 +1,306 @@
+.project-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 4vw, 48px);
+}
+
+.project-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 4, 6, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.project-modal__panel {
+  position: relative;
+  width: min(920px, 100%);
+  max-height: min(88vh, 860px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(25, 211, 255, 0.28);
+  background: var(--surface-card);
+  box-shadow: var(--glow-md), 0 40px 90px rgba(0, 0, 0, 0.65), var(--inset-hairline);
+}
+
+.project-modal__scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Previous / counter / next, mirroring the close button on the other side. */
+.project-modal__nav {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: rgba(6, 7, 8, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.project-modal__nav .project-modal__icon-btn {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+}
+
+.project-modal__count {
+  min-width: 64px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  color: var(--text-body);
+}
+
+.project-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+}
+
+.project-modal__icon-btn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(6, 7, 8, 0.7);
+  backdrop-filter: blur(6px);
+  color: var(--text-body);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.project-modal__icon-btn:hover,
+.project-modal__icon-btn:focus-visible {
+  color: var(--brand-cyan);
+  border-color: rgba(25, 211, 255, 0.5);
+}
+
+/* ---- Header: screenshot, or a branded placeholder until there is one ---- */
+
+.project-modal__image,
+.project-modal__placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-modal__image {
+  object-fit: cover;
+  object-position: top;
+}
+
+.project-modal__placeholder {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(60% 90% at 30% 20%, rgba(25, 211, 255, 0.18), transparent 70%),
+    radial-gradient(60% 90% at 80% 90%, rgba(31, 107, 255, 0.22), transparent 70%),
+    var(--surface-raised);
+}
+
+.project-modal__placeholder span {
+  font-family: var(--font-mono);
+  font-size: clamp(64px, 12vw, 140px);
+  font-weight: var(--w-bold);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(25, 211, 255, 0.45);
+}
+
+/* Live site preview, layered over the placeholder and faded in once loaded. */
+.site-preview {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+.site-preview.is-loaded {
+  opacity: 1;
+}
+
+.site-preview iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  transform-origin: 0 0;
+  /* the card colour, so a site that's still painting doesn't flash white */
+  background: var(--surface-card);
+}
+
+/* ---- Body ---- */
+
+.project-modal__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 48px);
+  padding: clamp(24px, 4vw, 44px);
+}
+
+.project-modal__index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--brand-cyan);
+}
+
+.project-modal__title {
+  margin: 6px 0 14px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-strong);
+}
+
+.project-modal__lead {
+  margin: 0 0 8px;
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
+  color: var(--text-body);
+}
+
+.project-modal__label {
+  margin: 26px 0 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.project-modal__side .project-modal__label:first-child {
+  margin-top: 0;
+}
+
+.project-modal__text {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+.project-modal__features {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.project-modal__features li {
+  position: relative;
+  padding-left: 18px;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text-body);
+}
+
+.project-modal__features li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--brand-gradient);
+}
+
+.project-modal__tech {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project-modal__tech-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: var(--surface-chip);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-body);
+}
+
+.project-modal__tech-icon {
+  display: inline-flex;
+  line-height: 0;
+}
+
+.project-modal__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 52px;
+  margin-top: 28px;
+  border-radius: var(--r-md);
+  background: var(--brand-gradient);
+  color: var(--on-accent);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease-out);
+}
+
+.project-modal__cta:hover,
+.project-modal__cta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-md);
+}
+
+@media (max-width: 767px) {
+  .project-modal {
+    padding: 10px;
+    place-items: end center;
+  }
+
+  .project-modal__panel {
+    max-height: 92vh;
+  }
+
+  .project-modal__body {
+    grid-template-columns: 1fr;
+  }
+
+  .project-modal__image,
+  .project-modal__placeholder {
+    aspect-ratio: 16 / 9;
+  }
+}

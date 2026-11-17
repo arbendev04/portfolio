@@ -1,13 +1,41 @@
+/* The section is one screen plus a "hold" of extra scroll. Its content
+   (.skills__pin) sticks to the viewport during that hold, so the globe docked
+   beside the stack stays put for a moment before the contact section arrives
+   and the globe grows again. Raise --skills-hold for a longer pause. */
 .skills {
+  --skills-hold: 70vh;
+  position: relative;
+  min-height: calc(100vh + var(--skills-hold));
+}
+
+.skills__pin {
+  position: sticky;
+  top: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--section-y) 0;
+  /* tighter than other sections: the whole block must fit one screen while
+     pinned, or its bottom would be unreachable until the hold ends */
+  padding: clamp(2rem, 6vh, 4.5rem) 0;
+}
+
+/* On narrow screens the globe stacks above the list and the block is taller
+   than the screen, so pinning would hide its bottom — no hold there. */
+@media (max-width: 900px) {
+  .skills {
+    --skills-hold: 0px;
+  }
+
+  .skills__pin {
+    position: static;
+    padding: var(--section-y) 0;
+  }
 }
 
 .skills__header {
-  margin-bottom: clamp(40px, 6vw, 72px);
+  margin-bottom: clamp(28px, 5vh, 56px);
 }
 
 .skills__eyebrow {
@@ -29,11 +57,38 @@
   color: var(--text-strong);
 }
 
+/* Globe on the left, the stack on the right. */
+.skills__body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+
+/* Square the traveling globe docks into (it measures this box every frame). */
+.skills__globe-slot {
+  width: 100%;
+  /* capped by height too, so the pinned block always fits one screen */
+  max-width: min(520px, 58vh);
+  aspect-ratio: 1;
+  justify-self: center;
+}
+
 .skills__rows {
   display: flex;
   flex-direction: column;
   gap: clamp(28px, 3.5vw, 40px);
   max-width: var(--maxw-content);
+}
+
+@media (max-width: 900px) {
+  .skills__body {
+    grid-template-columns: 1fr;
+  }
+
+  .skills__globe-slot {
+    max-width: 340px;
+  }
 }
 
 .skills__row {
@@ -61,38 +116,104 @@
 .skills__pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
 }
 
+/* Icon-only tile; the technology's name lives in .skills__tip. */
 .skills__pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  height: 34px;
-  padding: 0 14px 0 12px;
-  border-radius: var(--r-pill);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-md);
   border: 1px solid var(--border);
-  background: var(--surface-card);
+  /* background-color only: the .spotlight class supplies background-image */
+  background-color: var(--surface-card);
   color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.02em;
   cursor: default;
-  transition: all var(--dur-base) var(--ease-spring);
+  outline: none;
+  transition:
+    transform var(--dur-base) var(--ease-spring),
+    background-color var(--dur-base) var(--ease-out);
+  /* spotlight tuned for small tiles: tighter light, finer ring */
+  --glow-size: 150px;
+  --glow-ring: 1.5px;
+  --glow-wash: 0.18;
 }
 
-.skills__pill:hover {
+/* No whole-border highlight: the spotlight lights only the part near the
+   cursor. Hover just lifts and enlarges the tile. */
+.skills__pill:hover,
+.skills__pill:focus-visible {
+  z-index: 1;
   color: var(--brand-cyan-bright);
-  border-color: rgba(25, 211, 255, 0.5);
-  box-shadow: var(--glow-sm);
-  transform: translateY(-2px);
-  background: var(--surface-raised);
+  background-color: var(--surface-raised);
+  transform: translateY(-3px) scale(1.18);
+}
+
+/* keyboard users still need an unmistakable focus indicator */
+.skills__pill:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 
 .skills__pill-icon {
   display: flex;
-  flex: 0 0 auto;
   line-height: 0;
+}
+
+/* the SVGs carry width/height="16"; CSS sizing takes precedence over those */
+.skills__pill-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---- Tooltip ---- */
+
+.skills__tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(25, 211, 255, 0.4);
+  background: rgba(6, 7, 8, 0.92);
+  box-shadow: var(--shadow-sm);
+  color: var(--brand-cyan-bright);
+  font-family: var(--font-mono);
+  /* the tile is scaled up 1.18 while hovered, so this renders ~12px */
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+/* little pointer under the tooltip */
+.skills__tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  border: 5px solid transparent;
+  border-top-color: rgba(25, 211, 255, 0.4);
+}
+
+.skills__pill:hover .skills__tip,
+.skills__pill:focus-visible .skills__tip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skills__pill:hover,
+  .skills__pill:focus-visible {
+    transform: none;
+  }
 }
 
 @media (max-width: 767px) {

@@ -1,39 +1,10 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import HoverLetters from './HoverLetters';
-import ProjectsGrid, { type ProjectItem } from './ProjectsGrid';
+import ProjectsGrid from './ProjectsGrid';
+import TravelingGlobe from './TravelingGlobe';
+import { projects } from '../data/projects';
 import './Projects.css';
-
-const projects: ProjectItem[] = [
-  {
-    id: 'arango-dental-clinic',
-    index: '01',
-    tech: ['Astro', 'SEO'],
-    title: 'Arango Dental Clinic',
-    description: 'A dental clinic in Benidorm, Spain — minimalist, trust-first visuals, a full service showcase, and a direct line to WhatsApp.',
-    url: 'https://www.arangodentalclinic.es/',
-  },
-  {
-    id: 'rdg-accounting',
-    index: '02',
-    tech: ['Astro'],
-    title: 'RDG Accounting Group',
-    description: 'A bilingual accounting and tax firm — service showcase, consultation booking, and WhatsApp-driven course inquiries in English and Spanish.',
-    url: 'https://www.rdgaccountinggroup.com/en',
-  },
-  {
-    id: 'certcol',
-    index: '03',
-    tech: ['Next.js'],
-    title: 'certCol',
-    description: 'A lead-gen platform for selling Colombian CID investment certificates — a multi-step valuation form with DIAN validation and Habeas Data compliance.',
-    url: 'https://www.certcol.co/',
-    // certcol.co sends X-Frame-Options: DENY — it refuses to render inside any
-    // iframe, so this falls back to a static image instead.
-    noPreview: true,
-    previewImage: '/projects/certcol.webp',
-  },
-];
 
 export default function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -55,7 +26,9 @@ export default function Projects() {
   const gridY = useTransform(scrollYProgress, [0.2, 0.85], [50, 0]);
 
   return (
-    <section data-section ref={sectionRef} className="work">
+    <section data-section ref={sectionRef} className="work work--cover">
+      {/* background here, then travels to dock beside the tech stack */}
+      <TravelingGlobe />
       {/* The eyebrow keeps the scroll-scrubbed fade tied to scrollYProgress, but the
           title is left unwrapped: HoverLetters drives its own letter-by-letter
           reveal on scroll, and nesting it inside a still-fading-in parent would let that

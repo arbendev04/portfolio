@@ -29,12 +29,18 @@
   transition: color var(--dur-base) var(--ease-out);
 }
 
-/* subtle brighten-to-white on hover — the background/accent colour change
-   was deliberately left out (see git history), this is just the icon itself
-   standing out a bit, not a full accent treatment */
+/* On hover/focus the icon takes on its network's own colour (--brand, set per
+   link). Only the icon changes — the bubble stays neutral. */
 .social-dock__link:hover .social-dock__bubble,
 .social-dock__link:focus-visible .social-dock__bubble {
-  color: var(--text-body);
+  color: var(--brand, var(--text-body));
+}
+
+/* Instagram's colour is a gradient: switch the icon's stroke to the gradient
+   defined inside its own SVG instead of a flat colour. */
+.social-dock__link--instagram:hover .social-dock__icon svg,
+.social-dock__link--instagram:focus-visible .social-dock__icon svg {
+  stroke: url(#social-dock-instagram);
 }
 
 .social-dock__icon {

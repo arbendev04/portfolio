@@ -36,7 +36,7 @@ export default function Contact() {
   }
 
   return (
-    <section data-section className="contact">
+    <section data-section data-globe-contact className="contact">
       <div className="contact__inner">
         <motion.div
           className="contact__eyebrow"
