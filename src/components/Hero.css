@@ -1,9 +1,10 @@
-/* Tall scroll runway: the inner .hero__sticky pins for the extra 180vh, which
-   is the distance the name uses to grow, hollow out into outlines, and fade.
-   Raise or lower this single value to stretch or shorten the whole effect —
-   shorter means the same animation plays out over less scrolling, i.e. faster. */
+/* Tall scroll runway: the inner .hero__sticky pins for the extra 240vh. The
+   first 35% of that is the agent colony building "Arben" (COLONY_BUILD_END in
+   Hero.tsx); the rest is the name growing, hollowing out into outlines and
+   fading. Raise or lower this single value to stretch or shorten the whole
+   effect — shorter means the same animation plays out over less scrolling. */
 .hero {
-  min-height: 280vh;
+  min-height: 340vh;
   position: relative;
   /* NOTE: no `overflow: hidden` here — it would turn .hero into a scroll
      container and break `position: sticky` on .hero__sticky. */

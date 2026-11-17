@@ -13,6 +13,8 @@ interface KineticHeroNameProps {
   /** Index of the line painted with the brand gradient. */
   accentIndex?: number;
   scrollTargetRef?: RefObject<HTMLElement | null>;
+  /** Share of the scroll runway to hold still before the zoom begins (0..1). */
+  zoomStart?: number;
 }
 
 interface Magnitudes {
@@ -74,7 +76,7 @@ function AccentWord({ word, measure }: AccentWordProps) {
   );
 }
 
-export default function KineticHeroName({ words, accentIndex = -1, scrollTargetRef }: KineticHeroNameProps) {
+export default function KineticHeroName({ words, accentIndex = -1, scrollTargetRef, zoomStart = 0 }: KineticHeroNameProps) {
   const reduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
   const m = reduceMotion ? REDUCED_MAGNITUDES : isMobile ? MOBILE_MAGNITUDES : DESKTOP_MAGNITUDES;
@@ -99,15 +101,19 @@ export default function KineticHeroName({ words, accentIndex = -1, scrollTargetR
   // high damping stops it from overshooting into a floaty/bouncy feel
   const progress = useSpring(scrollYProgress, { stiffness: 400, damping: 40, mass: 0.3 });
 
-  const scale = useTransform(progress, [0, 1], [1, m.scaleTo]);
+  // Every keyframe below is written on a 0..1 zoom timeline and squeezed into
+  // the part of the runway after `zoomStart` — before it the name holds still.
+  const at = (t: number) => zoomStart + t * (1 - zoomStart);
+
+  const scale = useTransform(progress, [at(0), 1], [1, m.scaleTo]);
   // holds full strength through the hollowing-out, then clears near the end so
   // the section hands off cleanly
-  const opacity = useTransform(progress, [0, 0.85, 1], [1, 1, m.opacityTo]);
+  const opacity = useTransform(progress, [at(0), at(0.85), 1], [1, 1, m.opacityTo]);
 
   // solid fill dissolves while the stroked copy takes over, leaving the letters
   // as pure outlines for the last stretch of the growth
-  const fillOpacity = useTransform(progress, [0.18, 0.55], [1, 0]);
-  const outlineOpacity = useTransform(progress, [0.18, 0.5], [0, 1]);
+  const fillOpacity = useTransform(progress, [at(0.18), at(0.55)], [1, 0]);
+  const outlineOpacity = useTransform(progress, [at(0.18), at(0.5)], [0, 1]);
 
   // Every word is split into per-letter spans for the hover effect. The accent
   // word needs the gradient-preserving treatment from AccentWord; the rest just

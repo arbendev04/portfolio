@@ -3,7 +3,12 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { scrollToSection } from '../lib/lenis';
 import { EASE_OUT } from '../lib/motion';
 import KineticHeroName from './KineticHeroName';
+import AgentColony from './AgentColony';
 import './Hero.css';
+
+// The first stretch of the runway belongs to the agent colony building
+// "Arben"; the name's zoom only takes over once that word is complete.
+const COLONY_BUILD_END = 0.35;
 
 function scrollToWork() {
   const target = document.querySelectorAll<HTMLElement>('[data-section]')[1];
@@ -13,6 +18,7 @@ function scrollToWork() {
 export default function Hero() {
   const reduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -32,13 +38,19 @@ export default function Hero() {
     <section data-section ref={heroRef} className="hero">
       <div className="hero__sticky">
         <div className="hero__glow" />
+        <AgentColony progress={scrollYProgress} buildEnd={COLONY_BUILD_END} contentRef={contentRef} />
 
-        <div className="hero__content">
+        <div className="hero__content" ref={contentRef}>
           <motion.div className="hero-eyebrow hero__eyebrow" style={{ opacity: supportOpacity }} {...fadeIn(0.1)}>
             // freelance systems engineer
           </motion.div>
 
-          <KineticHeroName words={['Santiago', 'Arango', 'Benjumea']} accentIndex={2} scrollTargetRef={heroRef} />
+          <KineticHeroName
+            words={['Santiago', 'Arango', 'Benjumea']}
+            accentIndex={2}
+            scrollTargetRef={heroRef}
+            zoomStart={COLONY_BUILD_END}
+          />
 
           <motion.div className="hero-role hero__role" style={{ opacity: supportOpacity }} {...fadeIn(1.0)}>
             Systems Engineer · Web Developer · Medellín
