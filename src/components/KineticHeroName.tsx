@@ -1,7 +1,11 @@
 import { useRef, type RefObject } from 'react';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { useGradientLetterStyles } from '../lib/useGradientLetters';
+import { useLetterEntrance } from '../lib/useLetterEntrance';
 import './KineticHeroName.css';
+
+// lands after the eyebrow (0.1s) has started, before the role line (1.0s)
+const NAME_ENTRANCE_DELAY = 0.15;
 
 interface KineticHeroNameProps {
   /** Each entry renders as its own stacked line. */
@@ -76,6 +80,11 @@ export default function KineticHeroName({ words, accentIndex = -1, scrollTargetR
   const m = reduceMotion ? REDUCED_MAGNITUDES : isMobile ? MOBILE_MAGNITUDES : DESKTOP_MAGNITUDES;
 
   const internalRef = useRef<HTMLHeadingElement>(null);
+  // Only the visible fill layer animates in: the stroked outline copy is fully
+  // transparent until the scroll-driven crossfade, by which point the fill's
+  // letters have long since settled into the same positions.
+  useLetterEntrance(internalRef, { selector: '.hero-letter', onScroll: false, delay: NAME_ENTRANCE_DELAY });
+
   const { scrollYProgress } = useScroll({
     target: scrollTargetRef ?? internalRef,
     // the sticky wrapper stays pinned for exactly the span between these two

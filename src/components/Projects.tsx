@@ -57,8 +57,8 @@ export default function Projects() {
   return (
     <section data-section ref={sectionRef} className="work">
       {/* The eyebrow keeps the scroll-scrubbed fade tied to scrollYProgress, but the
-          title is left unwrapped: HoverLetters drives its own blur-in reveal on
-          whileInView, and nesting it inside a still-fading-in parent would let that
+          title is left unwrapped: HoverLetters drives its own letter-by-letter
+          reveal on scroll, and nesting it inside a still-fading-in parent would let that
           reveal finish while the parent was still invisible. */}
       <div className="work__header">
         <motion.div className="work__eyebrow" style={{ opacity: headerOpacity, y: headerY }}>

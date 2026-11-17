@@ -49,7 +49,7 @@ export default function Contact() {
         </motion.div>
 
         {/* Left unwrapped, same reasoning as Projects' title: HoverLetters drives its
-            own blur-in reveal on whileInView, so it can't sit inside a parent whose
+            own letter-by-letter reveal on scroll, so it can't sit inside a parent whose
             own (slower-to-trigger, much taller) fadeUp would still be invisible by
             the time this one finishes animating. */}
         <h2 className="contact__title">

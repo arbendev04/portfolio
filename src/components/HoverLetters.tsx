@@ -1,7 +1,6 @@
 import { useRef, type ElementType } from 'react';
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { useGradientLetterStyles } from '../lib/useGradientLetters';
-import { EASE_OUT, revealViewport } from '../lib/motion';
+import { useLetterEntrance } from '../lib/useLetterEntrance';
 import './HoverLetters.css';
 
 interface HoverLettersProps {
@@ -16,39 +15,6 @@ interface HoverLettersProps {
   gradient?: boolean;
 }
 
-// Wider gap between words than a typical stagger so each one is clearly
-// legible arriving on its own instead of the whole line snapping in at once.
-const lineContainer: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.14 } },
-};
-
-// Each word blurs and slides in from the right as one unit — the letter spans
-// nested inside are only there for the hover colour swap and aren't animated
-// themselves, they just inherit their word's blur/opacity/transform for free
-// since that's how CSS painting composites a subtree.
-const wordEntrance: Variants = {
-  hidden: { opacity: 0, x: 28, filter: 'blur(10px)' },
-  visible: {
-    opacity: 1,
-    x: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.9, ease: EASE_OUT },
-    // a lingering `filter: blur(0px)` still forces GPU compositing and can knock
-    // out ClearType/subpixel font smoothing, leaving text looking soft even at
-    // zero blur radius — snapping to `none` once the transition ends restores
-    // normal crisp text rendering without affecting the animated transition itself.
-    transitionEnd: { filter: 'none' },
-  },
-};
-
-// Blur and a moving target are exactly what prefers-reduced-motion exists to
-// avoid, so that preference gets a plain opacity fade instead of the real thing.
-const wordEntranceReduced: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.4, ease: EASE_OUT } },
-};
-
 /** Splits on whitespace runs rather than every character so a leading/trailing
  * space (e.g. "Let's build ") survives as its own token instead of vanishing. */
 function tokenize(text: string): string[] {
@@ -57,11 +23,10 @@ function tokenize(text: string): string[] {
 
 export default function HoverLetters({ text, className, as: Tag = 'span', gradient = false }: HoverLettersProps) {
   const containerRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
   const tokens = tokenize(text);
   const letterCount = tokens.reduce((count, token) => (/\s/.test(token) ? count : count + token.length), 0);
   const { letterRefs, styles } = useGradientLetterStyles(containerRef, gradient, letterCount);
-  const wordVariants = reduceMotion ? wordEntranceReduced : wordEntrance;
+  useLetterEntrance(containerRef, { selector: '.hover-letter', onScroll: true });
 
   let letterIndex = 0;
 
@@ -71,20 +36,14 @@ export default function HoverLetters({ text, className, as: Tag = 'span', gradie
       className={className ? `hover-letters ${className}` : 'hover-letters'}
       aria-label={text}
     >
-      <motion.span
-        className="hover-line"
-        initial="hidden"
-        whileInView="visible"
-        viewport={revealViewport}
-        variants={lineContainer}
-      >
+      <span className="hover-line">
         {tokens.map((token, ti) => {
           if (/^\s+$/.test(token)) {
             return <span key={ti}>{token}</span>;
           }
 
           return (
-            <motion.span key={ti} className="hover-word" variants={wordVariants}>
+            <span key={ti} className="hover-word">
               {token.split('').map((ch) => {
                 const i = letterIndex++;
                 return (
@@ -101,10 +60,10 @@ export default function HoverLetters({ text, className, as: Tag = 'span', gradie
                   </span>
                 );
               })}
-            </motion.span>
+            </span>
           );
         })}
-      </motion.span>
+      </span>
     </Tag>
   );
 }

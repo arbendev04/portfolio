@@ -1,4 +1,5 @@
 import Lenis from 'lenis';
+import { ScrollTrigger } from './gsap';
 
 let lenis: Lenis | null = null;
 
@@ -10,6 +11,9 @@ export function initLenis(): Lenis {
     easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     touchMultiplier: 2,
   });
+
+  // keeps ScrollTrigger's positions in step with Lenis' smoothed scroll
+  lenis.on('scroll', ScrollTrigger.update);
 
   function raf(time: number) {
     lenis?.raf(time);
