@@ -1,10 +1,10 @@
-/* Tall scroll runway: the inner .hero__sticky pins for the extra 240vh. The
-   first 35% of that is the agent colony building "Arben" (COLONY_BUILD_END in
-   Hero.tsx); the rest is the name growing, hollowing out into outlines and
-   fading. Raise or lower this single value to stretch or shorten the whole
-   effect — shorter means the same animation plays out over less scrolling. */
+/* Tall scroll runway: the inner .hero__sticky pins for the extra 380vh. The
+   name flies out, the agent colony gathers into "ARBEN", and over the last
+   100vh the projects section (pulled up by .work--cover's -100vh margin)
+   slides over the still-pinned hero. The exact shares are the timeline
+   constants in Hero.tsx — change this value and those together. */
 .hero {
-  min-height: 340vh;
+  min-height: 480vh;
   position: relative;
   /* NOTE: no `overflow: hidden` here — it would turn .hero into a scroll
      container and break `position: sticky` on .hero__sticky. */
@@ -25,8 +25,8 @@
 
 .hero__glow {
   position: absolute;
-  top: 8%;
-  left: -6%;
+  top: 15%;
+  left: 20%;
   width: 60%;
   height: 70%;
   pointer-events: none;
@@ -35,6 +35,7 @@
 
 .hero__content {
   position: relative;
+  text-align: center;
 }
 
 .hero__eyebrow {

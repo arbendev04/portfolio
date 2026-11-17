@@ -1,11 +1,25 @@
-import { useRef, type RefObject } from 'react';
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from 'framer-motion';
 import { useGradientLetterStyles } from '../lib/useGradientLetters';
 import { useLetterEntrance } from '../lib/useLetterEntrance';
+import { startScaleFor, zoomScale } from '../lib/heroZoom';
 import './KineticHeroName.css';
 
 // lands after the eyebrow (0.1s) has started, before the role line (1.0s)
 const NAME_ENTRANCE_DELAY = 0.15;
+
+/** On-screen size of each name line before any scrolling. */
+const START_LINE_PX = 55;
+/** Reduced motion only grows the name a little instead of flying through it. */
+const REDUCED_GROWTH = 1.6;
 
 interface KineticHeroNameProps {
   /** Each entry renders as its own stacked line. */
@@ -13,25 +27,49 @@ interface KineticHeroNameProps {
   /** Index of the line painted with the brand gradient. */
   accentIndex?: number;
   scrollTargetRef?: RefObject<HTMLElement | null>;
-  /** Share of the scroll runway to hold still before the zoom begins (0..1). */
-  zoomStart?: number;
+  /** Share of the scroll runway by which the zoom-out is finished (0..1). */
+  zoomEnd?: number;
 }
 
 interface Magnitudes {
   scaleTo: number;
-  /** Opacity at the end of the travel — 0.05 leaves the faint ghost the
-   * reference's "ENORME" keeps rather than blanking out entirely. */
+  /** Opacity at the end of the travel. Fully gone, so the "ARBEN" the agent
+   * colony assembles afterwards has the stage to itself. */
   opacityTo: number;
 }
 
-const DESKTOP_MAGNITUDES: Magnitudes = { scaleTo: 8, opacityTo: 0.05 };
-const MOBILE_MAGNITUDES: Magnitudes = { scaleTo: 5, opacityTo: 0.05 };
-/** Reduced motion keeps the effect legible but well short of the full 8x zoom,
- * which is the scale of movement the preference exists to avoid. */
-const REDUCED_MAGNITUDES: Magnitudes = { scaleTo: 1.6, opacityTo: 0 };
+const DESKTOP_MAGNITUDES: Magnitudes = { scaleTo: 8, opacityTo: 0 };
+const MOBILE_MAGNITUDES: Magnitudes = { scaleTo: 5, opacityTo: 0 };
 
 function useIsMobile(): boolean {
   return useRef(window.matchMedia('(max-width: 767px)').matches).current;
+}
+
+/** Measures the rendered font size, derives the scale that shows each line at
+ * START_LINE_PX, and the layout height the small name actually occupies — a
+ * transform doesn't shrink layout, so the frame reserves only the visual size
+ * and the copy above and below sits snugly around the small name. */
+function useStartScale(headingRef: RefObject<HTMLElement | null>): { startScale: MotionValue<number>; frameHeight: number } {
+  const startScale = useMotionValue(1);
+  const [frameHeight, setFrameHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const heading = headingRef.current;
+    if (!heading) return;
+
+    const measure = () => {
+      const scale = startScaleFor(START_LINE_PX, parseFloat(getComputedStyle(heading).fontSize));
+      startScale.set(scale);
+      setFrameHeight(heading.offsetHeight * scale);
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(heading);
+    return () => observer.disconnect();
+  }, [headingRef, startScale]);
+
+  return { startScale, frameHeight };
 }
 
 interface AccentWordProps {
@@ -76,16 +114,17 @@ function AccentWord({ word, measure }: AccentWordProps) {
   );
 }
 
-export default function KineticHeroName({ words, accentIndex = -1, scrollTargetRef, zoomStart = 0 }: KineticHeroNameProps) {
+export default function KineticHeroName({ words, accentIndex = -1, scrollTargetRef, zoomEnd = 1 }: KineticHeroNameProps) {
   const reduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
-  const m = reduceMotion ? REDUCED_MAGNITUDES : isMobile ? MOBILE_MAGNITUDES : DESKTOP_MAGNITUDES;
+  const m = isMobile ? MOBILE_MAGNITUDES : DESKTOP_MAGNITUDES;
 
   const internalRef = useRef<HTMLHeadingElement>(null);
   // Only the visible fill layer animates in: the stroked outline copy is fully
   // transparent until the scroll-driven crossfade, by which point the fill's
   // letters have long since settled into the same positions.
   useLetterEntrance(internalRef, { selector: '.hero-letter', onScroll: false, delay: NAME_ENTRANCE_DELAY });
+  const { startScale, frameHeight } = useStartScale(internalRef);
 
   const { scrollYProgress } = useScroll({
     target: scrollTargetRef ?? internalRef,
@@ -102,13 +141,17 @@ export default function KineticHeroName({ words, accentIndex = -1, scrollTargetR
   const progress = useSpring(scrollYProgress, { stiffness: 400, damping: 40, mass: 0.3 });
 
   // Every keyframe below is written on a 0..1 zoom timeline and squeezed into
-  // the part of the runway after `zoomStart` — before it the name holds still.
-  const at = (t: number) => zoomStart + t * (1 - zoomStart);
+  // the start of the runway, up to `zoomEnd` — the rest belongs to whatever
+  // the hero shows after the name has left.
+  const at = (t: number) => t * zoomEnd;
 
-  const scale = useTransform(progress, [at(0), 1], [1, m.scaleTo]);
+  // from the small starting size, flying through to far past the viewport
+  const scale = useTransform([progress, startScale], ([p, start]: number[]) =>
+    zoomScale(p / zoomEnd, start, reduceMotion ? start * REDUCED_GROWTH : m.scaleTo),
+  );
   // holds full strength through the hollowing-out, then clears near the end so
   // the section hands off cleanly
-  const opacity = useTransform(progress, [at(0), at(0.85), 1], [1, 1, m.opacityTo]);
+  const opacity = useTransform(progress, [0, at(0.85), at(1)], [1, 1, m.opacityTo]);
 
   // solid fill dissolves while the stroked copy takes over, leaving the letters
   // as pure outlines for the last stretch of the growth
@@ -134,31 +177,33 @@ export default function KineticHeroName({ words, accentIndex = -1, scrollTargetR
     );
 
   return (
-    <motion.div className="kinetic-grow" style={{ scale, opacity }}>
-      <div className="kinetic-stack">
-        {/* Every word is now split into aria-hidden letter spans for the hover
-            effect, so the heading needs an explicit accessible name — otherwise
-            assistive tech would announce nothing at all. */}
-        <motion.h1
-          ref={internalRef}
-          className="hero-name hero__title kinetic-layer"
-          style={{ opacity: fillOpacity }}
-          aria-label={words.join(' ')}
-        >
-          {renderLines(true)}
-        </motion.h1>
+    <div className="kinetic-frame" style={{ height: frameHeight || undefined }}>
+      <motion.div className="kinetic-grow" style={{ x: '-50%', y: '-50%', scale, opacity }}>
+        <div className="kinetic-stack">
+          {/* Every word is now split into aria-hidden letter spans for the hover
+              effect, so the heading needs an explicit accessible name — otherwise
+              assistive tech would announce nothing at all. */}
+          <motion.h1
+            ref={internalRef}
+            className="hero-name hero__title kinetic-layer"
+            style={{ opacity: fillOpacity }}
+            aria-label={words.join(' ')}
+          >
+            {renderLines(true)}
+          </motion.h1>
 
-        {/* Stroked duplicate of the same glyphs. It lives outside the <h1> so the
-            heading holds the name exactly once for search engines, and is hidden
-            from assistive tech so it is announced exactly once too. */}
-        <motion.div
-          className="hero__title kinetic-layer kinetic-layer--outline"
-          style={{ opacity: outlineOpacity }}
-          aria-hidden="true"
-        >
-          {renderLines(false)}
-        </motion.div>
-      </div>
-    </motion.div>
+          {/* Stroked duplicate of the same glyphs. It lives outside the <h1> so the
+              heading holds the name exactly once for search engines, and is hidden
+              from assistive tech so it is announced exactly once too. */}
+          <motion.div
+            className="hero__title kinetic-layer kinetic-layer--outline"
+            style={{ opacity: outlineOpacity }}
+            aria-hidden="true"
+          >
+            {renderLines(false)}
+          </motion.div>
+        </div>
+      </motion.div>
+    </div>
   );
 }

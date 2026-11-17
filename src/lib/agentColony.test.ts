@@ -4,6 +4,7 @@ import {
   agentPosition,
   agentProgress,
   buildProgress,
+  centeredWordBox,
   createAgents,
   repel,
   type Agent,
@@ -18,15 +19,30 @@ const agent: Agent = {
 };
 
 describe('buildProgress', () => {
-  it('maps the first stretch of hero scroll onto a full 0→1 build', () => {
-    expect(buildProgress(0, 0.35)).toBe(0);
-    expect(buildProgress(0.175, 0.35)).toBeCloseTo(0.5);
-    expect(buildProgress(0.35, 0.35)).toBe(1);
+  it('maps its stretch of the hero scroll onto a full 0→1 build', () => {
+    expect(buildProgress(0.3, 0.3, 0.8)).toBe(0);
+    expect(buildProgress(0.55, 0.3, 0.8)).toBeCloseTo(0.5);
+    expect(buildProgress(0.8, 0.3, 0.8)).toBe(1);
   });
 
-  it('stays clamped once the build stretch is over', () => {
-    expect(buildProgress(0.9, 0.35)).toBe(1);
-    expect(buildProgress(-0.1, 0.35)).toBe(0);
+  it('holds at 0 before the stretch and at 1 after it', () => {
+    expect(buildProgress(0.1, 0.3, 0.8)).toBe(0);
+    expect(buildProgress(0.95, 0.3, 0.8)).toBe(1);
+  });
+});
+
+describe('centeredWordBox', () => {
+  it('centres the word box in the stage', () => {
+    const box = centeredWordBox(1600, 900);
+    expect(box.x + box.width / 2).toBeCloseTo(800);
+    expect(box.y + box.height / 2).toBeCloseTo(450);
+  });
+
+  it('stays inside the stage on a narrow phone screen', () => {
+    const box = centeredWordBox(375, 812);
+    expect(box.x).toBeGreaterThan(0);
+    expect(box.x + box.width).toBeLessThan(375);
+    expect(box.height).toBeGreaterThan(0);
   });
 });
 

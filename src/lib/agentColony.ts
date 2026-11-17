@@ -32,9 +32,14 @@ export interface Agent {
   arc: number;
 }
 
-/** Fraction of the whole build each single trip takes. Overlapping trips are
- * what make it read as a busy colony instead of a queue. */
-export const TRAVEL = 0.22;
+/** Fraction of the whole build each single trip takes. Long, heavily
+ * overlapping trips make the swarm converge together like a flock, while the
+ * left-to-right order still lets the word resolve letter by letter. */
+export const TRAVEL = 0.45;
+
+/** Share of the stage the finished word may span. */
+const WORD_WIDTH_SHARE = 0.86;
+const WORD_HEIGHT_SHARE = 0.42;
 
 /** Small random spread on top of the left-to-right order, so neighbouring
  * bricks don't land in perfect sequence. */
@@ -46,10 +51,18 @@ const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 
 const easeInOutCubic = (t: number): number => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
-/** Maps raw hero scroll progress onto the build: 0 at the top, 1 once the
- * first `buildEnd` share of the runway has been scrolled. */
-export function buildProgress(scrollProgress: number, buildEnd: number): number {
-  return clamp(scrollProgress / buildEnd, 0, 1);
+/** Maps raw hero scroll progress onto the build: 0 until `buildStart`, 1 from
+ * `buildEnd` onwards, linear in between. */
+export function buildProgress(scrollProgress: number, buildStart: number, buildEnd: number): number {
+  return clamp((scrollProgress - buildStart) / (buildEnd - buildStart), 0, 1);
+}
+
+/** The box the finished word is fitted into: centred, as wide as the stage
+ * comfortably allows. The word keeps its own aspect ratio inside it. */
+export function centeredWordBox(stageWidth: number, stageHeight: number): Rect {
+  const width = stageWidth * WORD_WIDTH_SHARE;
+  const height = stageHeight * WORD_HEIGHT_SHARE;
+  return { x: (stageWidth - width) / 2, y: (stageHeight - height) / 2, width, height };
 }
 
 /** How far along its own trip one agent is, given the overall build. */

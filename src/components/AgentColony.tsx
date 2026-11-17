@@ -1,17 +1,26 @@
-import { useEffect, useRef, type RefObject } from 'react';
-import { motion, useTransform, type MotionValue } from 'framer-motion';
-import { agentPosition, buildProgress, createAgents, repel, type Agent, type Vec } from '../lib/agentColony';
-import { measureColonyLayout, sampleWordBricks } from '../lib/colonyLayout';
+import { useEffect, useRef } from 'react';
+import type { MotionValue } from 'framer-motion';
+import {
+  agentPosition,
+  buildProgress,
+  centeredWordBox,
+  createAgents,
+  repel,
+  type Agent,
+  type Vec,
+} from '../lib/agentColony';
+import { sampleWordBricks } from '../lib/colonyLayout';
 import { REDUCED_MOTION_QUERY } from '../lib/gsap';
 import './AgentColony.css';
 
 interface AgentColonyProps {
   /** Hero scroll progress, 0 at the top of the runway to 1 at its end. */
   progress: MotionValue<number>;
-  /** Share of the runway spent building the word. */
+  /** Runway share where the swarm starts gathering into the word. */
+  buildStart: number;
+  /** Runway share where the word is complete. It then stays until the next
+   * section slides up over the hero and covers it. */
   buildEnd: number;
-  /** The hero copy block — the word is placed in the free space next to it. */
-  contentRef: RefObject<HTMLElement | null>;
   word?: string;
 }
 
@@ -21,22 +30,23 @@ interface Scene {
   gradient: CanvasGradient;
 }
 
-const CURSOR_RADIUS = 90;
-const CURSOR_PUSH = 36;
+const CURSOR_RADIUS = 110;
+const CURSOR_PUSH = 40;
 const WANDER_COLOR = 'rgba(86, 230, 255, 0.85)';
+const CARRIER_COLOR = 'rgba(255, 255, 255, 0.9)';
 /** Idle agents need to read clearly on the dark page before any scrolling. */
 const AGENT_SIZE = 3;
-const CARRIER_COLOR = 'rgba(255, 255, 255, 0.9)';
+/** Keeps idle agents off the very edge of the stage. */
+const SWARM_MARGIN = 24;
 
-function buildScene(ctx: CanvasRenderingContext2D, stage: HTMLElement, content: HTMLElement, word: string): Scene | null {
-  const layout = measureColonyLayout(stage, content);
-  if (!layout) return null;
-  const { bricks, step } = sampleWordBricks(word, layout.word);
-  const { x, y, width, height } = layout.word;
-  const gradient = ctx.createLinearGradient(x, y, x + width, y + height);
+function buildScene(ctx: CanvasRenderingContext2D, width: number, height: number, word: string): Scene {
+  const box = centeredWordBox(width, height);
+  const { bricks, step } = sampleWordBricks(word, box);
+  const swarm = { x: SWARM_MARGIN, y: SWARM_MARGIN, width: width - SWARM_MARGIN * 2, height: height - SWARM_MARGIN * 2 };
+  const gradient = ctx.createLinearGradient(box.x, box.y, box.x + box.width, box.y + box.height);
   gradient.addColorStop(0, '#1F6BFF');
   gradient.addColorStop(1, '#19D3FF');
-  return { agents: createAgents(bricks, layout.swarm), brick: step - 1, gradient };
+  return { agents: createAgents(bricks, swarm), brick: Math.max(2, step - 2), gradient };
 }
 
 function drawScene(ctx: CanvasRenderingContext2D, scene: Scene, build: number, time: number, cursor: Vec | null): void {
@@ -65,30 +75,40 @@ function drawScene(ctx: CanvasRenderingContext2D, scene: Scene, build: number, t
   carrying.forEach((p) => ctx.fillRect(p.x - 1, p.y - half - 3, 2, 2));
 }
 
-/** A swarm of tiny agents that carry bricks into place to spell `word` as the
- * hero is scrolled — and take it apart again on the way back up. */
-export default function AgentColony({ progress, buildEnd, contentRef, word = 'Arben' }: AgentColonyProps) {
+/** Reduced motion: nothing travels. The finished bricks simply fade in where
+ * they belong as the build advances, so the word still assembles with scroll. */
+function drawStill(ctx: CanvasRenderingContext2D, scene: Scene, build: number): void {
+  const half = scene.brick / 2;
+  ctx.globalAlpha = build;
+  ctx.fillStyle = scene.gradient;
+  scene.agents.forEach(({ target }) => ctx.fillRect(target.x - half, target.y - half, scene.brick, scene.brick));
+  ctx.globalAlpha = 1;
+}
+
+/** A swarm of tiny agents scattered across the whole hero that gathers into
+ * `word` as the hero is scrolled — and scatters again on the way back up. */
+export default function AgentColony({ progress, buildStart, buildEnd, word = 'ARBEN' }: AgentColonyProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const opacity = useTransform(progress, [buildEnd + 0.04, buildEnd + 0.2], [1, 0]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const stage = canvas?.parentElement;
-    const content = contentRef.current;
     const ctx = canvas?.getContext('2d');
-    if (!canvas || !stage || !content || !ctx) return;
+    if (!canvas || !stage || !ctx) return;
 
     const reduced = window.matchMedia(REDUCED_MOTION_QUERY).matches;
     let scene: Scene | null = null;
-    let build = buildProgress(progress.get(), buildEnd);
+    let build = buildProgress(progress.get(), buildStart, buildEnd);
     let cursor: Vec | null = null;
     let frame = 0;
     let visible = true;
     let disposed = false;
 
     const render = (time: number) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (scene) drawScene(ctx, scene, reduced ? 1 : build, reduced ? 0 : time, cursor);
+      ctx.clearRect(0, 0, stage.clientWidth, stage.clientHeight);
+      if (!scene) return;
+      if (reduced) drawStill(ctx, scene, build);
+      else drawScene(ctx, scene, build, time, cursor);
     };
 
     const layout = () => {
@@ -96,7 +116,7 @@ export default function AgentColony({ progress, buildEnd, contentRef, word = 'Ar
       canvas.width = stage.clientWidth * dpr;
       canvas.height = stage.clientHeight * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      scene = buildScene(ctx, stage, content, word);
+      scene = buildScene(ctx, stage.clientWidth, stage.clientHeight, word);
       render(performance.now() / 1000);
     };
 
@@ -109,7 +129,7 @@ export default function AgentColony({ progress, buildEnd, contentRef, word = 'Ar
     };
 
     const unsubscribe = progress.on('change', (value) => {
-      build = buildProgress(value, buildEnd);
+      build = buildProgress(value, buildStart, buildEnd);
       if (reduced) render(0);
     });
 
@@ -147,7 +167,7 @@ export default function AgentColony({ progress, buildEnd, contentRef, word = 'Ar
       window.removeEventListener('pointermove', onPointer);
       document.removeEventListener('pointerleave', onLeave);
     };
-  }, [progress, buildEnd, contentRef, word]);
+  }, [progress, buildStart, buildEnd, word]);
 
-  return <motion.canvas ref={canvasRef} className="agent-colony" style={{ opacity }} aria-hidden="true" />;
+  return <canvas ref={canvasRef} className="agent-colony" aria-hidden="true" />;
 }

@@ -1,5 +1,17 @@
+/* Reserves only the name's small on-screen size (height set inline from the
+   measured start scale), so the eyebrow and role line sit right around it. */
+.kinetic-frame {
+  position: relative;
+  width: 100%;
+}
+
 .kinetic-grow {
-  display: block;
+  /* centred in the frame (translate -50%/-50% comes from the inline motion
+     style) and free of layout, since its real rendered size is far larger
+     than what the frame reserves */
+  position: absolute;
+  left: 50%;
+  top: 50%;
   /* expands outward from its own centre so the type engulfs the viewport,
      the way the reference's "ENORME" does */
   transform-origin: center center;

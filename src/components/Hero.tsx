@@ -6,9 +6,15 @@ import KineticHeroName from './KineticHeroName';
 import AgentColony from './AgentColony';
 import './Hero.css';
 
-// The first stretch of the runway belongs to the agent colony building
-// "Arben"; the name's zoom only takes over once that word is complete.
-const COLONY_BUILD_END = 0.35;
+// Hero runway timeline (shares of the 380vh scroll runway, 0..1):
+//   0     → 0.405  the name grows from small until it leaves the screen
+//   0.22  → 0.575  meanwhile the swarm gathers into "ARBEN"
+//   0.575 → 0.737  "ARBEN" holds, complete
+//   0.737 → 1      the projects section slides up over it like a curtain —
+//                  that's the last 100vh, set by .work--cover's -100vh margin
+const NAME_EXIT_END = 0.405;
+const COLONY_BUILD_START = 0.22;
+const COLONY_BUILD_END = 0.575;
 
 function scrollToWork() {
   const target = document.querySelectorAll<HTMLElement>('[data-section]')[1];
@@ -18,7 +24,6 @@ function scrollToWork() {
 export default function Hero() {
   const reduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -38,9 +43,9 @@ export default function Hero() {
     <section data-section ref={heroRef} className="hero">
       <div className="hero__sticky">
         <div className="hero__glow" />
-        <AgentColony progress={scrollYProgress} buildEnd={COLONY_BUILD_END} contentRef={contentRef} />
+        <AgentColony progress={scrollYProgress} buildStart={COLONY_BUILD_START} buildEnd={COLONY_BUILD_END} />
 
-        <div className="hero__content" ref={contentRef}>
+        <div className="hero__content">
           <motion.div className="hero-eyebrow hero__eyebrow" style={{ opacity: supportOpacity }} {...fadeIn(0.1)}>
             // freelance systems engineer
           </motion.div>
@@ -49,7 +54,7 @@ export default function Hero() {
             words={['Santiago', 'Arango', 'Benjumea']}
             accentIndex={2}
             scrollTargetRef={heroRef}
-            zoomStart={COLONY_BUILD_END}
+            zoomEnd={NAME_EXIT_END}
           />
 
           <motion.div className="hero-role hero__role" style={{ opacity: supportOpacity }} {...fadeIn(1.0)}>
