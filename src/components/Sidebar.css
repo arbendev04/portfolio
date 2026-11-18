@@ -12,7 +12,7 @@
   justify-content: space-between;
   padding: 26px 0;
   border-right: 1px solid var(--line-soft);
-  background: rgba(6, 7, 8, 0.72);
+  background: var(--sidebar-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }

@@ -1,0 +1,200 @@
+/* Fixed top-right settings pill. Sits above page content and the sidebar
+   (z-index 20) but below the project modal (z-index 100). */
+.site-controls {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  background: var(--controls-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-md), var(--inset-hairline);
+  font-family: var(--font-mono);
+}
+
+.site-controls__lang {
+  display: flex;
+  gap: 2px;
+}
+
+.site-controls__lang-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  min-width: 36px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.site-controls__lang-btn:hover {
+  color: var(--text-strong);
+}
+
+.site-controls__lang-btn[aria-pressed='true'] {
+  background: rgb(var(--accent-rgb) / 0.14);
+  color: var(--accent-emphasis);
+  box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.35);
+}
+
+.site-controls__divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+}
+
+.site-controls__mode-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-base) var(--ease-spring);
+}
+
+.site-controls__mode-btn:hover {
+  color: var(--accent-emphasis);
+  background: rgb(var(--accent-rgb) / 0.12);
+}
+
+.site-controls__mode-btn:active {
+  transform: rotate(-20deg) scale(0.92);
+}
+
+.site-controls__accent {
+  position: relative;
+}
+
+.site-controls__accent-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.site-controls__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  box-shadow: var(--glow-sm);
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+
+.site-controls__accent-btn:hover .site-controls__dot,
+.site-controls__accent-btn[aria-expanded='true'] .site-controls__dot {
+  transform: scale(1.2);
+}
+
+.site-controls__popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: -4px;
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  background: var(--popover-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-lg);
+  transform-origin: top right;
+  animation: site-controls-pop var(--dur-base) var(--ease-out);
+}
+
+.site-controls__swatch {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--swatch-edge);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.site-controls__swatch:hover {
+  transform: scale(1.12);
+}
+
+/* the chosen one gets a ring in the page background's colour, then a
+   contrasting one (white on dark, ink on light) */
+.site-controls__swatch[aria-checked='true'] {
+  box-shadow:
+    0 0 0 2px var(--bg-page),
+    0 0 0 4px var(--swatch-ring);
+}
+
+@keyframes site-controls-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-controls__popover {
+    animation: none;
+  }
+
+  .site-controls__dot,
+  .site-controls__swatch,
+  .site-controls__lang-btn,
+  .site-controls__mode-btn {
+    transition: none;
+  }
+}
+
+/* Mobile: the sidebar becomes a bottom bar, so the top-right corner stays
+   free — just tighten the pill. */
+@media (max-width: 767px) {
+  .site-controls {
+    top: 12px;
+    right: 12px;
+    gap: 4px;
+    padding: 3px;
+  }
+
+  .site-controls__lang-btn {
+    min-width: 32px;
+    height: 28px;
+    padding: 0 8px;
+  }
+
+  .site-controls__accent-btn,
+  .site-controls__mode-btn {
+    width: 28px;
+    height: 28px;
+  }
+}

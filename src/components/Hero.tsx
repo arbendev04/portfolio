@@ -4,6 +4,7 @@ import { scrollToSection } from '../lib/lenis';
 import { EASE_OUT } from '../lib/motion';
 import KineticHeroName from './KineticHeroName';
 import AgentColony from './AgentColony';
+import { useT } from '../i18n/langStore';
 import './Hero.css';
 
 // Hero runway timeline (shares of the 380vh scroll runway, 0..1):
@@ -23,6 +24,7 @@ function scrollToWork() {
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
+  const t = useT();
   const heroRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -47,7 +49,7 @@ export default function Hero() {
 
         <div className="hero__content">
           <motion.div className="hero-eyebrow hero__eyebrow" style={{ opacity: supportOpacity }} {...fadeIn(0.1)}>
-            // freelance systems engineer
+            {t.hero.eyebrow}
           </motion.div>
 
           <KineticHeroName
@@ -58,7 +60,7 @@ export default function Hero() {
           />
 
           <motion.div className="hero-role hero__role" style={{ opacity: supportOpacity }} {...fadeIn(1.0)}>
-            Systems Engineer · Web Developer · Medellín
+            {t.hero.role}
             <span className="cursor-blink" style={{ color: 'var(--brand-cyan)', marginLeft: 4 }}>
               ▍
             </span>
@@ -69,11 +71,11 @@ export default function Hero() {
           type="button"
           className="hero-scroll hero__scroll"
           onClick={scrollToWork}
-          aria-label="Scroll to work"
+          aria-label={t.hero.scrollLabel}
           style={{ opacity: supportOpacity }}
           {...fadeIn(1.45)}
         >
-          <span className="hero__scroll-label">scroll</span>
+          <span className="hero__scroll-label">{t.hero.scroll}</span>
           <span className="chev">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
           </span>

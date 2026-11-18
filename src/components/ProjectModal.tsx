@@ -6,6 +6,7 @@ import { icons } from '../data/techIcons';
 import { useFocusTrap } from '../lib/focusTrap';
 import { getLenis } from '../lib/lenis';
 import SitePreview from './SitePreview';
+import { useLang, useT } from '../i18n/langStore';
 import './ProjectModal.css';
 
 interface ProjectModalProps {
@@ -107,16 +108,17 @@ function TechList({ tech }: { tech: string[] }) {
 }
 
 function ProjectNav({ position, onPrev, onNext }: Pick<ProjectModalProps, 'position' | 'onPrev' | 'onNext'>) {
+  const t = useT();
   if (position.total < 2) return null;
   return (
     <div className="project-modal__nav">
-      <button type="button" className="project-modal__icon-btn" onClick={onPrev} aria-label="Previous project">
+      <button type="button" className="project-modal__icon-btn" onClick={onPrev} aria-label={t.modal.previous}>
         {PREV_ICON}
       </button>
       <span className="project-modal__count" aria-live="polite">
         {pad(position.current)} / {pad(position.total)}
       </span>
-      <button type="button" className="project-modal__icon-btn" onClick={onNext} aria-label="Next project">
+      <button type="button" className="project-modal__icon-btn" onClick={onNext} aria-label={t.modal.next}>
         {NEXT_ICON}
       </button>
     </div>
@@ -124,6 +126,9 @@ function ProjectNav({ position, onPrev, onNext }: Pick<ProjectModalProps, 'posit
 }
 
 function ProjectContent({ project, titleId }: { project: ProjectItem; titleId: string }) {
+  const lang = useLang();
+  const t = useT();
+  const details = project.details[lang];
   return (
     <>
       <ModalHeader project={project} />
@@ -134,29 +139,29 @@ function ProjectContent({ project, titleId }: { project: ProjectItem; titleId: s
           <h3 id={titleId} className="project-modal__title">
             {project.title}
           </h3>
-          <p className="project-modal__lead">{project.description}</p>
+          <p className="project-modal__lead">{project.description[lang]}</p>
 
-          <h4 className="project-modal__label">The challenge</h4>
-          <p className="project-modal__text">{project.details.challenge}</p>
+          <h4 className="project-modal__label">{t.modal.challenge}</h4>
+          <p className="project-modal__text">{details.challenge}</p>
 
-          <h4 className="project-modal__label">What I built</h4>
-          <p className="project-modal__text">{project.details.solution}</p>
+          <h4 className="project-modal__label">{t.modal.solution}</h4>
+          <p className="project-modal__text">{details.solution}</p>
         </div>
 
         <aside className="project-modal__side">
-          <h4 className="project-modal__label">Highlights</h4>
+          <h4 className="project-modal__label">{t.modal.highlights}</h4>
           <ul className="project-modal__features">
-            {project.details.features.map((feature) => (
+            {details.features.map((feature) => (
               <li key={feature}>{feature}</li>
             ))}
           </ul>
 
-          <h4 className="project-modal__label">Stack</h4>
+          <h4 className="project-modal__label">{t.modal.stack}</h4>
           <TechList tech={project.tech} />
 
           {project.url && (
             <a href={project.url} target="_blank" rel="noopener noreferrer" className="project-modal__cta">
-              Visit site {ARROW_ICON}
+              {t.modal.visit} {ARROW_ICON}
             </a>
           )}
         </aside>
@@ -167,6 +172,7 @@ function ProjectContent({ project, titleId }: { project: ProjectItem; titleId: s
 
 export default function ProjectModal({ project, layoutId, position, direction, onPrev, onNext, onClose }: ProjectModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const t = useT();
   const titleId = `project-modal-title-${project.id}`;
   useFocusTrap(panelRef, true, onClose);
   useArrowKeys(onPrev, onNext);
@@ -186,7 +192,7 @@ export default function ProjectModal({ project, layoutId, position, direction, o
         transition={{ type: 'spring', stiffness: 260, damping: 30 }}
       >
         <ProjectNav position={position} onPrev={onPrev} onNext={onNext} />
-        <button type="button" className="project-modal__icon-btn project-modal__close" onClick={onClose} aria-label="Close project details">
+        <button type="button" className="project-modal__icon-btn project-modal__close" onClick={onClose} aria-label={t.modal.close}>
           {CLOSE_ICON}
         </button>
 

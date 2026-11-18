@@ -3,6 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- before the pre-paint script, which retints it in light mode -->
+    <meta name="theme-color" content="#060708" />
+
+    <!-- Applies the saved colour mode, its accent colour and the language
+         before first paint, so there is no flash of the defaults. Keys and ids
+         must match src/lib/mode.ts, src/lib/accent.ts (accent.test.ts checks)
+         and src/i18n/lang.ts. Storage may throw (privacy modes, blocked site
+         data), hence the try/catch. -->
+    <script>
+      (function () {
+        try {
+          var root = document.documentElement;
+          var light = localStorage.getItem('arben:mode') === 'light';
+          var ids = light
+            ? ['ocean', 'indigo', 'teal', 'crimson', 'burnt-orange']
+            : ['cyan', 'violet', 'emerald', 'amber', 'rose'];
+          var accent = localStorage.getItem(light ? 'arben:accent-light' : 'arben:accent');
+          root.dataset.mode = light ? 'light' : 'dark';
+          root.style.colorScheme = light ? 'light' : 'dark';
+          root.dataset.accent = ids.indexOf(accent) !== -1 ? accent : ids[0];
+          if (light) document.querySelector('meta[name="theme-color"]').setAttribute('content', '#F7F8FA');
+          var lang = localStorage.getItem('arben:lang');
+          if (lang === 'en' || lang === 'es') root.lang = lang;
+        } catch (e) {}
+      })();
+    </script>
 
     <title>ArbenDev — Santiago Arango Benjumea</title>
     <meta
@@ -42,7 +68,6 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicos/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicos/apple-touch-icon.png" />
     <link rel="manifest" href="/favicos/site.webmanifest" />
-    <meta name="theme-color" content="#060708" />
 
     <!-- Fonts: Space Grotesk (display/kinetic) + Hanken Grotesk (body) + JetBrains Mono (tech) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

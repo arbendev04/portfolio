@@ -4,10 +4,13 @@ import HoverLetters from './HoverLetters';
 import ProjectsGrid from './ProjectsGrid';
 import TravelingGlobe from './TravelingGlobe';
 import { projects } from '../data/projects';
+import { useLang, useT } from '../i18n/langStore';
 import './Projects.css';
 
 export default function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
+  const lang = useLang();
+  const t = useT();
   // Scroll-scrubbed instead of a once-off whileInView trigger: progress ties
   // directly to scroll position, the same way the hero's own fade is driven,
   // so this section is already catching up by the time the hero recedes
@@ -35,9 +38,10 @@ export default function Projects() {
           reveal finish while the parent was still invisible. */}
       <div className="work__header">
         <motion.div className="work__eyebrow" style={{ opacity: headerOpacity, y: headerY }}>
-          [ 02 ] — selected work
+          {t.projects.eyebrow}
         </motion.div>
-        <HoverLetters as="h2" className="work__title" text="Things I have built." />
+        {/* keyed by language: remounting replays the letter entrance for the new text */}
+        <HoverLetters key={lang} as="h2" className="work__title" text={t.projects.title} />
       </div>
 
       <motion.div style={{ opacity: gridOpacity, y: gridY }}>

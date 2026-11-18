@@ -1,6 +1,10 @@
 /* arben.dev — Design Tokens
  * Space Grotesk (display/kinetic) + Hanken Grotesk (body/UI) + JetBrains Mono (technical)
  * Dark, minimalist, technical. Deep black base with electric-blue → cyan gradient.
+ *
+ * Two colour modes: dark (the :root defaults, the site's identity) and light
+ * (<html data-mode="light">, the override block further down). Components
+ * never hardcode mode-specific colours — they read the semantic tokens here.
  */
 
 :root {
@@ -26,17 +30,26 @@
 
   --white: #FBFDFF;
 
-  /* ---- Brand gradient ---- */
+  /* ---- Brand gradient ----
+     Derived from the selected accent palette (see the [data-accent] blocks at
+     the end of this file). The names predate the themes: "blue" is the deep
+     end of the gradient and "cyan" the bright accent, whatever the palette. */
   --brand-blue: #1F6BFF;
   --brand-blue-deep: #1450E6;
   --brand-cyan: #19D3FF;
   --brand-cyan-bright: #56E6FF;
+  /* space-separated channels, for rgb(var(--accent-rgb) / <alpha>) */
+  --accent-rgb: 25 211 255;
+  --accent-deep-rgb: 31 107 255;
+  /* spotlight hue range, read by src/lib/spotlight.ts */
+  --glow-hue-from: 192;
+  --glow-hue-to: 220;
 
   --brand-gradient: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-cyan) 100%);
-  --brand-gradient-soft: linear-gradient(135deg, #1F6BFF22 0%, #19D3FF22 100%);
+  --brand-gradient-soft: linear-gradient(135deg, rgb(var(--accent-deep-rgb) / 0.13) 0%, rgb(var(--accent-rgb) / 0.13) 100%);
 
-  --glow-cyan: rgba(25, 211, 255, 0.45);
-  --glow-blue: rgba(31, 107, 255, 0.40);
+  --glow-cyan: rgb(var(--accent-rgb) / 0.45);
+  --glow-blue: rgb(var(--accent-deep-rgb) / 0.4);
 
   /* ---- Semantic surfaces ---- */
   --bg-page: var(--black-950);
@@ -56,8 +69,53 @@
 
   --accent: var(--brand-cyan);
   --accent-press: var(--brand-blue-deep);
+  /* accent text that must stand out the most: a lighter tint on black, the
+     deep end of the palette on white */
+  --accent-emphasis: var(--brand-cyan-bright);
   --focus-ring: var(--brand-cyan);
   --on-accent: #06121B;
+  --selection-text: var(--white);
+
+  /* status colours, as hex and as channels for translucent tints */
+  --success: #2bd576;
+  --success-rgb: 43 213 118;
+  --danger: #ff6b6b;
+  /* the GitHub mark's own colour for the current background */
+  --brand-github: #F0F6FC;
+
+  /* ---- Glass, overlays & floating UI ---- */
+  --controls-bg: rgba(10, 12, 16, 0.66);
+  --popover-bg: rgba(10, 12, 16, 0.86);
+  --sidebar-bg: rgba(6, 7, 8, 0.72);
+  --overlay-bg: rgba(3, 4, 6, 0.72);
+  --chip-glass-bg: rgba(6, 7, 8, 0.7);
+  --tooltip-bg: rgba(6, 7, 8, 0.92);
+  --label-bg: rgba(6, 7, 8, 0.85);
+  --input-bg: rgba(10, 13, 18, 0.88);
+  --form-glass-border: rgba(255, 255, 255, 0.09);
+  /* near-transparent glass: the globe behind should read clearly through it */
+  --form-glass-bg:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.008) 55%),
+    rgba(12, 16, 22, 0.16);
+  --form-glass-blur: 10px;
+  --form-glass-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --swatch-edge: rgba(255, 255, 255, 0.18);
+  --swatch-ring: var(--white);
+
+  /* ---- Grid texture (global overlay + the projects sheet's repaint) ---- */
+  --grid-line: var(--line-strong);
+  --grid-opacity: 0.045;
+  /* same strength as --grid-opacity, for color-mix() */
+  --grid-mix: 4.5%;
+
+  /* ---- Spotlight (src/styles/spotlight.css) ---- */
+  --glow-lightness: 60%;
+  /* multiplies each component's --glow-wash */
+  --glow-wash-scale: 1;
+  --glow-ring-brightness: 1.6;
+  --glow-core: rgba(255, 255, 255, 0.85);
 
   /* ---- Typography ---- */
   --font-display: 'Space Grotesk', sans-serif;
@@ -114,9 +172,11 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 12px 30px -12px rgba(0, 0, 0, 0.7);
   --shadow-lg: 0 30px 70px -24px rgba(0, 0, 0, 0.8);
-  --glow-sm: 0 0 0 1px rgba(25, 211, 255, 0.4), 0 0 18px -2px var(--glow-cyan);
-  --glow-md: 0 0 0 1px rgba(25, 211, 255, 0.5), 0 0 34px -4px var(--glow-cyan);
+  --glow-sm: 0 0 0 1px rgb(var(--accent-rgb) / 0.4), 0 0 18px -2px var(--glow-cyan);
+  --glow-md: 0 0 0 1px rgb(var(--accent-rgb) / 0.5), 0 0 34px -4px var(--glow-cyan);
   --inset-hairline: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --cover-shadow: 0 -28px 70px rgba(0, 0, 0, 0.6);
+  --modal-shadow: 0 40px 90px rgba(0, 0, 0, 0.65);
 
   /* ---- Motion ---- */
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -126,4 +186,203 @@
   --dur-base: 240ms;
   --dur-slow: 480ms;
   --dur-kinetic: 720ms;
+  /* colour cross-fade when the mode is switched */
+  --dur-mode: 250ms;
+}
+
+/* ---- Light mode ----
+   Set via <html data-mode="light"> before first paint (index.html) and then
+   by src/lib/modeStore.ts. Text greys are checked against --bg-page and the
+   white cards for WCAG AA (body/muted >= 7:1, faint >= 4.9:1). Depth comes
+   from soft shadows rather than glows, which wash out on white. */
+:root[data-mode='light'] {
+  --line-soft: #E5E9EE;
+  --line: #D9DFE6;
+  --line-strong: #B8C2CE;
+
+  --bg-page: #F7F8FA;
+  --bg-surface: #F1F3F6;
+  --surface-card: #FFFFFF;
+  --surface-raised: #F1F4F8;
+  --surface-chip: #E8ECF1;
+
+  --text-strong: #0B1220;
+  --text-body: #334155;
+  --text-muted: #475569;
+  --text-faint: #5B6676;
+
+  --accent-emphasis: var(--brand-blue);
+  --on-accent: #FFFFFF;
+  --selection-text: var(--text-strong);
+
+  --success: #15803D;
+  --success-rgb: 21 128 61;
+  --danger: #B91C1C;
+  --brand-github: #1F2328;
+
+  --controls-bg: rgba(255, 255, 255, 0.72);
+  --popover-bg: rgba(255, 255, 255, 0.9);
+  --sidebar-bg: rgba(247, 248, 250, 0.78);
+  --overlay-bg: rgba(15, 23, 42, 0.38);
+  --chip-glass-bg: rgba(255, 255, 255, 0.78);
+  --tooltip-bg: rgba(255, 255, 255, 0.96);
+  --label-bg: rgba(255, 255, 255, 0.92);
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --form-glass-border: rgba(255, 255, 255, 0.7);
+  /* near-transparent glass: the globe behind should read clearly through it */
+  --form-glass-bg:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.06) 55%),
+    rgba(247, 248, 250, 0.08);
+  --form-glass-blur: 8px;
+  --form-glass-shadow:
+    0 24px 60px -12px rgba(15, 23, 42, 0.16),
+    0 0 0 1px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --swatch-edge: rgba(15, 23, 42, 0.14);
+  --swatch-ring: var(--text-strong);
+
+  --grid-line: #0F172A;
+  --grid-opacity: 0.05;
+  --grid-mix: 5%;
+
+  --glow-lightness: 45%;
+  --glow-wash-scale: 0.55;
+  --glow-ring-brightness: 1;
+  --glow-core: rgb(var(--accent-deep-rgb) / 0.75);
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 12px 30px -12px rgba(15, 23, 42, 0.18);
+  --shadow-lg: 0 30px 70px -24px rgba(15, 23, 42, 0.24);
+  --glow-sm: 0 0 0 1px rgb(var(--accent-rgb) / 0.35), 0 2px 10px -2px rgb(var(--accent-rgb) / 0.3);
+  --glow-md: 0 0 0 1px rgb(var(--accent-rgb) / 0.4), 0 10px 26px -10px rgb(var(--accent-rgb) / 0.45);
+  --inset-hairline: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --cover-shadow: 0 -20px 50px -10px rgba(15, 23, 42, 0.12);
+  --modal-shadow: 0 40px 90px -20px rgba(15, 23, 42, 0.3);
+}
+
+/* ---- Accent palettes ----
+   Selected via <html data-accent="…">, set before first paint by the inline
+   script in index.html and afterwards by src/lib/accentStore.ts. Cyan is the
+   :root default above. Keep in sync with DARK_ACCENTS / LIGHT_ACCENTS in
+   src/lib/accent.ts. Ids are unique across modes, so these never collide. */
+:root[data-accent='violet'] {
+  --brand-blue: #7C3AED;
+  --brand-blue-deep: #6D28D9;
+  --brand-cyan: #C084FC;
+  --brand-cyan-bright: #D8B4FE;
+  --accent-rgb: 192 132 252;
+  --accent-deep-rgb: 124 58 237;
+  --glow-hue-from: 268;
+  --glow-hue-to: 290;
+}
+
+:root[data-accent='emerald'] {
+  --brand-blue: #059669;
+  --brand-blue-deep: #047857;
+  --brand-cyan: #34D399;
+  --brand-cyan-bright: #6EE7B7;
+  --accent-rgb: 52 211 153;
+  --accent-deep-rgb: 5 150 105;
+  --glow-hue-from: 150;
+  --glow-hue-to: 168;
+}
+
+:root[data-accent='amber'] {
+  --brand-blue: #EA580C;
+  --brand-blue-deep: #C2410C;
+  --brand-cyan: #FBBF24;
+  --brand-cyan-bright: #FCD34D;
+  --accent-rgb: 251 191 36;
+  --accent-deep-rgb: 234 88 12;
+  --glow-hue-from: 25;
+  --glow-hue-to: 45;
+}
+
+:root[data-accent='rose'] {
+  --brand-blue: #E11D48;
+  --brand-blue-deep: #BE123C;
+  --brand-cyan: #FB7185;
+  --brand-cyan-bright: #FDA4AF;
+  --accent-rgb: 251 113 133;
+  --accent-deep-rgb: 225 29 72;
+  --glow-hue-from: 340;
+  --glow-hue-to: 356;
+}
+
+/* ---- Light-mode accent palettes ----
+   Only ever active together with data-mode="light". --brand-cyan (the accent
+   used as text) and --brand-blue both reach 4.5:1 on the light page and on
+   white cards — enforced by accent.test.ts. --brand-blue-deep is the press
+   shade, one step darker. */
+:root[data-accent='ocean'] {
+  --brand-blue: #1E40AF;
+  --brand-blue-deep: #1E3A8A;
+  --brand-cyan: #2563EB;
+  --brand-cyan-bright: #3B82F6;
+  --accent-rgb: 37 99 235;
+  --accent-deep-rgb: 30 64 175;
+  --glow-hue-from: 214;
+  --glow-hue-to: 226;
+}
+
+:root[data-accent='indigo'] {
+  --brand-blue: #3730A3;
+  --brand-blue-deep: #312E81;
+  --brand-cyan: #4F46E5;
+  --brand-cyan-bright: #6366F1;
+  --accent-rgb: 79 70 229;
+  --accent-deep-rgb: 55 48 163;
+  --glow-hue-from: 238;
+  --glow-hue-to: 250;
+}
+
+:root[data-accent='teal'] {
+  --brand-blue: #115E59;
+  --brand-blue-deep: #134E4A;
+  --brand-cyan: #0F766E;
+  --brand-cyan-bright: #0D9488;
+  --accent-rgb: 15 118 110;
+  --accent-deep-rgb: 17 94 89;
+  --glow-hue-from: 170;
+  --glow-hue-to: 182;
+}
+
+:root[data-accent='crimson'] {
+  --brand-blue: #9F1239;
+  --brand-blue-deep: #881337;
+  --brand-cyan: #BE123C;
+  --brand-cyan-bright: #E11D48;
+  --accent-rgb: 190 18 60;
+  --accent-deep-rgb: 159 18 57;
+  --glow-hue-from: 340;
+  --glow-hue-to: 352;
+}
+
+:root[data-accent='burnt-orange'] {
+  --brand-blue: #9A3412;
+  --brand-blue-deep: #7C2D12;
+  --brand-cyan: #C2410C;
+  --brand-cyan-bright: #EA580C;
+  --accent-rgb: 194 65 12;
+  --accent-deep-rgb: 154 52 18;
+  --glow-hue-from: 14;
+  --glow-hue-to: 26;
+}
+
+/* ---- Mode switch cross-fade ----
+   src/lib/modeStore.ts sets data-mode-switching for the length of the fade
+   (never under reduced motion), so colours ease over instead of snapping.
+   It exists only for that moment, so the site's own transitions are
+   untouched the rest of the time. */
+:root[data-mode-switching],
+:root[data-mode-switching] *,
+:root[data-mode-switching] *::before,
+:root[data-mode-switching] *::after {
+  transition:
+    background-color var(--dur-mode) ease,
+    color var(--dur-mode) ease,
+    border-color var(--dur-mode) ease,
+    fill var(--dur-mode) ease,
+    stroke var(--dur-mode) ease,
+    box-shadow var(--dur-mode) ease !important;
 }

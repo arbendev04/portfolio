@@ -4,10 +4,13 @@ import { icons, categories } from '../data/techIcons';
 import HoverLetters from './HoverLetters';
 import { fadeUp, revealViewport } from '../lib/motion';
 import { useSpotlight } from '../lib/spotlight';
+import { useLang, useT } from '../i18n/langStore';
 import './TechStack.css';
 
 export default function TechStack() {
   const rowsRef = useRef<HTMLDivElement>(null);
+  const lang = useLang();
+  const t = useT();
   useSpotlight(rowsRef, '.skills__pill');
 
   return (
@@ -23,9 +26,10 @@ export default function TechStack() {
             viewport={revealViewport}
             variants={fadeUp}
           >
-            [ 03 ] — capabilities
+            {t.skills.eyebrow}
           </motion.div>
-          <HoverLetters as="h2" className="skills__title" text="The stack I reach for." />
+          {/* keyed by language: remounting replays the letter entrance for the new text */}
+          <HoverLetters key={lang} as="h2" className="skills__title" text={t.skills.title} />
         </div>
 
         <div className="skills__body">
@@ -34,7 +38,7 @@ export default function TechStack() {
           <div ref={rowsRef} className="skills__rows">
             {categories.map((cat, i) => (
               <motion.div
-                key={cat.label}
+                key={cat.key}
                 className="skills__row"
                 initial="hidden"
                 whileInView="visible"
@@ -42,7 +46,7 @@ export default function TechStack() {
                 variants={fadeUp}
                 transition={{ delay: i * 0.06 }}
               >
-                <div className="skills__row-label">{cat.label}</div>
+                <div className="skills__row-label">{t.skills.categories[cat.key]}</div>
                 <div className="skills__pills">
                   {cat.items.map((item) => (
                     // Icon only; the name shows in a tooltip on hover or focus.

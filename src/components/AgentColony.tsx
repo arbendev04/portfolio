@@ -7,10 +7,14 @@ import {
   createAgents,
   repel,
   type Agent,
+  type Rect,
   type Vec,
 } from '../lib/agentColony';
 import { sampleWordBricks } from '../lib/colonyLayout';
 import { REDUCED_MOTION_QUERY } from '../lib/gsap';
+import { accentStore, currentPalette } from '../lib/accentStore';
+import { modeStore } from '../lib/modeStore';
+import { colonyInk } from '../lib/sceneColors';
 import './AgentColony.css';
 
 interface AgentColonyProps {
@@ -27,26 +31,35 @@ interface AgentColonyProps {
 interface Scene {
   agents: Agent[];
   brick: number;
+  /** Where the word sits — the gradient spans it. */
+  box: Rect;
   gradient: CanvasGradient;
+  wanderColor: string;
+  carrierColor: string;
 }
 
 const CURSOR_RADIUS = 110;
 const CURSOR_PUSH = 40;
-const WANDER_COLOR = 'rgba(86, 230, 255, 0.85)';
-const CARRIER_COLOR = 'rgba(255, 255, 255, 0.9)';
 /** Idle agents need to read clearly on the dark page before any scrolling. */
 const AGENT_SIZE = 3;
 /** Keeps idle agents off the very edge of the stage. */
 const SWARM_MARGIN = 24;
 
+/** The scene's colours for the current accent and colour mode: the brand
+ * gradient across the word box, plus the idle and carrier agent colours. */
+function paint(ctx: CanvasRenderingContext2D, box: Rect): Pick<Scene, 'gradient' | 'wanderColor' | 'carrierColor'> {
+  const ink = colonyInk(currentPalette(), modeStore.get());
+  const gradient = ctx.createLinearGradient(box.x, box.y, box.x + box.width, box.y + box.height);
+  gradient.addColorStop(0, ink.gradientFrom);
+  gradient.addColorStop(1, ink.gradientTo);
+  return { gradient, wanderColor: ink.wander, carrierColor: ink.carrier };
+}
+
 function buildScene(ctx: CanvasRenderingContext2D, width: number, height: number, word: string): Scene {
   const box = centeredWordBox(width, height);
   const { bricks, step } = sampleWordBricks(word, box);
   const swarm = { x: SWARM_MARGIN, y: SWARM_MARGIN, width: width - SWARM_MARGIN * 2, height: height - SWARM_MARGIN * 2 };
-  const gradient = ctx.createLinearGradient(box.x, box.y, box.x + box.width, box.y + box.height);
-  gradient.addColorStop(0, '#1F6BFF');
-  gradient.addColorStop(1, '#19D3FF');
-  return { agents: createAgents(bricks, swarm), brick: Math.max(2, step - 2), gradient };
+  return { agents: createAgents(bricks, swarm), brick: Math.max(2, step - 2), box, ...paint(ctx, box) };
 }
 
 function drawScene(ctx: CanvasRenderingContext2D, scene: Scene, build: number, time: number, cursor: Vec | null): void {
@@ -64,14 +77,14 @@ function drawScene(ctx: CanvasRenderingContext2D, scene: Scene, build: number, t
 
   // grouped by fill so the context switches style three times per frame,
   // not once per agent
-  ctx.fillStyle = WANDER_COLOR;
+  ctx.fillStyle = scene.wanderColor;
   wandering.forEach((p) => ctx.fillRect(p.x - AGENT_SIZE / 2, p.y - AGENT_SIZE / 2, AGENT_SIZE, AGENT_SIZE));
 
   ctx.fillStyle = scene.gradient;
   placed.forEach((p) => ctx.fillRect(p.x - half, p.y - half, scene.brick, scene.brick));
   carrying.forEach((p) => ctx.fillRect(p.x - half, p.y - half, scene.brick, scene.brick));
 
-  ctx.fillStyle = CARRIER_COLOR;
+  ctx.fillStyle = scene.carrierColor;
   carrying.forEach((p) => ctx.fillRect(p.x - 1, p.y - half - 3, 2, 2));
 }
 
@@ -128,6 +141,16 @@ export default function AgentColony({ progress, buildStart, buildEnd, word = 'AR
       if (!reduced && !frame && visible) frame = requestAnimationFrame(tick);
     };
 
+    // a new accent or colour mode only repaints: the agents keep their
+    // places mid-flight
+    const repaint = () => {
+      if (!scene) return;
+      scene = { ...scene, ...paint(ctx, scene.box) };
+      if (reduced) render(0);
+    };
+    const unsubscribeAccent = accentStore.subscribe(repaint);
+    const unsubscribeMode = modeStore.subscribe(repaint);
+
     const unsubscribe = progress.on('change', (value) => {
       build = buildProgress(value, buildStart, buildEnd);
       if (reduced) render(0);
@@ -162,6 +185,8 @@ export default function AgentColony({ progress, buildStart, buildEnd, word = 'AR
       disposed = true;
       cancelAnimationFrame(frame);
       unsubscribe();
+      unsubscribeAccent();
+      unsubscribeMode();
       resizeObserver.disconnect();
       visibility.disconnect();
       window.removeEventListener('pointermove', onPointer);

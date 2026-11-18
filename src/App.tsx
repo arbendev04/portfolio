@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import Projects from './components/Projects';
 import TechStack from './components/TechStack';
 import Contact from './components/Contact';
+import SiteControls from './components/SiteControls';
 import { initLenis } from './lib/lenis';
 import './App.css';
 
@@ -16,7 +17,7 @@ export default function App() {
     <>
       <div className="grid-texture" />
       <Sidebar />
-
+      <SiteControls />
       <main className="main-content">
         <Hero />
         <Projects />

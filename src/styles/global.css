@@ -69,10 +69,10 @@ input, textarea, select {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.045;
+  opacity: var(--grid-opacity);
   background-image:
-    linear-gradient(var(--line-strong) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line-strong) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 68px 68px;
 }
 
@@ -116,8 +116,8 @@ input, textarea, select {
 
 /* ---- Selection ---- */
 ::selection {
-  background: rgba(25, 211, 255, 0.25);
-  color: var(--white);
+  background: rgb(var(--accent-rgb) / 0.25);
+  color: var(--selection-text);
 }
 
 /* ---- Scrollbar ---- */

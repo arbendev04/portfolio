@@ -5,6 +5,7 @@ import { icons } from '../data/techIcons';
 import { useSpotlight } from '../lib/spotlight';
 import { wrapIndex } from '../lib/wrapIndex';
 import ProjectModal from './ProjectModal';
+import { useLang } from '../i18n/langStore';
 import './ProjectsGrid.css';
 
 interface ProjectsGridProps {
@@ -50,6 +51,7 @@ interface OpenState {
 export default function ProjectsGrid({ items, id = 'projects-grid' }: ProjectsGridProps) {
   const [open, setOpen] = useState<OpenState | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const lang = useLang();
   useSpotlight(gridRef, '.projects-grid__card');
 
   const close = useCallback(() => setOpen(null), []);
@@ -83,7 +85,7 @@ export default function ProjectsGrid({ items, id = 'projects-grid' }: ProjectsGr
                 <span className="projects-grid__arrow">{ARROW}</span>
               </h3>
               <TechTags tech={item.tech} />
-              <p className="projects-grid__desc">{item.description}</p>
+              <p className="projects-grid__desc">{item.description[lang]}</p>
             </div>
           </motion.button>
         ))}

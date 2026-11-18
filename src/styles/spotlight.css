@@ -18,18 +18,19 @@
   --glow-ring: 2px;
   --glow-wash: 0.13;
   --glow-at: var(--glow-x, -999px) var(--glow-y, -999px);
-  --glow-color: hsl(var(--glow-hue, 200) 100% 60%);
+  --glow-color: hsl(var(--glow-hue, var(--glow-hue-from)) 100% var(--glow-lightness));
   /* layer 1: a faint wash of the glow colour inside the element. Only the
      image is set, so the element keeps its own background-color. */
   background-image: radial-gradient(
     var(--glow-size) circle at var(--glow-at),
-    hsl(var(--glow-hue, 200) 100% 60% / var(--glow-wash)),
+    hsl(var(--glow-hue, var(--glow-hue-from)) 100% var(--glow-lightness) / calc(var(--glow-wash) * var(--glow-wash-scale))),
     transparent 70%
   );
 }
 
 /* layers 2 and 3: the border lighting up near the cursor — a coloured ring,
-   then a smaller white-hot core on top. Each is a full-size gradient masked
+   then a smaller hot core on top (white on dark; the deep accent on light,
+   where white would vanish — see --glow-core in tokens.css). Each is a full-size gradient masked
    down to a thin ring just inside the edge (padding = ring thickness), so
    only the border area ever glows. */
 .spotlight::before,
@@ -52,9 +53,9 @@
 
 .spotlight::before {
   background: radial-gradient(calc(var(--glow-size) * 0.75) circle at var(--glow-at), var(--glow-color), transparent 100%);
-  filter: brightness(1.6);
+  filter: brightness(var(--glow-ring-brightness));
 }
 
 .spotlight::after {
-  background: radial-gradient(calc(var(--glow-size) * 0.35) circle at var(--glow-at), rgba(255, 255, 255, 0.85), transparent 100%);
+  background: radial-gradient(calc(var(--glow-size) * 0.35) circle at var(--glow-at), var(--glow-core), transparent 100%);
 }

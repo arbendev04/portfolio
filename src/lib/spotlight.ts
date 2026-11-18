@@ -1,10 +1,9 @@
 import { useEffect, type RefObject } from 'react';
 import '../styles/spotlight.css';
 
-/** Hue at the left edge of the screen — brand cyan (#19D3FF). */
-export const GLOW_HUE_FROM = 192;
-/** Hue at the right edge of the screen — brand blue (#1F6BFF). */
-export const GLOW_HUE_TO = 220;
+/** Used only if the accent hue range can't be read from the CSS tokens. */
+const FALLBACK_HUE_FROM = 192;
+const FALLBACK_HUE_TO = 220;
 
 interface Point {
   x: number;
@@ -18,11 +17,29 @@ export function localPoint(pointer: Point, rect: { left: number; top: number }):
   return { x: pointer.x - rect.left, y: pointer.y - rect.top };
 }
 
-/** The glow's hue drifts from cyan to blue as the cursor crosses the screen. */
-export function glowHue(pointerX: number, viewportWidth: number): number {
-  if (viewportWidth <= 0) return GLOW_HUE_FROM;
+/** The glow's hue drifts across the accent's hue range (`from` at the left
+ * edge, `to` at the right) as the cursor crosses the screen. */
+export function glowHue(pointerX: number, viewportWidth: number, from: number, to: number): number {
+  if (viewportWidth <= 0) return from;
   const t = Math.min(1, Math.max(0, pointerX / viewportWidth));
-  return GLOW_HUE_FROM + (GLOW_HUE_TO - GLOW_HUE_FROM) * t;
+  return from + (to - from) * t;
+}
+
+/** A hue read from a CSS custom property, or `fallback` if it isn't a number. */
+export function parseHue(raw: string, fallback: number): number {
+  const value = parseFloat(raw);
+  return Number.isFinite(value) ? value : fallback;
+}
+
+/** The current accent's hue range, from --glow-hue-from/--glow-hue-to (set
+ * per accent in tokens.css). Read on each frame, so switching accents applies
+ * immediately — getComputedStyle on the root is cheap. */
+function accentHueRange(): [number, number] {
+  const styles = getComputedStyle(document.documentElement);
+  return [
+    parseHue(styles.getPropertyValue('--glow-hue-from'), FALLBACK_HUE_FROM),
+    parseHue(styles.getPropertyValue('--glow-hue-to'), FALLBACK_HUE_TO),
+  ];
 }
 
 /**
@@ -47,7 +64,8 @@ export function useSpotlight(containerRef: RefObject<HTMLElement | null>, select
     const apply = () => {
       frame = 0;
       if (!pointer) return;
-      container.style.setProperty('--glow-hue', glowHue(pointer.x, window.innerWidth).toFixed(1));
+      const [from, to] = accentHueRange();
+      container.style.setProperty('--glow-hue', glowHue(pointer.x, window.innerWidth, from, to).toFixed(1));
       container.querySelectorAll<HTMLElement>(selector).forEach((card) => {
         const { x, y } = localPoint(pointer!, card.getBoundingClientRect());
         card.style.setProperty('--glow-x', `${x.toFixed(1)}px`);

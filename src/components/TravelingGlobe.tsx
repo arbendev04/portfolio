@@ -2,19 +2,24 @@ import { useEffect, useRef, type CSSProperties } from 'react';
 import createGlobe from 'cobe';
 import { backgroundRect, dockProgress, enterProgress, lerpRect, stageOpacity, sway } from '../lib/globeTravel';
 import { REDUCED_MOTION_QUERY } from '../lib/gsap';
+import { accentStore, currentPalette } from '../lib/accentStore';
+import { modeStore } from '../lib/modeStore';
+import { globeLook } from '../lib/sceneColors';
+import { useT } from '../i18n/langStore';
+import type { Messages } from '../i18n/messages';
 import './TravelingGlobe.css';
 
 interface Place {
-  id: string;
-  label: string;
+  /** Also the key of the place's (translated) label in messages.globe. */
+  id: keyof Messages['globe'];
   location: [number, number];
 }
 
-const HOME: Place = { id: 'medellin', label: 'Medellín', location: [6.2442, -75.5812] };
+const HOME: Place = { id: 'medellin', location: [6.2442, -75.5812] };
 const PLACES: Place[] = [
   HOME,
-  { id: 'miami', label: 'Miami', location: [25.7617, -80.1918] },
-  { id: 'spain', label: 'Spain', location: [40.4168, -3.7038] },
+  { id: 'miami', location: [25.7617, -80.1918] },
+  { id: 'spain', location: [40.4168, -3.7038] },
 ];
 const ARCS = PLACES.filter((p) => p !== HOME).map((p) => ({ id: `${HOME.id}-${p.id}`, from: HOME.location, to: p.location }));
 
@@ -34,6 +39,9 @@ const CONTACT_SELECTOR = '[data-globe-contact]';
 /** Equivalent of `target` closest to `current`, so easing never spins the long way round. */
 const nearestTurn = (current: number, target: number) => target + TWO_PI * Math.round((current - target) / TWO_PI);
 
+/** The globe's colours for the current accent and colour mode. */
+const currentLook = () => globeLook(currentPalette(), modeStore.get());
+
 function startGlobe(canvas: HTMLCanvasElement, size: number) {
   return createGlobe(canvas, {
     devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
@@ -41,14 +49,9 @@ function startGlobe(canvas: HTMLCanvasElement, size: number) {
     height: size,
     phi: FOCUS_PHI,
     theta: FOCUS_THETA,
-    dark: 1,
     diffuse: 1.2,
     mapSamples: 16000,
-    mapBrightness: 9,
-    baseColor: [0.22, 0.26, 0.32],
-    markerColor: [0.1, 0.83, 1],
-    glowColor: [0.06, 0.22, 0.4],
-    arcColor: [0.1, 0.83, 1],
+    ...currentLook(),
     arcWidth: 0.6,
     arcHeight: 0.3,
     markerElevation: 0.02,
@@ -74,6 +77,7 @@ function startGlobe(canvas: HTMLCanvasElement, size: number) {
  * rects — the dock one measured live — so while docked it follows the slot.
  */
 export default function TravelingGlobe() {
+  const t = useT();
   const clipRef = useRef<HTMLDivElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -138,8 +142,14 @@ export default function TravelingGlobe() {
     build();
     frame = requestAnimationFrame(tick);
     window.addEventListener('resize', build);
+    // recolours the running globe in place — no rebuild, no remount
+    const recolor = () => globe?.update(currentLook());
+    const unsubscribeAccent = accentStore.subscribe(recolor);
+    const unsubscribeMode = modeStore.subscribe(recolor);
     return () => {
       cancelAnimationFrame(frame);
+      unsubscribeAccent();
+      unsubscribeMode();
       window.removeEventListener('resize', build);
       globe?.destroy();
     };
@@ -166,7 +176,7 @@ export default function TravelingGlobe() {
                 } as CSSProperties
               }
             >
-              {place.label}
+              {t.globe[place.id]}
             </span>
           ))}
         </div>

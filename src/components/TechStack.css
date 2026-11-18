@@ -147,7 +147,7 @@
 .skills__pill:hover,
 .skills__pill:focus-visible {
   z-index: 1;
-  color: var(--brand-cyan-bright);
+  color: var(--accent-emphasis);
   background-color: var(--surface-raised);
   transform: translateY(-3px) scale(1.18);
 }
@@ -177,10 +177,10 @@
   left: 50%;
   padding: 5px 10px;
   border-radius: 6px;
-  border: 1px solid rgba(25, 211, 255, 0.4);
-  background: rgba(6, 7, 8, 0.92);
+  border: 1px solid rgb(var(--accent-rgb) / 0.4);
+  background: var(--tooltip-bg);
   box-shadow: var(--shadow-sm);
-  color: var(--brand-cyan-bright);
+  color: var(--accent-emphasis);
   font-family: var(--font-mono);
   /* the tile is scaled up 1.18 while hovered, so this renders ~12px */
   font-size: 10.5px;
@@ -200,7 +200,7 @@
   left: 50%;
   translate: -50% 0;
   border: 5px solid transparent;
-  border-top-color: rgba(25, 211, 255, 0.4);
+  border-top-color: rgb(var(--accent-rgb) / 0.4);
 }
 
 .skills__pill:hover .skills__tip,

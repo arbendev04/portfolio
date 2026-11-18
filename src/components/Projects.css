@@ -18,14 +18,14 @@
   padding-inline: var(--page-gutter);
   border-radius: 32px 32px 0 0;
   border-top: 1px solid var(--border);
-  box-shadow: 0 -28px 70px rgba(0, 0, 0, 0.6);
+  box-shadow: var(--cover-shadow);
   /* The page's grid texture is a fixed layer *behind* the content, so an opaque
      sheet would hide it. The sheet repaints the same grid itself, fixed to the
      viewport so its lines sit exactly on top of the global ones. */
   background-color: var(--bg-page);
   background-image:
-    linear-gradient(color-mix(in srgb, var(--line-strong) 4.5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--line-strong) 4.5%, transparent) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--grid-line) var(--grid-mix), transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--grid-line) var(--grid-mix), transparent) 1px, transparent 1px);
   background-size: 68px 68px;
   background-attachment: fixed;
 }
