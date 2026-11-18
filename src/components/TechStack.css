@@ -169,6 +169,22 @@
   height: 24px;
 }
 
+/* Zoho's mark is a wide wordmark with fine detail that blurs at 24px. */
+.skills__pill[data-tech='Zoho'] .skills__pill-icon svg {
+  width: 34px;
+  height: 34px;
+}
+
+/* SEO / GEO / AEO: the site's mono face in the accent colour, sized to sit at
+   the same visual weight as the 24px logos around it. */
+.skills__pill-acronym {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--accent-emphasis);
+}
+
 /* ---- Tooltip ---- */
 
 .skills__tip {
@@ -207,6 +223,27 @@
 .skills__pill:focus-visible .skills__tip {
   opacity: 1;
   transform: translate(-50%, 0);
+}
+
+/* Acronym tooltips carry a full explanation, far wider than the tile. Centred
+   they would spill off the left edge on phones (these tiles lead their row),
+   so they start at the tile's left edge and wrap within a fixed width. */
+.skills__tip--wide {
+  left: 0;
+  width: max-content;
+  max-width: 200px;
+  white-space: normal;
+  line-height: 1.35;
+  transform: translate(0, 4px);
+}
+
+.skills__tip--wide::after {
+  left: 18px;
+}
+
+.skills__pill:hover .skills__tip--wide,
+.skills__pill:focus-visible .skills__tip--wide {
+  transform: translate(0, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {

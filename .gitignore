@@ -1,5 +1,7 @@
 # build output
 dist/
+# SSR bundle used by scripts/prerender.mjs (deleted after the build)
+dist-ssr/
 
 # dependencies
 node_modules/

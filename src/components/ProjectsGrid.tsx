@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
-import type { ProjectItem } from '../data/projects';
+import { formatProjectNumber, type ProjectItem } from '../data/projects';
 import { icons } from '../data/techIcons';
 import { useSpotlight } from '../lib/spotlight';
 import { wrapIndex } from '../lib/wrapIndex';
@@ -78,12 +78,12 @@ export default function ProjectsGrid({ items, id = 'projects-grid' }: ProjectsGr
           >
             <div className="projects-grid__content">
               <span className="projects-grid__index" aria-hidden="true">
-                {item.index}
+                {formatProjectNumber(index)}
               </span>
-              <h3 className="projects-grid__title">
+              <h4 className="projects-grid__title">
                 {item.title}
                 <span className="projects-grid__arrow">{ARROW}</span>
-              </h3>
+              </h4>
               <TechTags tech={item.tech} />
               <p className="projects-grid__desc">{item.description[lang]}</p>
             </div>

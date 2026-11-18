@@ -67,6 +67,46 @@
   color: var(--text-muted);
 }
 
+/* The value proposition: the most prominent supporting line under the name. */
+.hero__value {
+  max-width: 44ch;
+  margin: clamp(14px, 1.8vw, 22px) auto 0;
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  line-height: 1.45;
+  color: var(--text-body);
+  text-wrap: balance;
+}
+
+/* Primary CTA — same treatment as the contact form's submit button. */
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  margin-top: clamp(18px, 2.4vw, 28px);
+  padding: 0 28px;
+  border-radius: var(--r-md);
+  background: var(--brand-gradient);
+  color: var(--on-accent);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease-out);
+}
+
+.hero__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-md);
+}
+
+.hero__cta:active {
+  transform: translateY(0);
+}
+
 .hero__scroll {
   position: absolute;
   bottom: 40px;

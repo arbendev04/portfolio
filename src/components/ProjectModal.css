@@ -160,6 +160,13 @@
   padding: clamp(24px, 4vw, 44px);
 }
 
+.project-modal__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .project-modal__index {
   font-family: var(--font-mono);
   font-size: var(--fs-eyebrow);

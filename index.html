@@ -30,10 +30,10 @@
       })();
     </script>
 
-    <title>ArbenDev — Santiago Arango Benjumea</title>
+    <title>ArbenDev — Santiago Arango | Desarrollo web en Medellín</title>
     <meta
       name="description"
-      content="Ingeniero de sistemas y desarrollador web freelance en Colombia. WordPress, Shopify, automatizaciones con IA y código a medida."
+      content="Páginas web, tiendas online y software a medida que automatiza procesos para negocios en Colombia y España. Rápidos, con SEO y fáciles de usar."
     />
     <link rel="canonical" href="https://arben.dev/" />
     <meta name="robots" content="index, follow" />
@@ -42,10 +42,10 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://arben.dev/" />
-    <meta property="og:title" content="ArbenDev — Santiago Arango Benjumea" />
+    <meta property="og:title" content="ArbenDev — Santiago Arango | Desarrollo web en Medellín" />
     <meta
       property="og:description"
-      content="Ingeniero de sistemas y desarrollador web freelance en Colombia. WordPress, Shopify, automatizaciones con IA y código a medida."
+      content="Páginas web, tiendas online y software a medida que automatiza procesos para negocios en Colombia y España. Rápidos, con SEO y fáciles de usar."
     />
     <meta property="og:image" content="https://arben.dev/og-image.webp" />
     <meta property="og:image:width" content="1200" />
@@ -55,10 +55,10 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="ArbenDev — Santiago Arango Benjumea" />
+    <meta name="twitter:title" content="ArbenDev — Santiago Arango | Desarrollo web en Medellín" />
     <meta
       name="twitter:description"
-      content="Ingeniero de sistemas y desarrollador web freelance en Colombia. WordPress, Shopify, automatizaciones con IA y código a medida."
+      content="Páginas web, tiendas online y software a medida que automatiza procesos para negocios en Colombia y España. Rápidos, con SEO y fáciles de usar."
     />
     <meta name="twitter:image" content="https://arben.dev/og-image.webp" />
 
@@ -77,40 +77,95 @@
       rel="stylesheet"
     />
 
-    <!-- JSON-LD -->
+    <!-- JSON-LD. The Person "@id" must match PERSON_ID in src/seo/jsonLd.ts
+         (jsonLd.test.ts parses every block here). The projects ItemList is not
+         written by hand: scripts/prerender.mjs generates it from
+         src/data/projects.ts at build time. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
-        "name": "Santiago Arango",
+        "@id": "https://arben.dev/#person",
+        "name": "Santiago Arango Benjumea",
+        "alternateName": "ArbenDev",
         "url": "https://arben.dev",
-        "jobTitle": "Ingeniero de Sistemas · Desarrollador Web Freelance",
-        "description": "Ingeniero de sistemas y desarrollador web freelance en Colombia especializado en WordPress, Shopify, automatizaciones con IA y soluciones a medida.",
-        "knowsAbout": ["WordPress", "WooCommerce", "Shopify", "TypeScript", "React", "Angular", "Astro", "PHP", "Python", "PostgreSQL", "OpenAI", "n8n", "Zapier"],
+        "image": "https://arben.dev/og-image.webp",
+        "jobTitle": "Ingeniero de Sistemas · Desarrollador Web",
+        "description": "Ingeniero de sistemas y desarrollador web en Medellín. Desarrolla páginas web, tiendas online y software a medida que automatiza procesos para negocios en Colombia y España.",
+        "address": { "@type": "PostalAddress", "addressLocality": "Medellín", "addressCountry": "CO" },
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "Introduction to Cybersecurity",
+            "credentialCategory": "badge",
+            "url": "https://www.credly.com/badges/16f83ce4-ff31-441e-b7cd-da841b83d290",
+            "recognizedBy": { "@type": "Organization", "name": "Cisco" }
+          }
+        ],
+        "knowsAbout": ["Desarrollo web", "Software a medida", "Automatización de procesos", "Ciberseguridad", "SEO", "GEO (Generative Engine Optimization)", "AEO (Answer Engine Optimization)", "Google Search Console", "Google Analytics", "Zoho", "WordPress", "WooCommerce", "Shopify", "Elementor", "HTML", "CSS", "TypeScript", "PHP", "React", "Angular", "Astro", "Next.js", "PostgreSQL", "Python", "OpenAI", "Claude", "n8n", "Zapier", "Make"],
         "sameAs": [
-          "https://github.com/ArbenS90",
+          "https://github.com/arbendev04",
           "https://www.linkedin.com/in/santiago-arango-benjumea-383864219/",
           "https://www.instagram.com/arbendev/"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "@id": "https://arben.dev/#business",
+        "name": "ArbenDev",
+        "url": "https://arben.dev",
+        "image": "https://arben.dev/og-image.webp",
+        "logo": "https://arben.dev/logos/logo.webp",
+        "description": "Desarrollo de páginas web, landing pages, tiendas online y software a medida que automatiza procesos y reduce la carga operativa de negocios en Colombia y España, con sitios rápidos y optimizados para SEO.",
+        "founder": { "@id": "https://arben.dev/#person" },
+        "email": "hola@arben.dev",
+        "telephone": "+57 305 326 8551",
+        "address": { "@type": "PostalAddress", "addressLocality": "Medellín", "addressCountry": "CO" },
+        "areaServed": [
+          { "@type": "Country", "name": "Colombia", "identifier": "CO" },
+          { "@type": "Country", "name": "España", "identifier": "ES" },
+          { "@type": "Country", "name": "Estados Unidos", "identifier": "US" }
         ],
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "email": "hola@arben.dev",
-          "contactType": "customer service",
-          "availableLanguage": ["Spanish"],
-          "areaServed": ["CO", "ES", "LATAM"]
-        }
+        "serviceType": ["Desarrollo de páginas web", "Tiendas online (e-commerce)", "Software a medida", "Automatización de procesos"],
+        "knowsAbout": ["Desarrollo web", "E-commerce", "Software a medida", "Automatización de procesos", "SEO", "Astro", "Next.js", "Shopify", "WooCommerce", "n8n", "Zapier", "Make"],
+        "sameAs": [
+          "https://github.com/arbendev04",
+          "https://www.linkedin.com/in/santiago-arango-benjumea-383864219/",
+          "https://www.instagram.com/arbendev/"
+        ]
       }
     </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
+        "@id": "https://arben.dev/#website",
         "name": "ArbenDev",
         "url": "https://arben.dev",
-        "description": "Portafolio de Santiago Arango Benjumea — Ingeniero de Sistemas y Desarrollador Web.",
-        "author": { "@type": "Person", "name": "Santiago Arango Benjumea" }
+        "inLanguage": "es",
+        "description": "Portafolio de Santiago Arango Benjumea — páginas web, tiendas online, software a medida y automatización de procesos.",
+        "author": { "@id": "https://arben.dev/#person" },
+        "publisher": { "@id": "https://arben.dev/#business" }
       }
     </script>
+
+    <!-- The build prerenders the page into #root for crawlers (scripts/prerender.mjs)
+         and marks it data-prerendered. It stays hidden until the client app has
+         replaced it (App.tsx removes the attribute on mount), so visitors never
+         see a flash of static markup. Without JS it is shown as-is, with the
+         entrance-animation start states (inline opacity: 0) neutralised. -->
+    <style>
+      #root[data-prerendered] { visibility: hidden; }
+    </style>
+    <noscript>
+      <style>
+        #root[data-prerendered] { visibility: visible; }
+        #root[data-prerendered] [style*="opacity"] { opacity: 1 !important; }
+      </style>
+    </noscript>
   </head>
   <body>
     <!-- Netlify Forms detection: Netlify registers forms by parsing the deployed

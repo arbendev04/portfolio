@@ -33,8 +33,12 @@ const TWO_PI = Math.PI * 2;
 
 /** The dock slot lives in the tech stack section, a different component. */
 const SLOT_SELECTOR = '[data-globe-slot]';
-/** The section the globe ends its trip behind. */
-const CONTACT_SELECTOR = '[data-globe-contact]';
+/** The first section after the tech stack. Its rising into view starts the
+ * last leg, so the globe leaves the dock while the slot is still on screen and
+ * then stays a faint background through every section after it (credentials,
+ * contact). Driving it from a later section instead would let the docked globe
+ * scroll away with the tech stack and fly back in from above. */
+const FINAL_SELECTOR = '[data-globe-final]';
 
 /** Equivalent of `target` closest to `current`, so easing never spins the long way round. */
 const nearestTurn = (current: number, target: number) => target + TWO_PI * Math.round((current - target) / TWO_PI);
@@ -66,8 +70,8 @@ function startGlobe(canvas: HTMLCanvasElement, size: number) {
  *   1. a large, faint background behind the project cards, spinning freely;
  *   2. docked into the slot beside the tech stack, where hovering it reveals
  *      where Santiago works;
- *   3. grown again into a faint background behind the contact form, with the
- *      three places always labelled.
+ *   3. grown again into a faint background behind the credentials and the
+ *      contact form, with the three places always labelled.
  * At stops 2 and 3 it sways gently around the Atlantic instead of spinning,
  * so it keeps moving even when the page doesn't, without ever turning the
  * labelled places away.
@@ -88,7 +92,7 @@ export default function TravelingGlobe() {
     const canvas = canvasRef.current;
     const section = clip?.closest('section');
     const slot = document.querySelector<HTMLElement>(SLOT_SELECTOR);
-    const contact = document.querySelector<HTMLElement>(CONTACT_SELECTOR);
+    const contact = document.querySelector<HTMLElement>(FINAL_SELECTOR);
     if (!clip || !layer || !canvas || !section || !slot) return;
 
     const reduced = window.matchMedia(REDUCED_MOTION_QUERY).matches;

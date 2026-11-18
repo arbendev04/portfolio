@@ -28,10 +28,18 @@ export function getLenis(): Lenis | null {
   return lenis;
 }
 
-export function scrollToSection(target: Element): void {
+export interface ScrollToSectionOptions {
+  /** Jump instead of animating (reduced motion). */
+  immediate?: boolean;
+  /** Runs once the scroll has landed (right away when Lenis isn't running). */
+  onComplete?: () => void;
+}
+
+export function scrollToSection(target: Element, { immediate = false, onComplete }: ScrollToSectionOptions = {}): void {
   if (lenis) {
-    lenis.scrollTo(target as HTMLElement, { offset: 0 });
+    lenis.scrollTo(target as HTMLElement, { offset: 0, immediate, onComplete });
   } else {
-    target.scrollIntoView({ behavior: 'smooth' });
+    target.scrollIntoView({ behavior: immediate ? 'auto' : 'smooth' });
+    onComplete?.();
   }
 }

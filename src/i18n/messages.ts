@@ -8,10 +8,15 @@ const en = {
     role: 'Systems Engineer · Web Developer · Medellín',
     scroll: 'scroll',
     scrollLabel: 'Scroll to work',
+    value: "I build websites, online stores and custom software that automates your processes and takes work off your team's plate.",
+    cta: 'Get a quote',
   },
   projects: {
     eyebrow: '[ 02 ] — selected work',
     title: 'Things I have built.',
+    personal: 'Personal project',
+    clientGroup: '// client work',
+    personalGroup: '// personal projects',
   },
   skills: {
     eyebrow: '[ 03 ] — capabilities',
@@ -20,7 +25,15 @@ const en = {
       web: 'Web Development',
       frameworks: 'Frameworks & Languages',
       ai: 'AI & Automation',
+      seo: 'SEO & Visibility',
     },
+  },
+  certifications: {
+    eyebrow: '[ 04 ] — certifications',
+    title: 'Always learning.',
+    verify: 'Verify credential',
+    /** Screen-reader name for a card: "{name}, issued by {issuer}. Verify credential". */
+    cardLabel: '{name}, issued by {issuer}. Verify credential (opens in a new tab)',
   },
   modal: {
     challenge: 'The challenge',
@@ -33,7 +46,7 @@ const en = {
     close: 'Close project details',
   },
   contact: {
-    eyebrow: '[ 04 ] — contact',
+    eyebrow: '[ 05 ] — contact',
     titleLead: "Let's build ",
     titleAccent: 'something',
     titleEnd: '.',
@@ -101,10 +114,15 @@ const es: Messages = {
     role: 'Ingeniero de Sistemas · Desarrollador Web · Medellín',
     scroll: 'desliza',
     scrollLabel: 'Ir a los proyectos',
+    value: 'Desarrollo páginas web, tiendas online y software a medida que automatiza procesos y le quita carga a tu equipo.',
+    cta: 'Cotiza tu proyecto',
   },
   projects: {
     eyebrow: '[ 02 ] — trabajo seleccionado',
     title: 'Cosas que he construido.',
+    personal: 'Proyecto personal',
+    clientGroup: '// para clientes',
+    personalGroup: '// proyectos personales',
   },
   skills: {
     eyebrow: '[ 03 ] — capacidades',
@@ -113,7 +131,14 @@ const es: Messages = {
       web: 'Desarrollo web',
       frameworks: 'Frameworks y lenguajes',
       ai: 'IA y automatización',
+      seo: 'SEO y visibilidad',
     },
+  },
+  certifications: {
+    eyebrow: '[ 04 ] — certificaciones',
+    title: 'Siempre aprendiendo.',
+    verify: 'Verificar credencial',
+    cardLabel: '{name}, emitido por {issuer}. Verificar credencial (se abre en una pestaña nueva)',
   },
   modal: {
     challenge: 'El reto',
@@ -126,7 +151,7 @@ const es: Messages = {
     close: 'Cerrar detalles del proyecto',
   },
   contact: {
-    eyebrow: '[ 04 ] — contacto',
+    eyebrow: '[ 05 ] — contacto',
     titleLead: 'Construyamos ',
     titleAccent: 'algo',
     titleEnd: '.',

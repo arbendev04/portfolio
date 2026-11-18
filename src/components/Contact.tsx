@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import HoverLetters from './HoverLetters';
 import SocialDock from './SocialDock';
+import { CONTACT_SECTION_ID } from './HeroCta';
 import { fadeUp, revealViewport } from '../lib/motion';
 import { CONTACT_FORM_NAME, HONEYPOT_FIELD, submitContactForm } from '../lib/contactForm';
 import { currentYear } from '../lib/year';
@@ -42,7 +43,7 @@ export default function Contact() {
   }
 
   return (
-    <section data-section data-globe-contact className="contact">
+    <section id={CONTACT_SECTION_ID} data-section className="contact">
       <div className="contact__inner">
         <motion.div
           className="contact__eyebrow"

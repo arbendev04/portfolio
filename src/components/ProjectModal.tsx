@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import type { ProjectItem } from '../data/projects';
+import { formatProjectNumber, type ProjectItem } from '../data/projects';
 import { icons } from '../data/techIcons';
 import { useFocusTrap } from '../lib/focusTrap';
 import { getLenis } from '../lib/lenis';
 import SitePreview from './SitePreview';
+import PersonalBadge from './PersonalBadge';
 import { useLang, useT } from '../i18n/langStore';
 import './ProjectModal.css';
 
@@ -51,8 +52,6 @@ const PREV_ICON = icon(['m15 18-6-6 6-6']);
 const NEXT_ICON = icon(['m9 18 6-6-6-6']);
 const ARROW_ICON = icon(['M7 17 17 7', 'M7 7h10v10']);
 
-const pad = (n: number) => String(n).padStart(2, '0');
-
 /** Smooth scrolling would scroll the page behind the modal, so it's paused
  * while the modal is open. */
 function usePausedPageScroll(): void {
@@ -79,13 +78,13 @@ function useArrowKeys(onPrev: () => void, onNext: () => void): void {
 /** A screenshot when the project has one (sites that refuse to be framed);
  * otherwise a live preview of the site, layered over a branded placeholder
  * that shows until the site has loaded. */
-function ModalHeader({ project }: { project: ProjectItem }) {
+function ModalHeader({ project, number }: { project: ProjectItem; number: string }) {
   if (project.image) {
     return <img className="project-modal__image" src={project.image} alt="" />;
   }
   return (
     <div className="project-modal__placeholder" aria-hidden="true">
-      <span>{project.index}</span>
+      <span>{number}</span>
       {project.url && <SitePreview url={project.url} />}
     </div>
   );
@@ -116,7 +115,7 @@ function ProjectNav({ position, onPrev, onNext }: Pick<ProjectModalProps, 'posit
         {PREV_ICON}
       </button>
       <span className="project-modal__count" aria-live="polite">
-        {pad(position.current)} / {pad(position.total)}
+        {formatProjectNumber(position.current - 1)} / {formatProjectNumber(position.total - 1)}
       </span>
       <button type="button" className="project-modal__icon-btn" onClick={onNext} aria-label={t.modal.next}>
         {NEXT_ICON}
@@ -125,17 +124,27 @@ function ProjectNav({ position, onPrev, onNext }: Pick<ProjectModalProps, 'posit
   );
 }
 
-function ProjectContent({ project, titleId }: { project: ProjectItem; titleId: string }) {
+interface ProjectContentProps {
+  project: ProjectItem;
+  /** The project's card number within its group, e.g. "02". */
+  number: string;
+  titleId: string;
+}
+
+function ProjectContent({ project, number, titleId }: ProjectContentProps) {
   const lang = useLang();
   const t = useT();
   const details = project.details[lang];
   return (
     <>
-      <ModalHeader project={project} />
+      <ModalHeader project={project} number={number} />
 
       <div className="project-modal__body">
         <div className="project-modal__main">
-          <span className="project-modal__index">{project.index}</span>
+          <div className="project-modal__meta">
+            <span className="project-modal__index">{number}</span>
+            {project.personal && <PersonalBadge />}
+          </div>
           <h3 id={titleId} className="project-modal__title">
             {project.title}
           </h3>
@@ -210,7 +219,7 @@ export default function ProjectModal({ project, layoutId, position, direction, o
             animate="center"
             exit="exit"
           >
-            <ProjectContent project={project} titleId={titleId} />
+            <ProjectContent project={project} number={formatProjectNumber(position.current - 1)} titleId={titleId} />
           </motion.div>
         </AnimatePresence>
       </motion.div>

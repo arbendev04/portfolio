@@ -3,9 +3,32 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import HoverLetters from './HoverLetters';
 import ProjectsGrid from './ProjectsGrid';
 import TravelingGlobe from './TravelingGlobe';
-import { projects } from '../data/projects';
+import { groupProjects, projects, type ProjectItem } from '../data/projects';
 import { useLang, useT } from '../i18n/langStore';
 import './Projects.css';
+
+const { client, personal } = groupProjects(projects);
+
+interface ProjectGroupProps {
+  id: string;
+  label: string;
+  items: ProjectItem[];
+}
+
+/** One labelled group of cards. Each group is its own grid, so the modal's
+ * prev / next arrows only browse within it. Empty groups render nothing. */
+function ProjectGroup({ id, label, items }: ProjectGroupProps) {
+  if (items.length === 0) return null;
+  const headingId = `${id}-heading`;
+  return (
+    <section className="work__group" aria-labelledby={headingId}>
+      <h3 id={headingId} className="work__group-label">
+        {label}
+      </h3>
+      <ProjectsGrid id={id} items={items} />
+    </section>
+  );
+}
 
 export default function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -44,8 +67,9 @@ export default function Projects() {
         <HoverLetters key={lang} as="h2" className="work__title" text={t.projects.title} />
       </div>
 
-      <motion.div style={{ opacity: gridOpacity, y: gridY }}>
-        <ProjectsGrid items={projects} />
+      <motion.div className="work__groups" style={{ opacity: gridOpacity, y: gridY }}>
+        <ProjectGroup id="projects-client" label={t.projects.clientGroup} items={client} />
+        <ProjectGroup id="projects-personal" label={t.projects.personalGroup} items={personal} />
       </motion.div>
     </section>
   );

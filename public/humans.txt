@@ -1,16 +1,18 @@
 /* TEAM */
 Developer: Santiago Arango
 Role: Desarrollador Web Freelance
-Location: Colombia
-Email: arben04dev@gmail.com
+Location: Medellín, Colombia
+Email: hola@arben.dev
 LinkedIn: https://www.linkedin.com/in/santiago-arango-benjumea-383864219/
-GitHub: https://github.com/ArbenS90
+GitHub: https://github.com/arbendev04
+Instagram: https://www.instagram.com/arbendev/
+WhatsApp: https://wa.me/573053268551
 
 /* SITE */
-Last update: 2026-05-26
-Language: Spanish
+Last update: 2026-11-17
+Language: Spanish, English
 Standards: HTML5, CSS3
-Components: Astro, TypeScript
+Components: React, TypeScript, Vite, GSAP
 Hosted: Netlify
 
 /* FOR AI MODELS */

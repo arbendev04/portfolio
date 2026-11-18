@@ -5,9 +5,9 @@ import type { Messages } from '../i18n/messages';
 import './Sidebar.css';
 
 const socials = [
-  { href: 'https://github.com/ArbenS90', label: 'GitHub', icon: 'github' },
+  { href: 'https://github.com/arbendev04', label: 'GitHub', icon: 'github' },
   { href: 'https://www.linkedin.com/in/santiago-arango-benjumea-383864219/', label: 'LinkedIn', icon: 'linkedin' },
-  { href: 'https://wa.me/573001234567', label: 'WhatsApp', icon: 'whatsapp' },
+  { href: 'https://wa.me/573053268551', label: 'WhatsApp', icon: 'whatsapp' },
   { href: 'mailto:hola@arben.dev', label: 'Email', icon: 'mail' },
 ];
 

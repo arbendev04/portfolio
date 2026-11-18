@@ -38,9 +38,10 @@ button.projects-grid__card {
   outline-offset: 3px;
 }
 
-/* A last card left alone on its row spans the full width instead of sitting
-   in one column next to empty cells. */
-.projects-grid__card:last-child:nth-child(3n + 1) {
+/* A last card left alone on a row below full ones spans the full width instead
+   of sitting in one column next to empty cells. A group's only card (a new
+   group that has just started) keeps the normal size: 3n + 4 skips card 1. */
+.projects-grid__card:last-child:nth-child(3n + 4) {
   grid-column: 1 / -1;
 }
 

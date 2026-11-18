@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { icons, categories } from '../data/techIcons';
+import { acronyms, icons, categories } from '../data/techIcons';
 import HoverLetters from './HoverLetters';
 import { fadeUp, revealViewport } from '../lib/motion';
 import { useSpotlight } from '../lib/spotlight';
@@ -48,18 +48,29 @@ export default function TechStack() {
               >
                 <div className="skills__row-label">{t.skills.categories[cat.key]}</div>
                 <div className="skills__pills">
-                  {cat.items.map((item) => (
-                    // Icon only; the name shows in a tooltip on hover or focus.
-                    // Focusable so keyboard and touch users can reveal it too, and
-                    // labelled so screen readers still get the name.
-                    <span key={item} className="skills__pill spotlight" role="img" aria-label={item} tabIndex={0}>
-                      {/* Static, developer-authored SVG strings — not user input, safe to inject */}
-                      <span className="skills__pill-icon" aria-hidden="true" dangerouslySetInnerHTML={{ __html: icons[item] }} />
-                      <span className="skills__tip" aria-hidden="true">
-                        {item}
+                  {cat.items.map((item) => {
+                    const meaning = acronyms[item]?.[lang];
+                    const name = meaning ? `${item} — ${meaning}` : item;
+                    return (
+                      // Icon only; the name shows in a tooltip on hover or focus.
+                      // Focusable so keyboard and touch users can reveal it too, and
+                      // labelled so screen readers still get the name.
+                      <span key={item} className="skills__pill spotlight" data-tech={item} role="img" aria-label={name} tabIndex={0}>
+                        {meaning ? (
+                          // a practice, not a product: no logo, so the acronym is the glyph
+                          <span className="skills__pill-acronym" aria-hidden="true">
+                            {item}
+                          </span>
+                        ) : (
+                          // Static, developer-authored SVG strings — not user input, safe to inject
+                          <span className="skills__pill-icon" aria-hidden="true" dangerouslySetInnerHTML={{ __html: icons[item] }} />
+                        )}
+                        <span className={meaning ? 'skills__tip skills__tip--wide' : 'skills__tip'} aria-hidden="true">
+                          {name}
+                        </span>
                       </span>
-                    </span>
-                  ))}
+                    );
+                  })}
                 </div>
               </motion.div>
             ))}

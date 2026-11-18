@@ -1,0 +1,150 @@
+/* Sits above the traveling globe (projects layer, z-index 2), which grows
+   behind this section on its way to the contact form. No background of its
+   own, so the faint globe shows through around the cards. */
+.certs {
+  position: relative;
+  z-index: 3;
+  padding: var(--section-y) 0 0;
+}
+
+.certs__header {
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.certs__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--brand-cyan);
+  margin-bottom: 16px;
+}
+
+.certs__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--text-strong);
+}
+
+/* Small cards that wrap: one credential sits alone at its natural width
+   instead of stretching across the page. */
+.certs__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.certs__card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+  padding: 20px 22px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  /* background-color only: the .spotlight class supplies background-image */
+  background-color: var(--surface-card);
+  box-shadow: var(--inset-hairline);
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+
+.certs__card:hover {
+  transform: translateY(-3px);
+}
+
+.certs__card:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.certs__badge {
+  flex: 0 0 auto;
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.35));
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+
+.certs__card:hover .certs__badge {
+  transform: rotate(-6deg) scale(1.06);
+}
+
+.certs__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.certs__meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.certs__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--text-strong);
+}
+
+.certs__summary {
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.certs__verify {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-emphasis);
+}
+
+.certs__verify svg {
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+
+.certs__card:hover .certs__verify svg {
+  transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .certs__card:hover,
+  .certs__card:hover .certs__badge,
+  .certs__card:hover .certs__verify svg {
+    transform: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .certs__card {
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .certs__badge {
+    width: 64px;
+    height: 64px;
+  }
+}

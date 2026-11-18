@@ -41,8 +41,14 @@ interface Magnitudes {
 const DESKTOP_MAGNITUDES: Magnitudes = { scaleTo: 8, opacityTo: 0 };
 const MOBILE_MAGNITUDES: Magnitudes = { scaleTo: 5, opacityTo: 0 };
 
+/** Read once on mount. The build-time prerender has no window and takes the
+ * desktop branch; the client renders from scratch (createRoot), so the two
+ * never need to agree. */
 function useIsMobile(): boolean {
-  return useRef(window.matchMedia('(max-width: 767px)').matches).current;
+  const [isMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches,
+  );
+  return isMobile;
 }
 
 /** Measures the rendered font size, derives the scale that shows each line at

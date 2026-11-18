@@ -4,6 +4,7 @@ import { scrollToSection } from '../lib/lenis';
 import { EASE_OUT } from '../lib/motion';
 import KineticHeroName from './KineticHeroName';
 import AgentColony from './AgentColony';
+import HeroCta from './HeroCta';
 import { useT } from '../i18n/langStore';
 import './Hero.css';
 
@@ -65,6 +66,14 @@ export default function Hero() {
               ▍
             </span>
           </motion.div>
+
+          {/* the value proposition is the most prominent supporting line; the
+              role above it stays the small mono tag */}
+          <motion.p className="hero__value" style={{ opacity: supportOpacity }} {...fadeIn(1.15)}>
+            {t.hero.value}
+          </motion.p>
+
+          <HeroCta label={t.hero.cta} opacity={supportOpacity} reduceMotion={!!reduceMotion} entrance={fadeIn(1.3)} />
         </div>
 
         <motion.button
