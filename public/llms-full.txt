@@ -8,7 +8,7 @@ Desarrolla páginas web, tiendas online y software a medida que automatiza proce
 - Sitios web y landing pages con Astro y Next.js.
 - Tiendas online (e-commerce) con Shopify y WooCommerce.
 - Software y aplicaciones web a medida.
-- Automatización de procesos para reducir tareas manuales y carga operativa, especialmente de WhatsApp (n8n, Zapier, Make, integraciones con IA).
+- Automatización de procesos para reducir tareas manuales y carga operativa, especialmente de WhatsApp (n8n, Make, Zoho, integraciones con IA).
 - SEO técnico: sitios rápidos, con estructura y datos preparados para buscadores.
 - GEO y AEO: optimización para aparecer y ser citado en respuestas de motores de IA (ChatGPT, Perplexity, Google AI Overviews), con Google Search Console y Google Analytics para medir.
 
@@ -39,7 +39,7 @@ Depende del tamaño. Una web pequeña o landing page puede estar lista en pocos 
 Sí. Trabaja en remoto con clientes de cualquier país, en español o en inglés.
 
 ### ¿Qué procesos puede automatizar?
-Principalmente WhatsApp: respuestas automáticas, atención y seguimiento de clientes. También integra formularios, correos, hojas de cálculo y CRM con herramientas como n8n, Zapier, Make e IA, para reducir tareas manuales repetitivas.
+Principalmente WhatsApp: respuestas automáticas, atención y seguimiento de clientes. También integra formularios, correos, hojas de cálculo y CRM con herramientas como n8n, Make, Zoho e IA, para reducir tareas manuales repetitivas.
 
 ### ¿Hace software a medida?
 Sí. Desarrolla aplicaciones web a medida cuando una herramienta genérica no se ajusta al proceso del negocio.

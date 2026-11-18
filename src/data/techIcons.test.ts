@@ -17,11 +17,25 @@ describe('tech stack categories', () => {
   });
 
   it('groups search and AI visibility in its own row', () => {
-    expect(itemsOf('seo')).toEqual(['SEO', 'GEO', 'AEO', 'Google Search Console', 'Google Analytics']);
+    expect(itemsOf('seo')).toEqual(['SEO', 'GEO', 'AEO', 'Google Search Console', 'Google Analytics', 'Google Business Profile']);
   });
 
   it('lists Zoho with AI and automation', () => {
     expect(itemsOf('ai')).toContain('Zoho');
+  });
+
+  it('orders frameworks first (Astro leading), then languages, then the database', () => {
+    expect(itemsOf('frameworks')).toEqual(['Astro', 'React', 'Angular', 'JavaScript', 'TypeScript', 'PHP', 'PostgreSQL']);
+  });
+
+  it('lists Crocoblock with web development', () => {
+    expect(itemsOf('web')).toContain('Crocoblock');
+  });
+
+  it('no longer lists Zapier or Python', () => {
+    const all = categories.flatMap((cat) => cat.items);
+    expect(all).not.toContain('Zapier');
+    expect(all).not.toContain('Python');
   });
 
   it.each(LANGS)('explains every acronym in %s', (lang) => {
